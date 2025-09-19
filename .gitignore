@@ -1,35 +1,25 @@
-client/node_modules
-server/node_modules
-dist
-dist-ssr
-*.local
+node_modules
 
+# Output
+.output
+.vercel
+.netlify
+.wrangler
+/.svelte-kit
+/build
 
-data
-images
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# OS
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+Thumbs.db
 
-# build remnants 
-build.sh
-cb-client-img
-cb-server-img
-client/public/SERVER_URL.js
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
 
-*/.yarn/*
-!*/.yarn/cache
-!*/.yarn/patches
-!*/.yarn/plugins
-!*/.yarn/releases
-!*/.yarn/sdks
-!*/.yarn/versions
-build-latest.sh
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+.eslintcache

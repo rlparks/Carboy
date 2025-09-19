@@ -1,0 +1,33 @@
+services:
+  carboy:
+    container_name: carboy
+    image: ghcr.io/rlparks/carboy:main
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://root:carboypassword@carboy-db:5432/carboy
+      # Features
+      FEATURE_PASSWORD: true
+      # Analytics
+      PUBLIC_RYBBIT_ID: 1
+    depends_on:
+      - carboy-db
+    networks:
+      - carboy
+  carboy-db:
+    image: postgres
+    restart: unless-stopped
+    ports:
+      - 5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: carboypassword
+      POSTGRES_DB: carboy
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    networks:
+      - carboy
+networks:
+  carboy:
+    external: false

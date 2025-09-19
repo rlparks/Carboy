@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+/* https://tailwindcss.com/docs/dark-mode#using-a-data-attribute */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@font-face {
+	font-family: Oswald;
+	src: url("/fonts/Oswald-VariableFont_wght.ttf");
+}
+
+@font-face {
+	font-family: Merriweather Sans;
+	src: url("/fonts/MerriweatherSans-VariableFont_wght.ttf");
+}
