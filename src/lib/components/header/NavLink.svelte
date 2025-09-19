@@ -19,8 +19,8 @@
 	{href}
 	aria-current={pageIsActive ? "page" : undefined}
 	class={[
-		"rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white",
-		pageIsActive ? "font-bold underline" : "font-medium",
+		"text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white",
+		pageIsActive ? "font-bold underline underline-offset-8" : "font-medium",
 	]}
 >
 	{text}
