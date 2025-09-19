@@ -1,0 +1,91 @@
+export type Organization = {
+	id: string;
+	name: string;
+	createdAt: Date;
+	updatedAt: Date | null;
+};
+
+export type Account = {
+	id: string;
+	name: string;
+	email: string;
+	username: string;
+	role: string | null;
+	archived: boolean;
+	createdAt: Date;
+	updatedAt: Date | null;
+};
+
+export type AccountOrganization = {
+	accountId: string;
+	organizationId: string;
+};
+
+export type Session = {
+	id: string;
+	accountId: string;
+	tokenHash: string;
+	createdAt: Date;
+	updatedAt: Date | null;
+	expiresAt: Date;
+	oidcIdToken: string;
+	impersonatedBy: string | null;
+	selectedOrganizationId: string | null;
+};
+
+export type Department = {
+	id: string;
+	name: string;
+	organizationId: string;
+	position: number;
+	createdAt: Date;
+	updatedAt: Date | null;
+};
+
+export type Vehicle = {
+	id: string;
+	number: string;
+	name: string;
+	departmentId: string;
+	mileage: number | null;
+	createdAt: Date;
+	updatedAt: Date | null;
+};
+
+export type Destination = {
+	id: string;
+	buildingNumber: string | null;
+	name: string;
+	organizationId: string;
+	address: string | null;
+	latitude: number | null;
+	longitude: number | null;
+	createdAt: Date;
+	updatedAt: Date | null;
+};
+
+export type Trip = {
+	id: string;
+	vehicleId: string;
+	startTime: Date;
+	endTime: Date | null;
+	startMileage: number | null;
+	endMileage: number | null;
+	startedBy: string;
+	endedBy: string | null;
+	createdAt: Date;
+	updatedAt: Date | null;
+};
+
+export type TripDestination = {
+	tripId: string;
+	destinationId: string;
+	position: number;
+};
+
+export type Configuration = {
+	key: string;
+	value: string | null;
+	createdAt: Date;
+	updatedAt: Date | null;
+};
