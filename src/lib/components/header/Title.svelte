@@ -3,5 +3,5 @@
 </script>
 
 <a href={resolve("/")}>
-	<h1 class="mb-1 font-[Oswald] text-2xl font-bold">CarBoy 2</h1>
+	<h1 class="mb-1 font-[Oswald] text-2xl font-bold">Carboy</h1>
 </a>

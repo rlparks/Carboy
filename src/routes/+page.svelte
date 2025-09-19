@@ -2,6 +2,6 @@
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
 </script>
 
-<WindowTitle title="CarBoy 2" description="Vehicle checkout as you've never seen it before." />
+<WindowTitle title="Carboy" description="Vehicle checkout as you've never seen it before." />
 
-<p class="p-4">Welcome to CarBoy 2.</p>
+<p class="p-4">Welcome to Carboy 2.</p>
