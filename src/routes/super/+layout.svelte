@@ -4,7 +4,7 @@
 	let { children } = $props();
 </script>
 
-<div class="flex justify-center">
+<div class="mb-2 flex justify-center">
 	<nav class="space-x-4">
 		<NavLink href="/super/organizations" text="Organizations" mode="exact" />
 		<NavLink href="/super/config" text="OIDC Config" mode="exact" />

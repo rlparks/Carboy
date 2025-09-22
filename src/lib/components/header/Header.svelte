@@ -7,16 +7,26 @@
 	const { account } = $derived(await me());
 </script>
 
-<header class="mb-2 flex justify-between border-b border-gray-500 p-4 dark:border-gray-300">
+<header class="mb-2 flex justify-between border-b-4 border-bulldog">
 	<nav class="flex items-center space-x-4">
 		<Title />
-		<NavLink href="/" text="Home" mode="exact" />
-		<NavLink href="/trips" text="Trips" mode="exact" />
-		<NavLink href="/admin" text="Admin" mode="startsWith" />
-		<NavLink href="/super" text="Superadmin" mode="startsWith" />
+		<ul class="flex items-center space-x-4 py-4">
+			<li>
+				<NavLink href="/" text="Home" mode="exact" />
+			</li>
+			<li>
+				<NavLink href="/trips" text="Trips" mode="exact" />
+			</li>
+			<li>
+				<NavLink href="/admin" text="Admin" mode="startsWith" />
+			</li>
+			<li>
+				<NavLink href="/super" text="Superadmin" mode="startsWith" />
+			</li>
+		</ul>
 	</nav>
 
-	<div class="flex items-center space-x-4">
+	<div class="flex items-center space-x-4 p-4">
 		{#if !account}
 			<Button href="/login/oidc">Login</Button>
 		{:else}
