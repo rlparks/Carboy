@@ -1,0 +1,47 @@
+<script lang="ts">
+	import type { RemoteFormIssue } from "@sveltejs/kit";
+
+	type Props = {
+		name: string;
+		label?: string;
+		type?: "text" | "password" | "email" | "number";
+		placeholder?: string;
+		value?: string;
+		issues?: RemoteFormIssue[];
+	};
+	let {
+		name,
+		label,
+		type = "text",
+		placeholder = "",
+		value = $bindable(""),
+		issues,
+	}: Props = $props();
+
+	const id = $props.id();
+</script>
+
+<div>
+	{#if label}
+		<label for={id} class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+			{label}
+		</label>
+	{/if}
+
+	<input
+		{id}
+		{name}
+		{type}
+		{placeholder}
+		bind:value
+		class="block w-full rounded border border-gray-300 px-3 py-2 placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:placeholder-gray-500"
+	/>
+
+	{#if issues && issues.length > 0}
+		<ul class="mt-1 text-sm text-red-600">
+			{#each issues as issue (issue.message + issue.name)}
+				<li>{issue.message}</li>
+			{/each}
+		</ul>
+	{/if}
+</div>

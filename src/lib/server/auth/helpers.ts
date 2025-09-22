@@ -9,7 +9,11 @@ export function setSessionCookie(
 ) {
 	const cookieName = impersonated ? impersonateCookieName : sessionCookieName;
 
-	event.cookies.set(cookieName, sessionToken, {
+	setCookie(event, cookieName, sessionToken, expiresAt);
+}
+
+export function setCookie(event: RequestEvent, cookieName: string, value: string, expiresAt: Date) {
+	event.cookies.set(cookieName, value, {
 		path: "/",
 		sameSite: "lax", // if "strict", does not log in after redirect from OIDC provider
 		expires: expiresAt,

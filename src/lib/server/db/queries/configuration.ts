@@ -2,7 +2,6 @@ import { parsePgError } from "$lib/server/db/error";
 import { sql } from "$lib/server/db/postgres";
 
 type ConfigKey =
-	| "oidcEnabled"
 	| "oidcDiscoveryUrl"
 	| "oidcClientId"
 	| "oidcClientSecret"

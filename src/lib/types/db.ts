@@ -1,3 +1,5 @@
+import type { Role } from "$lib/server/auth/Security";
+
 export type Organization = {
 	id: string;
 	name: string;
@@ -10,7 +12,7 @@ export type Account = {
 	name: string;
 	email: string;
 	username: string;
-	role: string | null;
+	role: Role | null;
 	archived: boolean;
 	createdAt: Date;
 	updatedAt: Date | null;

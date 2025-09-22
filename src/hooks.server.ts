@@ -1,6 +1,7 @@
 import { building } from "$app/environment";
 import { impersonateCookieName, sessionCookieName, validateSessionToken } from "$lib/server/auth";
 import { deleteSessionCookie, setSessionCookie } from "$lib/server/auth/helpers";
+import Security from "$lib/server/auth/Security";
 import { initCarboy } from "$lib/server/init";
 import type { Handle, ServerInit } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
@@ -38,6 +39,7 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 };
 
 const addLocals: Handle = async ({ event, resolve }) => {
+	event.locals.security = new Security(event.locals.account);
 	return await resolve(event);
 };
 

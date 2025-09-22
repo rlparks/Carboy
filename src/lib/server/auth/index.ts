@@ -1,4 +1,5 @@
 import { generateTextId } from "$lib/server";
+import type { Role } from "$lib/server/auth/Security";
 import { sql } from "$lib/server/db/postgres";
 import type { Account, Session } from "$lib/types/db";
 import { sha256 } from "@oslojs/crypto/sha2";
@@ -57,7 +58,7 @@ type ValidationSelectResult = {
 	accountUsername: string;
 	accountCreatedAt: Date;
 	accountUpdatedAt: Date | null;
-	accountRole: string | null;
+	accountRole: Role | null;
 	accountName: string;
 	accountArchived: boolean;
 };
