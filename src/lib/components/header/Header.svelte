@@ -18,7 +18,7 @@
 				<NavLink href="/trips" text="Trips" mode="exact" />
 			</li>
 			<li>
-				<NavLink href="/admin" text="Admin" mode="startsWith" />
+				<NavLink href="/admin/vehicles" comparePath="/admin" text="Admin" mode="startsWith" />
 			</li>
 			<li>
 				<NavLink
