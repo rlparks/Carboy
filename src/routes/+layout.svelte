@@ -10,12 +10,6 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<svelte:boundary>
-	<Header />
+<Header />
 
-	{@render children?.()}
-
-	{#snippet pending()}
-		Loading... (temp)
-	{/snippet}
-</svelte:boundary>
+{@render children?.()}
