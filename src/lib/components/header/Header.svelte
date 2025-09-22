@@ -21,7 +21,12 @@
 				<NavLink href="/admin" text="Admin" mode="startsWith" />
 			</li>
 			<li>
-				<NavLink href="/super" text="Superadmin" mode="startsWith" />
+				<NavLink
+					href="/super/organizations"
+					comparePath="/super"
+					text="Superadmin"
+					mode="startsWith"
+				/>
 			</li>
 		</ul>
 	</nav>

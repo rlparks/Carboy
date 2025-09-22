@@ -4,13 +4,14 @@
 
 	type Props = {
 		href: RouteId;
+		comparePath?: string;
 		text: string;
 		mode: "exact" | "startsWith";
 	};
-	let { href, text, mode }: Props = $props();
+	let { href, text, mode, comparePath = href }: Props = $props();
 
 	const pageIsExact = $derived(page.url.pathname === href);
-	const pageStartsWith = $derived(page.url.pathname.startsWith(href));
+	const pageStartsWith = $derived(page.url.pathname.startsWith(comparePath));
 
 	const pageIsActive = $derived(mode === "exact" ? pageIsExact : pageStartsWith);
 </script>
