@@ -1,5 +1,5 @@
 import { form, getRequestEvent } from "$app/server";
-import { generateTextId } from "$lib/server";
+import { generateTextId, INITIAL_ADMIN_ID_TOKEN } from "$lib/server";
 import { createSession } from "$lib/server/auth";
 import { setSessionCookie } from "$lib/server/auth/helpers";
 import { sql } from "$lib/server/db/postgres";
@@ -18,8 +18,6 @@ const NameSchema = v.pipe(
 	v.minLength(1, "Name is required."),
 	v.maxLength(100, "Name cannot exceed 100 characters."),
 );
-
-export const INITIAL_ADMIN_ID_TOKEN = "initial-admin-token";
 
 export const createInitialSuperadmin = form(
 	v.strictObject({

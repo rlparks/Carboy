@@ -1,11 +1,11 @@
 import { resolve } from "$app/paths";
 import { form, getRequestEvent, query } from "$app/server";
+import { INITIAL_ADMIN_ID_TOKEN } from "$lib/server";
 import { deleteSession } from "$lib/server/auth";
 import { deleteSessionCookie } from "$lib/server/auth/helpers";
 import { getOidcUrls } from "$lib/server/auth/oidc";
 import { getOidcConfig } from "$lib/server/config/oidc";
 import { redirect } from "@sveltejs/kit";
-import { INITIAL_ADMIN_ID_TOKEN } from "../../../routes/setup/setup.remote";
 
 export const me = query(async () => {
 	const { account, session } = getRequestEvent().locals;
