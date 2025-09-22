@@ -56,7 +56,7 @@ export const GET: RequestHandler = async (event) => {
 		return redirect(303, url);
 	}
 
-	if (account.organizationIds.length === 0) {
+	if (account.organizationIds.length === 0 && account.role !== "superadmin") {
 		return error(
 			403,
 			"Your account is not associated with any organizations. Please contact an administrator.",
