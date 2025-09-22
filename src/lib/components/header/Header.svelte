@@ -7,7 +7,7 @@
 	const { account } = $derived(await me());
 </script>
 
-<header class="flex justify-between border-b border-gray-500 p-4 dark:border-gray-300">
+<header class="mb-2 flex justify-between border-b border-gray-500 p-4 dark:border-gray-300">
 	<nav class="flex items-center space-x-4">
 		<Title />
 		<NavLink href="/" text="Home" mode="exact" />
