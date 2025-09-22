@@ -3,6 +3,7 @@ import type { Role } from "$lib/server/auth/Security";
 export type Organization = {
 	id: string;
 	name: string;
+	slug: string;
 	createdAt: Date;
 	updatedAt: Date | null;
 };
