@@ -13,7 +13,7 @@
 		<NavLink href="/" text="Home" mode="exact" />
 		<NavLink href="/trips" text="Trips" mode="exact" />
 		<NavLink href="/admin" text="Admin" mode="startsWith" />
-		<NavLink href="/config" text="Config" mode="exact" />
+		<NavLink href="/super" text="Superadmin" mode="startsWith" />
 	</nav>
 
 	<div class="flex items-center space-x-4">
