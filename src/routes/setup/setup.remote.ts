@@ -19,6 +19,8 @@ const NameSchema = v.pipe(
 	v.maxLength(100, "Name cannot exceed 100 characters."),
 );
 
+export const INITIAL_ADMIN_ID_TOKEN = "initial-admin-token";
+
 export const createInitialSuperadmin = form(
 	v.strictObject({
 		username: UsernameSchema,
@@ -41,7 +43,7 @@ export const createInitialSuperadmin = form(
 			};
 		}
 
-		const { token, session } = await createSession(account.id, null, "initial-admin", null);
+		const { token, session } = await createSession(account.id, null, INITIAL_ADMIN_ID_TOKEN, null);
 
 		setSessionCookie(getRequestEvent(), token, session.expiresAt, false);
 
