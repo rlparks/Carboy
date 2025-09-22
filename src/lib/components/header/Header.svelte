@@ -1,7 +1,10 @@
 <script lang="ts">
 	import Button from "$lib/components/Button.svelte";
+	import { logout, me } from "$lib/components/header/account.remote";
 	import NavLink from "$lib/components/header/NavLink.svelte";
 	import Title from "$lib/components/header/Title.svelte";
+
+	const { account } = $derived(await me());
 </script>
 
 <header class="flex justify-between border-b border-gray-500 p-4 dark:border-gray-300">
@@ -14,6 +17,13 @@
 	</nav>
 
 	<div class="flex items-center space-x-4">
-		<Button href="/login/oidc">Login</Button>
+		{#if !account}
+			<Button href="/login/oidc">Login</Button>
+		{:else}
+			<p>{account.name}</p>
+			<form {...logout}>
+				<Button type="submit">Logout</Button>
+			</form>
+		{/if}
 	</div>
 </header>
