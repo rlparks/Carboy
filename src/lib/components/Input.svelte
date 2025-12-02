@@ -6,7 +6,7 @@
 		label?: string;
 		type?: "text" | "password" | "email" | "number";
 		placeholder?: string;
-		value?: string;
+		value?: string | number;
 		issues?: RemoteFormIssue[];
 	};
 	let {
@@ -39,7 +39,7 @@
 
 	{#if issues && issues.length > 0}
 		<ul class="mt-1 text-sm text-red-600">
-			{#each issues as issue (issue.message + issue.name)}
+			{#each issues as issue (issue.message + issue.path)}
 				<li>{issue.message}</li>
 			{/each}
 		</ul>

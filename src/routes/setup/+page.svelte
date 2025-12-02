@@ -3,8 +3,8 @@
 </script>
 
 <form {...createInitialSuperadmin} oninput={() => createInitialSuperadmin.validate()}>
-	<input type="text" name={createInitialSuperadmin.field("username")} />
-	<input type="email" name={createInitialSuperadmin.field("email")} />
-	<input type="text" name={createInitialSuperadmin.field("name")} />
+	<input {...createInitialSuperadmin.fields.username.as("text")} />
+	<input {...createInitialSuperadmin.fields.email.as("email")} />
+	<input {...createInitialSuperadmin.fields.name.as("text")} />
 	<button type="submit">Create Initial Admin</button>
 </form>

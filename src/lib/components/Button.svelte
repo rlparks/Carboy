@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { RouteId } from "$app/types";
+	import { resolve } from "path";
 	import type { Snippet } from "svelte";
 
 	type Props = {
@@ -15,7 +16,7 @@
 </script>
 
 {#if href}
-	<a {href} {onclick} class={standardButtonClasses}>
+	<a href={resolve(href)} {onclick} class={standardButtonClasses}>
 		{@render children?.()}
 	</a>
 {:else}

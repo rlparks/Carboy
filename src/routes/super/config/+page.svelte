@@ -4,41 +4,44 @@
 	import Input from "$lib/components/Input.svelte";
 	import { getConfig, setConfig } from "./config.remote";
 
-	const config = $derived(await getConfig());
+	const config = await getConfig();
+
+    setConfig.fields.set({
+        oidcClientId: config.clientId ?? "",
+        oidcClientSecret: config.clientSecret ?? "",
+        oidcDiscoveryUrl: config.discoveryUrl ?? "",
+        oidcUsernameClaim: config.usernameClaim ?? "",
+        signOutOfIdp: config.signOutOfIdp
+    })
 </script>
 
 <form {...setConfig} class="max-w-[500px] space-y-4">
 	<Input
-		name={setConfig.field("oidcDiscoveryUrl")}
+		{...setConfig.fields.oidcDiscoveryUrl.as("text", )}
 		label="OIDC Discovery URL"
-		issues={setConfig.issues?.oidcDiscoveryUrl}
-		value={config.discoveryUrl}
+		issues={setConfig.fields.oidcDiscoveryUrl.issues()}
 	/>
 
 	<Input
-		name={setConfig.field("oidcClientId")}
+		{...setConfig.fields.oidcClientId.as("text")}
 		label="OIDC Client ID"
-		issues={setConfig.issues?.oidcClientId}
-		value={config.clientId}
+		issues={setConfig.fields.oidcClientId.issues()}
 	/>
 
 	<Input
-		name={setConfig.field("oidcClientSecret")}
+		{...setConfig.fields.oidcClientSecret.as("text")}
 		label="OIDC Client Secret"
-		issues={setConfig.issues?.oidcClientSecret}
-		value={config.clientSecret}
+		issues={setConfig.fields.oidcClientId.issues()}
 	/>
 
 	<Input
-		name={setConfig.field("oidcUsernameClaim")}
+		{...setConfig.fields.oidcUsernameClaim.as("text")}
 		label="OIDC Username Claim"
-		issues={setConfig.issues?.oidcUsernameClaim}
-		value={config.usernameClaim}
+		issues={setConfig.fields.oidcUsernameClaim.issues()}
 	/>
 
 	<Checkbox
-		name={setConfig.field("signOutOfIdp")}
-		checked={config.signOutOfIdp}
+		{...setConfig.fields.signOutOfIdp.as("checkbox")}
 		label="Sign out of identity provider on logout"
 	/>
 
