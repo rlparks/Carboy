@@ -32,7 +32,7 @@ const config = {
 	compilerOptions: {
 		runes: true,
 		experimental: {
-			async: true,
+			async: false,
 		},
 	},
 };

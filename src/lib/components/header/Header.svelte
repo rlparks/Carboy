@@ -1,10 +1,15 @@
 <script lang="ts">
 	import Button from "$lib/components/Button.svelte";
-	import { logout, me } from "$lib/components/header/account.remote";
+	import { logout } from "$lib/components/header/account.remote";
 	import NavLink from "$lib/components/header/NavLink.svelte";
 	import Title from "$lib/components/header/Title.svelte";
+	import type { Account } from "$lib/types/db";
 
-	const { account } = $derived(await me());
+	type Props = {
+		account: Account | null;
+	};
+
+	let { account }: Props = $props();
 </script>
 
 <header class="mb-2 flex justify-between border-b-4 border-bulldog">

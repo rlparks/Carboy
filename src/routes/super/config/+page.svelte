@@ -2,22 +2,22 @@
 	import Button from "$lib/components/Button.svelte";
 	import Checkbox from "$lib/components/Checkbox.svelte";
 	import Input from "$lib/components/Input.svelte";
-	import { getConfig, setConfig } from "./config.remote";
+	import { setConfig } from "./config.remote";
 
-	const config = await getConfig();
+	let { data } = $props();
 
-    setConfig.fields.set({
-        oidcClientId: config.clientId ?? "",
-        oidcClientSecret: config.clientSecret ?? "",
-        oidcDiscoveryUrl: config.discoveryUrl ?? "",
-        oidcUsernameClaim: config.usernameClaim ?? "",
-        signOutOfIdp: config.signOutOfIdp
-    })
+	setConfig.fields.set({
+		oidcClientId: data.config.clientId ?? "",
+		oidcClientSecret: data.config.clientSecret ?? "",
+		oidcDiscoveryUrl: data.config.discoveryUrl ?? "",
+		oidcUsernameClaim: data.config.usernameClaim ?? "",
+		signOutOfIdp: data.config.signOutOfIdp,
+	});
 </script>
 
 <form {...setConfig} class="max-w-[500px] space-y-4">
 	<Input
-		{...setConfig.fields.oidcDiscoveryUrl.as("text", )}
+		{...setConfig.fields.oidcDiscoveryUrl.as("text")}
 		label="OIDC Discovery URL"
 		issues={setConfig.fields.oidcDiscoveryUrl.issues()}
 	/>

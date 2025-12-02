@@ -3,13 +3,13 @@
 	import Header from "$lib/components/header/Header.svelte";
 	import "../app.css";
 
-	let { children } = $props();
+	let { children, data } = $props();
 </script>
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<Header />
+<Header account={data.account} />
 
 {@render children?.()}
