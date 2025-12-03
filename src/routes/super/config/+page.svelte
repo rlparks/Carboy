@@ -2,6 +2,7 @@
 	import Button from "$lib/components/Button.svelte";
 	import Checkbox from "$lib/components/Checkbox.svelte";
 	import Input from "$lib/components/Input.svelte";
+	import WindowTitle from "$lib/components/WindowTitle.svelte";
 	import { setConfig } from "./config.remote";
 
 	let { data } = $props();
@@ -17,6 +18,8 @@
 		signOutOfIdp: initialConfig.signOutOfIdp,
 	});
 </script>
+
+<WindowTitle title="Configuration" description="View and manage system configuration." />
 
 <form {...setConfig} class="max-w-[500px] space-y-4">
 	<Input
