@@ -20,6 +20,9 @@ export const setConfig = form(
 		signOutOfIdp: v.optional(v.boolean(), false),
 	}),
 	async (data) => {
+		const event = getRequestEvent();
+		event.locals.security.enforceRole("superadmin");
+
 		await setValue("oidcDiscoveryUrl", data.oidcDiscoveryUrl);
 		await setValue("oidcClientId", data.oidcClientId);
 		await setValue("oidcClientSecret", data.oidcClientSecret);

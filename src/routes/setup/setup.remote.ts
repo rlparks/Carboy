@@ -3,8 +3,9 @@ import { generateTextId, INITIAL_ADMIN_ID_TOKEN } from "$lib/server";
 import { createSession } from "$lib/server/auth";
 import { setSessionCookie } from "$lib/server/auth/helpers";
 import { sql } from "$lib/server/db/postgres";
+import { getAccountCount } from "$lib/server/db/queries/account";
 import type { Account } from "$lib/types/db";
-import { redirect } from "@sveltejs/kit";
+import { error, redirect } from "@sveltejs/kit";
 import * as v from "valibot";
 
 const UsernameSchema = v.pipe(
@@ -26,6 +27,11 @@ export const createInitialSuperadmin = form(
 		name: NameSchema,
 	}),
 	async ({ username, email, name }) => {
+		const numberOfAccounts = await getAccountCount();
+		if (numberOfAccounts > 0) {
+			return error(400, "Setup has already been completed.");
+		}
+
 		const now = new Date();
 		const accountId = generateTextId();
 		const [account] = await sql<Account[]>`
