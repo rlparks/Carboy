@@ -22,6 +22,8 @@ export type Account = {
 export type AccountOrganization = {
 	accountId: string;
 	organizationId: string;
+	createdAt: Date;
+	updatedAt: Date | null;
 };
 
 export type Session = {
@@ -57,9 +59,8 @@ export type Vehicle = {
 
 export type Destination = {
 	id: string;
-	buildingNumber: string | null;
 	name: string;
-	organizationId: string;
+	shortName: string | null;
 	address: string | null;
 	latitude: number | null;
 	longitude: number | null;
@@ -84,6 +85,8 @@ export type TripDestination = {
 	tripId: string;
 	destinationId: string;
 	position: number;
+	createdAt: Date;
+	updatedAt: Date | null;
 };
 
 export type Configuration = {

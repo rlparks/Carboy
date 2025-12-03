@@ -21,6 +21,8 @@ CREATE TABLE IF NOT EXISTS account (
 CREATE TABLE IF NOT EXISTS account_organization (
     account_id TEXT NOT NULL REFERENCES account(id) ON DELETE CASCADE,
     organization_id TEXT NOT NULL REFERENCES organization(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ NOT NULL,
+    updated_at TIMESTAMPTZ,
     PRIMARY KEY (account_id, organization_id)
 );
 
@@ -58,9 +60,8 @@ CREATE TABLE IF NOT EXISTS vehicle (
 
 CREATE TABLE IF NOT EXISTS destination (
     id TEXT PRIMARY KEY,
-    building_number TEXT,
     name TEXT NOT NULL,
-    organization_id TEXT NOT NULL REFERENCES organization(id) ON DELETE CASCADE,
+    short_name TEXT,
     address TEXT,
     latitude DOUBLE PRECISION,
     longitude DOUBLE PRECISION,
@@ -86,6 +87,8 @@ CREATE TABLE IF NOT EXISTS trip_destination (
     trip_id TEXT NOT NULL REFERENCES trip(id) ON DELETE CASCADE,
     destination_id TEXT NOT NULL REFERENCES destination(id) ON DELETE RESTRICT,
     position INTEGER NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL,
+    updated_at TIMESTAMPTZ,
     PRIMARY KEY (trip_id, destination_id)
 );
 
