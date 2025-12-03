@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { resolve } from "$app/paths";
 	import type { RouteId } from "$app/types";
-	import { resolve } from "path";
 	import type { Snippet } from "svelte";
 
 	type Props = {
