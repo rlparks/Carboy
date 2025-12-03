@@ -17,7 +17,7 @@ export const setConfig = form(
 		oidcClientId: v.string(),
 		oidcClientSecret: v.string(),
 		oidcUsernameClaim: v.string(),
-		signOutOfIdp: v.boolean(),
+		signOutOfIdp: v.optional(v.boolean(), false),
 	}),
 	async (data) => {
 		await setValue("oidcDiscoveryUrl", data.oidcDiscoveryUrl);
@@ -25,5 +25,7 @@ export const setConfig = form(
 		await setValue("oidcClientSecret", data.oidcClientSecret);
 		await setValue("oidcUsernameClaim", data.oidcUsernameClaim);
 		await setValue("signOutOfIdp", String(data.signOutOfIdp));
+
+		return {};
 	},
 );

@@ -6,12 +6,15 @@
 
 	let { data } = $props();
 
+	// svelte-ignore state_referenced_locally
+	const initialConfig = data.config;
+
 	setConfig.fields.set({
-		oidcClientId: data.config.clientId ?? "",
-		oidcClientSecret: data.config.clientSecret ?? "",
-		oidcDiscoveryUrl: data.config.discoveryUrl ?? "",
-		oidcUsernameClaim: data.config.usernameClaim ?? "",
-		signOutOfIdp: data.config.signOutOfIdp,
+		oidcClientId: initialConfig.clientId ?? "",
+		oidcClientSecret: initialConfig.clientSecret ?? "",
+		oidcDiscoveryUrl: initialConfig.discoveryUrl ?? "",
+		oidcUsernameClaim: initialConfig.usernameClaim ?? "",
+		signOutOfIdp: initialConfig.signOutOfIdp,
 	});
 </script>
 
