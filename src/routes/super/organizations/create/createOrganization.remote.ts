@@ -1,5 +1,6 @@
 import { form, getRequestEvent } from "$app/server";
-import { redirect } from "@sveltejs/kit";
+import { createOrganization as createOrganizationDb } from "$lib/server/db/queries/organization";
+import { error, redirect } from "@sveltejs/kit";
 import * as v from "valibot";
 
 export const createOrganization = form(
@@ -8,7 +9,11 @@ export const createOrganization = form(
 		const event = getRequestEvent();
 		event.locals.security.enforceRole("superadmin");
 
-		console.log({ name, slug });
+		try {
+			await createOrganizationDb({ name, slug });
+		} catch {
+			return error(400, "Failed to create organization");
+		}
 
 		return redirect(303, "/super/organizations");
 	},
