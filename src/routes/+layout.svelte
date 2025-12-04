@@ -10,6 +10,10 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<Header account={data.account} />
+<Header
+	account={data.account}
+	organizations={data.accountOrganizations}
+	selectedOrganizationId={data.selectedOrganizationId}
+/>
 
 {@render children?.()}

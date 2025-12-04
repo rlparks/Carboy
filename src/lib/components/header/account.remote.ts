@@ -1,17 +1,11 @@
 import { resolve } from "$app/paths";
-import { form, getRequestEvent, query } from "$app/server";
+import { form, getRequestEvent } from "$app/server";
 import { INITIAL_ADMIN_ID_TOKEN } from "$lib/server";
 import { deleteSession } from "$lib/server/auth";
 import { deleteSessionCookie } from "$lib/server/auth/helpers";
 import { getOidcUrls } from "$lib/server/auth/oidc";
 import { getOidcConfig } from "$lib/server/config/oidc";
 import { redirect } from "@sveltejs/kit";
-
-export const me = query(async () => {
-	const { account, session } = getRequestEvent().locals;
-
-	return { account, session };
-});
 
 export const logout = form(async () => {
 	const event = getRequestEvent();

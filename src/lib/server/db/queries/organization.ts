@@ -16,6 +16,21 @@ export async function getOrganizations() {
 	}
 }
 
+export async function getOrganizationsByAccountId(accountId: string) {
+	try {
+		const rows = await sql<Organization[]>`
+            SELECT o.id, o.name, o.slug, o.created_at, o.updated_at
+            FROM organization o
+            INNER JOIN account_organization ao ON ao.organization_id = o.id
+            WHERE ao.account_id = ${accountId}
+            ORDER BY o.name ASC
+            ;`;
+		return rows;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
+
 export async function createOrganization(
 	organization: Omit<Organization, "id" | "createdAt" | "updatedAt">,
 ) {

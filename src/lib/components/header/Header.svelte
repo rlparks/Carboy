@@ -2,14 +2,17 @@
 	import Button from "$lib/components/Button.svelte";
 	import { logout } from "$lib/components/header/account.remote";
 	import NavLink from "$lib/components/header/NavLink.svelte";
+	import OrganizationSwitcher from "$lib/components/header/OrganizationSwitcher.svelte";
 	import Title from "$lib/components/header/Title.svelte";
-	import type { Account } from "$lib/types/db";
+	import type { Account, Organization } from "$lib/types/db";
 
 	type Props = {
 		account: Account | null;
+		organizations: Organization[];
+		selectedOrganizationId: string | null;
 	};
 
-	let { account }: Props = $props();
+	let { account, organizations, selectedOrganizationId }: Props = $props();
 </script>
 
 <header class="mb-2 flex justify-between border-b-4 border-bulldog">
@@ -40,6 +43,7 @@
 		{#if !account}
 			<Button href="/login/oidc">Login</Button>
 		{:else}
+			<OrganizationSwitcher {organizations} {selectedOrganizationId} />
 			<p>{account.name}</p>
 			<form {...logout}>
 				<Button type="submit">Logout</Button>
