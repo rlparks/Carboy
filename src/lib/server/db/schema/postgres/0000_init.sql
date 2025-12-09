@@ -60,14 +60,13 @@ CREATE TABLE IF NOT EXISTS vehicle (
 
 CREATE TABLE IF NOT EXISTS destination (
     id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
+    name TEXT NOT NULL UNIQUE,
     short_name TEXT,
     address TEXT,
     latitude DOUBLE PRECISION,
     longitude DOUBLE PRECISION,
     created_at TIMESTAMPTZ NOT NULL,
-    updated_at TIMESTAMPTZ,
-    UNIQUE (name, organization_id)
+    updated_at TIMESTAMPTZ
 );
 
 CREATE TABLE IF NOT EXISTS trip (
