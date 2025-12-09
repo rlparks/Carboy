@@ -6,7 +6,7 @@ services:
       - 3000:3000
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgres://root:carboypassword@carboy-db:5432/carboy
+      POSTGRES_URL: postgres://root:carboypassword@carboy-db:5432/carboy
       # Analytics
       PUBLIC_RYBBIT_ID: 1
     depends_on:
