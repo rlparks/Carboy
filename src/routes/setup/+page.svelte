@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Button from "$lib/components/Button.svelte";
+	import Input from "$lib/components/Input.svelte";
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
 	import { createInitialSuperadmin } from "./setup.remote";
 </script>
@@ -10,8 +12,29 @@
 	oninput={() => createInitialSuperadmin.validate()}
 	class="max-w-[500px] space-y-4"
 >
-	<input {...createInitialSuperadmin.fields.username.as("text")} />
-	<input {...createInitialSuperadmin.fields.email.as("email")} />
-	<input {...createInitialSuperadmin.fields.name.as("text")} />
-	<button type="submit">Create Initial Admin</button>
+	<Input
+		label="Username"
+		{...createInitialSuperadmin.fields.username.as("text")}
+		issues={createInitialSuperadmin.fields.username.issues()}
+	/>
+
+	<Input
+		label="Email"
+		{...createInitialSuperadmin.fields.email.as("email")}
+		issues={createInitialSuperadmin.fields.email.issues()}
+	/>
+
+	<Input
+		label="Name"
+		{...createInitialSuperadmin.fields.name.as("text")}
+		issues={createInitialSuperadmin.fields.name.issues()}
+	/>
+
+	<Input
+		label="Password"
+		{...createInitialSuperadmin.fields.password.as("password")}
+		issues={createInitialSuperadmin.fields.password.issues()}
+	/>
+
+	<Button type="submit">Create Initial Admin</Button>
 </form>

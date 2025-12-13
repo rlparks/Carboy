@@ -20,12 +20,18 @@ const NameSchema = v.pipe(
 	v.maxLength(100, "Name cannot exceed 100 characters."),
 );
 
+const PasswordSchema = v.pipe(
+	v.string(),
+	v.minLength(8, "Password must be at least 8 characters long."),
+	v.maxLength(1000, "Password cannot exceed 1000 characters."),
+);
+
 export const createInitialSuperadmin = form(
 	v.strictObject({
 		username: UsernameSchema,
 		email: EmailSchema,
 		name: NameSchema,
-		password: v.string(),
+		password: PasswordSchema,
 	}),
 	async ({ username, email, name, password }) => {
 		const numberOfAccounts = await getAccountCount();
