@@ -5,26 +5,9 @@ import { hashPassword, setSessionCookie } from "$lib/server/auth/helpers";
 import { sql } from "$lib/server/db/postgres";
 import { getAccountCount } from "$lib/server/db/queries/account";
 import type { FriendlyAccount } from "$lib/types/bonus";
+import { EmailSchema, NameSchema, PasswordSchema, UsernameSchema } from "$lib/types/validation";
 import { error, redirect } from "@sveltejs/kit";
 import * as v from "valibot";
-
-const UsernameSchema = v.pipe(
-	v.string(),
-	v.minLength(1, "Username is required."),
-	v.maxLength(20, "Username cannot exceed 20 characters."),
-);
-const EmailSchema = v.pipe(v.string(), v.email("Invalid email address."));
-const NameSchema = v.pipe(
-	v.string(),
-	v.minLength(1, "Name is required."),
-	v.maxLength(100, "Name cannot exceed 100 characters."),
-);
-
-const PasswordSchema = v.pipe(
-	v.string(),
-	v.minLength(8, "Password must be at least 8 characters long."),
-	v.maxLength(1000, "Password cannot exceed 1000 characters."),
-);
 
 export const createInitialSuperadmin = form(
 	v.strictObject({

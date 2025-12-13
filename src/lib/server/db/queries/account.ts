@@ -43,3 +43,41 @@ export async function getAccountWithOrgsByUsername(username: string) {
 		throw parsePgError(err);
 	}
 }
+
+export async function getAccountByUsernameOrEmail(usernameOrEmail: string) {
+	try {
+		const [row] = await sql<FriendlyAccount[]>`
+            SELECT 
+                id,
+                name,
+                email,
+                username,
+                role,
+                created_at,
+                updated_at,
+                archived,
+                password_enabled
+            FROM account
+            WHERE username = ${usernameOrEmail} OR email = ${usernameOrEmail};
+        `;
+
+		return row;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
+
+export async function getAccountPasswordHashById(accountId: string) {
+	try {
+		const [row] = await sql<{ passwordHash: string | null }[]>`
+            SELECT 
+                password_hash
+            FROM account
+            WHERE id = ${accountId};
+        `;
+
+		return row?.passwordHash ?? null;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
