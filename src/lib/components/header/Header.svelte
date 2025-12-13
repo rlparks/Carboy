@@ -20,23 +20,31 @@
 	<nav class="flex items-center space-x-4">
 		<Title />
 		<ul class="flex items-center space-x-4 py-4">
-			<li>
-				<NavLink href="/" text="Home" mode="exact" />
-			</li>
-			<li>
-				<NavLink href="/trips" text="Trips" mode="exact" />
-			</li>
-			<li>
-				<NavLink href="/admin/vehicles" comparePath="/admin" text="Admin" mode="startsWith" />
-			</li>
-			<li>
-				<NavLink
-					href="/super/organizations"
-					comparePath="/super"
-					text="Superadmin"
-					mode="startsWith"
-				/>
-			</li>
+			{#if account}
+				<li>
+					<NavLink href="/" text="Home" mode="exact" />
+				</li>
+				<li>
+					<NavLink href="/trips" text="Trips" mode="exact" />
+				</li>
+			{/if}
+
+			{#if account?.role === "admin" || account?.role === "superadmin"}
+				<li>
+					<NavLink href="/admin/vehicles" comparePath="/admin" text="Admin" mode="startsWith" />
+				</li>
+			{/if}
+
+			{#if account?.role === "superadmin"}
+				<li>
+					<NavLink
+						href="/super/organizations"
+						comparePath="/super"
+						text="Superadmin"
+						mode="startsWith"
+					/>
+				</li>
+			{/if}
 		</ul>
 	</nav>
 
