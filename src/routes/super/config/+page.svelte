@@ -2,6 +2,7 @@
 	import Button from "$lib/components/Button.svelte";
 	import Checkbox from "$lib/components/Checkbox.svelte";
 	import Input from "$lib/components/Input.svelte";
+	import MainBody from "$lib/components/MainBody.svelte";
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
 	import { setConfig } from "./config.remote";
 
@@ -21,35 +22,37 @@
 
 <WindowTitle title="Configuration" description="View and manage system configuration." />
 
-<form {...setConfig} class="max-w-125 space-y-4">
-	<Input
-		{...setConfig.fields.oidcDiscoveryUrl.as("text")}
-		label="OIDC Discovery URL"
-		issues={setConfig.fields.oidcDiscoveryUrl.issues()}
-	/>
+<MainBody>
+	<form {...setConfig} class="max-w-125 space-y-4">
+		<Input
+			{...setConfig.fields.oidcDiscoveryUrl.as("text")}
+			label="OIDC Discovery URL"
+			issues={setConfig.fields.oidcDiscoveryUrl.issues()}
+		/>
 
-	<Input
-		{...setConfig.fields.oidcClientId.as("text")}
-		label="OIDC Client ID"
-		issues={setConfig.fields.oidcClientId.issues()}
-	/>
+		<Input
+			{...setConfig.fields.oidcClientId.as("text")}
+			label="OIDC Client ID"
+			issues={setConfig.fields.oidcClientId.issues()}
+		/>
 
-	<Input
-		{...setConfig.fields.oidcClientSecret.as("text")}
-		label="OIDC Client Secret"
-		issues={setConfig.fields.oidcClientId.issues()}
-	/>
+		<Input
+			{...setConfig.fields.oidcClientSecret.as("text")}
+			label="OIDC Client Secret"
+			issues={setConfig.fields.oidcClientId.issues()}
+		/>
 
-	<Input
-		{...setConfig.fields.oidcUsernameClaim.as("text")}
-		label="OIDC Username Claim"
-		issues={setConfig.fields.oidcUsernameClaim.issues()}
-	/>
+		<Input
+			{...setConfig.fields.oidcUsernameClaim.as("text")}
+			label="OIDC Username Claim"
+			issues={setConfig.fields.oidcUsernameClaim.issues()}
+		/>
 
-	<Checkbox
-		{...setConfig.fields.signOutOfIdp.as("checkbox")}
-		label="Sign out of identity provider on logout"
-	/>
+		<Checkbox
+			{...setConfig.fields.signOutOfIdp.as("checkbox")}
+			label="Sign out of identity provider on logout"
+		/>
 
-	<Button type="submit">Save</Button>
-</form>
+		<Button type="submit">Save</Button>
+	</form>
+</MainBody>
