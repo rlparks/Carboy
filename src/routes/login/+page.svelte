@@ -7,7 +7,7 @@
 
 <WindowTitle title="Login" description="Access your Carboy account." />
 
-<form {...login} class="max-w-[500px] space-y-4">
+<form {...login} class="max-w-125 space-y-4">
 	<Input label="Username or Email" {...login.fields.usernameOrEmail.as("text")} />
 
 	<Input

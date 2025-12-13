@@ -10,7 +10,7 @@
 <form
 	{...createInitialSuperadmin}
 	oninput={() => createInitialSuperadmin.validate()}
-	class="max-w-[500px] space-y-4"
+	class="max-w-125 space-y-4"
 >
 	<Input
 		label="Username"
