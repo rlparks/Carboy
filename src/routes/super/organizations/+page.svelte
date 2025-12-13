@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Button from "$lib/components/Button.svelte";
+	import MainBody from "$lib/components/MainBody.svelte";
 	import Table from "$lib/components/table/Table.svelte";
 	import TableCell from "$lib/components/table/TableCell.svelte";
 	import TableRow from "$lib/components/table/TableRow.svelte";
@@ -12,7 +13,7 @@
 
 <WindowTitle title="Organizations" description="View and manage organizations." />
 
-<main class="space-y-4 px-4">
+<MainBody>
 	<div class="flex justify-center">
 		<Button href="/super/organizations/create">Create</Button>
 	</div>
@@ -26,4 +27,4 @@
 			</TableRow>
 		{/each}
 	</Table>
-</main>
+</MainBody>
