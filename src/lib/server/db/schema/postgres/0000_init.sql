@@ -13,6 +13,8 @@ CREATE TABLE IF NOT EXISTS account (
     username TEXT NOT NULL UNIQUE,
     role TEXT,
     archived BOOLEAN NOT NULL,
+    password_hash TEXT,
+    password_enabled BOOLEAN NOT NULL,
     created_at TIMESTAMPTZ NOT NULL,
     updated_at TIMESTAMPTZ,
     CONSTRAINT email_check CHECK (email <> '')
@@ -33,7 +35,7 @@ CREATE TABLE IF NOT EXISTS session (
     created_at TIMESTAMPTZ NOT NULL,
     updated_at TIMESTAMPTZ,
     expires_at TIMESTAMPTZ NOT NULL,
-    oidc_id_token TEXT NOT NULL,
+    oidc_id_token TEXT,
     impersonated_by TEXT REFERENCES account(id) ON DELETE CASCADE,
     selected_organization_id TEXT REFERENCES organization(id) ON DELETE SET NULL
 );

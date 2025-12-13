@@ -1,5 +1,6 @@
 import { impersonateCookieName, sessionCookieName } from "$lib/server/auth";
 import type { RequestEvent } from "@sveltejs/kit";
+import crypto from "crypto";
 
 export function setSessionCookie(
 	event: RequestEvent,
@@ -28,4 +29,30 @@ export function deleteSessionCookie(event: RequestEvent) {
 
 export function deleteImpersonateCookie(event: RequestEvent) {
 	event.cookies.delete(impersonateCookieName, { path: "/" });
+}
+
+// https://dev.to/farnabaz/hash-your-passwords-with-scrypt-using-nodejs-crypto-module-316k
+export async function hashPassword(password: string): Promise<string> {
+	return new Promise((resolve, reject) => {
+		const salt = crypto.randomBytes(8).toString("hex");
+
+		crypto.scrypt(password, salt, 64, (err, derivedKey) => {
+			if (err) reject(err);
+			resolve(derivedKey.toString("hex") + ":" + salt);
+		});
+	});
+}
+
+export async function verifyPassword(password: string, passwordHash: string): Promise<boolean> {
+	return new Promise((resolve, reject) => {
+		const [key, salt] = passwordHash.split(":");
+		if (!key || !salt) {
+			return reject(new Error("Invalid password hash format"));
+		}
+
+		crypto.scrypt(password, salt, 64, (err, derivedKey) => {
+			if (err) reject(err);
+			resolve(key == derivedKey.toString("hex"));
+		});
+	});
 }

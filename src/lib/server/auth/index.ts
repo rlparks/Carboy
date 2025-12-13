@@ -1,7 +1,8 @@
 import { generateTextId } from "$lib/server";
 import type { Role } from "$lib/server/auth/Security";
 import { sql } from "$lib/server/db/postgres";
-import type { Account, Session } from "$lib/types/db";
+import type { FriendlyAccount } from "$lib/types/bonus";
+import type { Session } from "$lib/types/db";
 import { sha256 } from "@oslojs/crypto/sha2";
 import { encodeHexLowerCase } from "@oslojs/encoding";
 
@@ -15,7 +16,7 @@ export const impersonateCookieName = "carboy-impersonate-session";
 export async function createSession(
 	accountId: string,
 	organizationId: string | null,
-	oidcIdToken: string,
+	oidcIdToken: string | null,
 	impersonatedBy: string | null,
 ) {
 	const token = generateSessionToken();
@@ -61,6 +62,7 @@ type ValidationSelectResult = {
 	accountRole: Role | null;
 	accountName: string;
 	accountArchived: boolean;
+	accountPasswordEnabled: boolean;
 };
 
 const noSession = {
@@ -111,7 +113,7 @@ function extractSessionAccount(row: ValidationSelectResult | undefined, tokenHas
 		selectedOrganizationId: row.sessionSelectedOrganizationId,
 	};
 
-	const account: Account = {
+	const account: FriendlyAccount = {
 		id: row.accountId,
 		email: row.accountEmail,
 		username: row.accountUsername,
@@ -120,6 +122,7 @@ function extractSessionAccount(row: ValidationSelectResult | undefined, tokenHas
 		role: row.accountRole,
 		name: row.accountName,
 		archived: row.accountArchived,
+		passwordEnabled: row.accountPasswordEnabled,
 	};
 
 	return { session, account };
@@ -142,7 +145,8 @@ async function getSessionAccountByTokenHash(tokenHash: string) {
             a.updated_at AS account_updated_at,
             a.role AS account_role,
             a.name AS account_name,
-            a.archived AS account_archived
+            a.archived AS account_archived,
+            a.password_enabled AS account_password_enabled
         FROM session s
         INNER JOIN account a ON s.account_id = a.id
         WHERE s.token_hash = ${tokenHash}

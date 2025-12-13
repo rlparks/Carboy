@@ -1,13 +1,13 @@
-import type { Account } from "$lib/types/db";
+import type { FriendlyAccount } from "$lib/types/bonus";
 import { error } from "@sveltejs/kit";
 
 export const ROLES = ["superadmin", "admin"] as const;
 export type Role = (typeof ROLES)[number];
 
 export default class Security {
-	private readonly account: Account | null;
+	private readonly account: FriendlyAccount | null;
 
-	constructor(account: Account | null) {
+	constructor(account: FriendlyAccount | null) {
 		this.account = account;
 	}
 

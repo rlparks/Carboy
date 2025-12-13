@@ -1,6 +1,6 @@
 import { parsePgError } from "$lib/server/db/error";
 import { sql } from "$lib/server/db/postgres";
-import type { Account } from "$lib/types/db";
+import type { FriendlyAccount } from "$lib/types/bonus";
 
 export async function getAccountCount() {
 	try {
@@ -16,7 +16,7 @@ export async function getAccountCount() {
 
 export async function getAccountWithOrgsByUsername(username: string) {
 	try {
-		type AccountWithOrgs = Account & { organizationIds: string[] };
+		type AccountWithOrgs = FriendlyAccount & { organizationIds: string[] };
 		const [row] = await sql<AccountWithOrgs[]>`
             SELECT 
                 a.id,
@@ -27,6 +27,7 @@ export async function getAccountWithOrgsByUsername(username: string) {
                 a.created_at,
                 a.updated_at,
                 a.archived,
+                a.password_enabled,
                 COALESCE(
                   ARRAY_AGG(ao.organization_id) FILTER (WHERE ao.organization_id IS NOT NULL),
                   ARRAY[]::text[]

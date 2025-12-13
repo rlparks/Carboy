@@ -1,6 +1,5 @@
 import { resolve } from "$app/paths";
 import { form, getRequestEvent } from "$app/server";
-import { INITIAL_ADMIN_ID_TOKEN } from "$lib/server";
 import { deleteSession } from "$lib/server/auth";
 import { deleteSessionCookie } from "$lib/server/auth/helpers";
 import { getOidcUrls } from "$lib/server/auth/oidc";
@@ -21,11 +20,7 @@ export const logout = form(async () => {
 	deleteSessionCookie(event);
 
 	const { signOutOfIdp } = await getOidcConfig();
-	if (
-		event.locals.session &&
-		signOutOfIdp &&
-		event.locals.session?.oidcIdToken !== INITIAL_ADMIN_ID_TOKEN
-	) {
+	if (event.locals.session && signOutOfIdp && event.locals.session.oidcIdToken) {
 		return await endOidcSession(event.url.origin, event.locals.session.oidcIdToken);
 	}
 

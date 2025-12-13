@@ -15,6 +15,8 @@ export type Account = {
 	username: string;
 	role: Role | null;
 	archived: boolean;
+	passwordHash: string | null;
+	passwordEnabled: boolean;
 	createdAt: Date;
 	updatedAt: Date | null;
 };
@@ -33,7 +35,7 @@ export type Session = {
 	createdAt: Date;
 	updatedAt: Date | null;
 	expiresAt: Date;
-	oidcIdToken: string;
+	oidcIdToken: string | null;
 	impersonatedBy: string | null;
 	selectedOrganizationId: string | null;
 };

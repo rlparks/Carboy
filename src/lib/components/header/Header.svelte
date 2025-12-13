@@ -4,10 +4,11 @@
 	import NavLink from "$lib/components/header/NavLink.svelte";
 	import OrganizationSwitcher from "$lib/components/header/OrganizationSwitcher.svelte";
 	import Title from "$lib/components/header/Title.svelte";
-	import type { Account, Organization } from "$lib/types/db";
+	import type { FriendlyAccount } from "$lib/types/bonus";
+	import type { Organization } from "$lib/types/db";
 
 	type Props = {
-		account: Account | null;
+		account: FriendlyAccount | null;
 		organizations: Organization[];
 		selectedOrganizationId: string | null;
 	};

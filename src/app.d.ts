@@ -1,7 +1,8 @@
 // See https://svelte.dev/docs/kit/types#app.d.ts
 
 import type Security from "$lib/server/auth/Security";
-import type { Account, Session } from "$lib/types/db";
+import type { FriendlyAccount } from "$lib/types/bonus";
+import type { Session } from "$lib/types/db";
 
 // for information about these interfaces
 declare global {
@@ -9,7 +10,7 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			session: Session | null;
-			account: Account | null;
+			account: FriendlyAccount | null;
 			security: Security;
 		}
 		// interface PageData {}
