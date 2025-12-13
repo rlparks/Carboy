@@ -4,7 +4,14 @@ import { error, redirect } from "@sveltejs/kit";
 import * as v from "valibot";
 
 export const createOrganization = form(
-	v.strictObject({ name: v.string(), slug: v.string() }),
+	v.strictObject({
+		name: v.pipe(v.string(), v.trim(), v.minLength(1, "Name is required.")),
+		slug: v.pipe(
+			v.string(),
+			v.trim(),
+			v.regex(/^[a-zA-Z0-9-]+$/, "Slug can only contain letters, numbers, and hyphens."),
+		),
+	}),
 	async ({ name, slug }) => {
 		const event = getRequestEvent();
 		event.locals.security.enforceRole("superadmin");
