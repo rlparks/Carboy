@@ -12,9 +12,9 @@
 
 <WindowTitle title="Organizations" description="View and manage organizations." />
 
-<div class="flex justify-center">
+<header class="flex justify-end">
 	<Button href="/super/organizations/create">Create</Button>
-</div>
+</header>
 
 <Table {headers}>
 	{#each data.organizations as org (org.id)}
