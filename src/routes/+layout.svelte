@@ -1,6 +1,7 @@
 <script lang="ts">
 	import favicon from "$lib/assets/favicon.svg";
 	import Header from "$lib/components/header/Header.svelte";
+	import MainBody from "$lib/components/MainBody.svelte";
 	import "../app.css";
 
 	let { children, data } = $props();
@@ -16,4 +17,6 @@
 	selectedOrganizationId={data.selectedOrganizationId}
 />
 
-{@render children?.()}
+<MainBody>
+	{@render children?.()}
+</MainBody>
