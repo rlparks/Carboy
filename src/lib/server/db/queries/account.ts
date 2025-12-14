@@ -16,11 +16,10 @@ export async function getAccounts() {
                 archived,
                 password_enabled,
                 (
-                    SELECT COALESCE(json_agg(json_build_object('id', o.id, 'name', o.name)), '[]'::json)
+                    SELECT COALESCE(json_agg(json_build_object('id', o.id, 'name', o.name) ORDER BY o.name), '[]'::json)
                     FROM organization o
                     INNER JOIN account_organization ao ON o.id = ao.organization_id
                     WHERE ao.account_id = a.id
-                    ORDER BY o.name
                 ) AS organizations
             FROM account a
             ORDER BY created_at DESC;
@@ -46,11 +45,10 @@ export async function getAccountsInOrganization(organizationId: string) {
                 a.archived,
                 a.password_enabled,
                 (
-                    SELECT COALESCE(json_agg(json_build_object('id', o.id, 'name', o.name)), '[]'::json)
+                    SELECT COALESCE(json_agg(json_build_object('id', o.id, 'name', o.name) ORDER BY o.name), '[]'::json)
                     FROM organization o
                     INNER JOIN account_organization ao ON o.id = ao.organization_id
                     WHERE ao.account_id = a.id
-                    ORDER BY o.name
                 ) AS organizations
             FROM account a
             INNER JOIN account_organization ao ON a.id = ao.account_id
