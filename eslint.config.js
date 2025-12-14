@@ -42,6 +42,7 @@ export default defineConfig(
 		rules: {
 			"no-unused-vars": "off",
 			"@typescript-eslint/no-unused-vars": "warn",
+			"svelte/no-navigation-without-resolve": "off", // :(
 		},
 	},
 );

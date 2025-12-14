@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { resolve } from "$app/paths";
+	import Link from "$lib/components/Link.svelte";
 	import Table from "$lib/components/table/Table.svelte";
 	import TableCell from "$lib/components/table/TableCell.svelte";
 	import TableRow from "$lib/components/table/TableRow.svelte";
@@ -19,7 +21,11 @@
 	{:then accounts}
 		{#each accounts as account (account.id)}
 			<TableRow>
-				<TableCell>{account.username}</TableCell>
+				<TableCell>
+					<Link href={resolve("/admin/accounts/[username]", { username: account.username })}>
+						{account.username}
+					</Link>
+				</TableCell>
 				<TableCell>{account.name}</TableCell>
 				<TableCell>{account.email}</TableCell>
 				<TableCell>{account.archived}</TableCell>
