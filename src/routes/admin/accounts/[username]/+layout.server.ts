@@ -19,5 +19,5 @@ export const load = (async (event) => {
 		return error(403, "Forbidden");
 	}
 
-	return { account };
+	return { editAccount: account };
 }) satisfies LayoutServerLoad;

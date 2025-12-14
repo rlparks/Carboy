@@ -6,14 +6,16 @@
 
 	let { data } = $props();
 
-	const title = $derived(`${data.account.name} (${data.account.username})`);
+	const title = $derived(`${data.editAccount.name} (${data.editAccount.username})`);
 </script>
 
 <WindowTitle {title} description="View account information." />
 
 <header class="flex justify-between">
 	<PageTitle {title} />
-	<Button href={resolve("/admin/accounts/[username]/edit", { username: data.account.username })}>
+	<Button
+		href={resolve("/admin/accounts/[username]/edit", { username: data.editAccount.username })}
+	>
 		Edit
 	</Button>
 </header>
