@@ -2,51 +2,9 @@ import { parsePgError } from "$lib/server/db/error";
 import { sql } from "$lib/server/db/postgres";
 import type { FriendlyAccount } from "$lib/types/bonus";
 
-export async function getAccountCount() {
+export async function getAccounts() {
 	try {
-		const [row] = await sql<{ count: string }[]>`
-                SELECT COUNT(*) AS count
-                FROM account;
-            `;
-		return parseInt(row?.count ?? "");
-	} catch (err) {
-		throw parsePgError(err);
-	}
-}
-
-export async function getAccountWithOrgsByUsername(username: string) {
-	try {
-		type AccountWithOrgs = FriendlyAccount & { organizationIds: string[] };
-		const [row] = await sql<AccountWithOrgs[]>`
-            SELECT 
-                a.id,
-                a.name,
-                a.email,
-                a.username,
-                a.role,
-                a.created_at,
-                a.updated_at,
-                a.archived,
-                a.password_enabled,
-                COALESCE(
-                  ARRAY_AGG(ao.organization_id) FILTER (WHERE ao.organization_id IS NOT NULL),
-                  ARRAY[]::text[]
-                ) AS "organization_ids"
-            FROM account a
-            LEFT JOIN account_organization ao ON a.id = ao.account_id
-            WHERE a.username = ${username}
-            GROUP BY a.id;
-        `;
-
-		return row;
-	} catch (err) {
-		throw parsePgError(err);
-	}
-}
-
-export async function getAccountByUsernameOrEmail(usernameOrEmail: string) {
-	try {
-		const [row] = await sql<FriendlyAccount[]>`
+		const rows = await sql<FriendlyAccount[]>`
             SELECT 
                 id,
                 name,
@@ -58,25 +16,35 @@ export async function getAccountByUsernameOrEmail(usernameOrEmail: string) {
                 archived,
                 password_enabled
             FROM account
-            WHERE username = ${usernameOrEmail} OR email = ${usernameOrEmail};
+            ORDER BY created_at DESC;
         `;
 
-		return row;
+		return rows;
 	} catch (err) {
 		throw parsePgError(err);
 	}
 }
 
-export async function getAccountPasswordHashById(accountId: string) {
+export async function getAccountsInOrganization(organizationId: string) {
 	try {
-		const [row] = await sql<{ passwordHash: string | null }[]>`
+		const rows = await sql<FriendlyAccount[]>`
             SELECT 
-                password_hash
-            FROM account
-            WHERE id = ${accountId};
+                a.id,
+                a.name,
+                a.email,
+                a.username,
+                a.role,
+                a.created_at,
+                a.updated_at,
+                a.archived,
+                a.password_enabled
+            FROM account a
+            INNER JOIN account_organization ao ON a.id = ao.account_id
+            WHERE ao.organization_id = ${organizationId}
+            ORDER BY a.created_at DESC;
         `;
 
-		return row?.passwordHash ?? null;
+		return rows;
 	} catch (err) {
 		throw parsePgError(err);
 	}

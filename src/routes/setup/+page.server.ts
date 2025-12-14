@@ -1,4 +1,4 @@
-import { getAccountCount } from "$lib/server/db/queries/account";
+import { getAccountCount } from "$lib/server/db/queries/auth";
 import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 

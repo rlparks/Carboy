@@ -3,7 +3,7 @@ import { setSessionCookie } from "$lib/server/auth/helpers";
 import { OIDC_STATE_KEY, getOidcUrls } from "$lib/server/auth/oidc";
 import { getAccessToken, getUserInfo } from "$lib/server/auth/oidc/backendflow";
 import { getOidcConfig } from "$lib/server/config/oidc";
-import { getAccountWithOrgsByUsername } from "$lib/server/db/queries/account";
+import { getAccountWithOrgsByUsername } from "$lib/server/db/queries/auth";
 import { error, redirect } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 

@@ -3,7 +3,7 @@ import { generateTextId } from "$lib/server";
 import { createSession } from "$lib/server/auth";
 import { hashPassword, setSessionCookie } from "$lib/server/auth/helpers";
 import { sql } from "$lib/server/db/postgres";
-import { getAccountCount } from "$lib/server/db/queries/account";
+import { getAccountCount } from "$lib/server/db/queries/auth";
 import type { FriendlyAccount } from "$lib/types/bonus";
 import { EmailSchema, NameSchema, PasswordSchema, UsernameSchema } from "$lib/types/validation";
 import { error, redirect } from "@sveltejs/kit";

@@ -4,7 +4,7 @@ import { setSessionCookie, verifyPassword } from "$lib/server/auth/helpers";
 import {
 	getAccountByUsernameOrEmail,
 	getAccountPasswordHashById,
-} from "$lib/server/db/queries/account";
+} from "$lib/server/db/queries/auth";
 import { PasswordSchema } from "$lib/types/validation";
 import { invalid, redirect } from "@sveltejs/kit";
 import * as v from "valibot";
