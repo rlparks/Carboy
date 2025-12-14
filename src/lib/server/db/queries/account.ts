@@ -1,10 +1,10 @@
 import { parsePgError } from "$lib/server/db/error";
 import { sql } from "$lib/server/db/postgres";
-import type { FriendlyAccount } from "$lib/types/bonus";
+import type { AccountWithOrganizations } from "$lib/types/bonus";
 
 export async function getAccounts() {
 	try {
-		const rows = await sql<FriendlyAccount[]>`
+		const rows = await sql<AccountWithOrganizations[]>`
             SELECT 
                 id,
                 name,
@@ -14,8 +14,15 @@ export async function getAccounts() {
                 created_at,
                 updated_at,
                 archived,
-                password_enabled
-            FROM account
+                password_enabled,
+                (
+                    SELECT COALESCE(json_agg(json_build_object('id', o.id, 'name', o.name)), '[]'::json)
+                    FROM organization o
+                    INNER JOIN account_organization ao ON o.id = ao.organization_id
+                    WHERE ao.account_id = a.id
+                    ORDER BY o.name
+                ) AS organizations
+            FROM account a
             ORDER BY created_at DESC;
         `;
 
@@ -27,7 +34,7 @@ export async function getAccounts() {
 
 export async function getAccountsInOrganization(organizationId: string) {
 	try {
-		const rows = await sql<FriendlyAccount[]>`
+		const rows = await sql<AccountWithOrganizations[]>`
             SELECT 
                 a.id,
                 a.name,
@@ -37,7 +44,14 @@ export async function getAccountsInOrganization(organizationId: string) {
                 a.created_at,
                 a.updated_at,
                 a.archived,
-                a.password_enabled
+                a.password_enabled,
+                (
+                    SELECT COALESCE(json_agg(json_build_object('id', o.id, 'name', o.name)), '[]'::json)
+                    FROM organization o
+                    INNER JOIN account_organization ao ON o.id = ao.organization_id
+                    WHERE ao.account_id = a.id
+                    ORDER BY o.name
+                ) AS organizations
             FROM account a
             INNER JOIN account_organization ao ON a.id = ao.account_id
             WHERE ao.organization_id = ${organizationId}

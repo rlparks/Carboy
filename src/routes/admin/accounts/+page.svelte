@@ -6,7 +6,7 @@
 
 	let { data } = $props();
 
-	const headers = ["Username", "Name", "Email", "Archived"];
+	const headers = ["Username", "Name", "Email", "Archived", "Organizations"];
 </script>
 
 <WindowTitle title="Accounts" description="View and manage user accounts." />
@@ -23,6 +23,19 @@
 				<TableCell>{account.name}</TableCell>
 				<TableCell>{account.email}</TableCell>
 				<TableCell>{account.archived}</TableCell>
+				<TableCell>
+					{#if account.organizations.length > 0}
+						{account.organizations.map((org) => org.name).join(", ")}
+					{:else}
+						<span class="italic">None</span>
+					{/if}
+				</TableCell>
+			</TableRow>
+		{:else}
+			<TableRow>
+				<TableCell colspan={headers.length} class="text-center italic">
+					No accounts found...?
+				</TableCell>
 			</TableRow>
 		{/each}
 	{/await}
