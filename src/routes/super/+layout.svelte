@@ -6,8 +6,8 @@
 
 <div class="mb-4 flex justify-center">
 	<nav class="space-x-4">
-		<NavLink href="/super/organizations" text="Organizations" mode="exact" />
-		<NavLink href="/super/config" text="OIDC Config" mode="exact" />
+		<NavLink href="/super/organizations" text="Organizations" mode="startsWith" />
+		<NavLink href="/super/config" text="OIDC Config" mode="startsWith" />
 	</nav>
 </div>
 
