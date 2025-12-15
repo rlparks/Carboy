@@ -6,7 +6,5 @@ export const load = (async (event) => {
 
 	const organizations = await getOrganizations();
 
-	return {
-		organizations,
-	};
+	return { organizations };
 }) satisfies PageServerLoad;

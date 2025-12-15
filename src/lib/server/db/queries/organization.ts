@@ -46,3 +46,22 @@ export async function createOrganization(
 		throw parsePgError(err);
 	}
 }
+
+export async function refreshAccountOrganizations(accountId: string, organizationIds: string[]) {
+	try {
+		await sql`
+					DELETE FROM account_organization
+					WHERE account_id = ${accountId}
+				`;
+
+		const now = new Date();
+		for (const orgId of organizationIds) {
+			await sql`
+                        INSERT INTO account_organization (account_id, organization_id, created_at, updated_at)
+                        VALUES (${accountId}, ${orgId}, ${now}, NULL)
+                    `;
+		}
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}

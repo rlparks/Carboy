@@ -1,8 +1,7 @@
 import { resolve } from "$app/paths";
 import { form, getRequestEvent } from "$app/server";
-import { parsePgError } from "$lib/server/db/error";
-import { sql } from "$lib/server/db/postgres";
-import { redirect } from "@sveltejs/kit";
+import { refreshAccountOrganizations } from "$lib/server/db/queries/organization";
+import { error, redirect } from "@sveltejs/kit";
 import * as v from "valibot";
 
 export const updateAccountOrganizations = form(
@@ -21,20 +20,9 @@ export const updateAccountOrganizations = form(
 			.filter((id) => id.length > 0);
 
 		try {
-			await sql`
-					DELETE FROM account_organization
-					WHERE account_id = ${accountId}
-				`;
-
-			const now = new Date();
-			for (const orgId of organizationIds) {
-				await sql`
-                        INSERT INTO account_organization (account_id, organization_id, created_at, updated_at)
-                        VALUES (${accountId}, ${orgId}, ${now}, NULL)
-                    `;
-			}
-		} catch (err) {
-			throw parsePgError(err);
+			await refreshAccountOrganizations(accountId, organizationIds);
+		} catch {
+			return error(500, "Failed to update account organizations.");
 		}
 
 		return redirect(303, resolve("/admin/accounts/[username]", { username }));
