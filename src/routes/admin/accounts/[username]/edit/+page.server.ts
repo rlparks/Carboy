@@ -13,4 +13,8 @@ export const load = (async (event) => {
 	) {
 		return error(403, "Forbidden");
 	}
+
+	if (editAccount.role === "superadmin" && !event.locals.security.hasRole("superadmin")) {
+		return error(403, "Forbidden");
+	}
 }) satisfies PageServerLoad;

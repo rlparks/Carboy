@@ -13,11 +13,13 @@
 
 <header class="flex justify-between">
 	<PageTitle {title} />
-	<Button
-		href={resolve("/admin/accounts/[username]/edit", { username: data.editAccount.username })}
-	>
-		Edit
-	</Button>
+	{#if data.account?.role === "superadmin" || data.editAccount.role !== "superadmin"}
+		<Button
+			href={resolve("/admin/accounts/[username]/edit", { username: data.editAccount.username })}
+		>
+			Edit
+		</Button>
+	{/if}
 </header>
 
 <div class="grid max-w-md grid-cols-2 gap-4">

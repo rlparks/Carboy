@@ -30,6 +30,10 @@ export const editAccount = form(
 			return error(403, "Forbidden");
 		}
 
+		if (account.role === "superadmin" && !event.locals.security.hasRole("superadmin")) {
+			return error(403, "Forbidden");
+		}
+
 		if (role === "superadmin" && !event.locals.security.hasRole("superadmin")) {
 			return error(403, "Cannot assign superadmin role");
 		}
