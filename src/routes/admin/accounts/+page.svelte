@@ -28,7 +28,7 @@
 				</TableCell>
 				<TableCell>{account.name}</TableCell>
 				<TableCell>{account.email}</TableCell>
-				<TableCell>{account.archived}</TableCell>
+				<TableCell>{account.archived ? "Yes" : "No"}</TableCell>
 				<TableCell>
 					{#if account.organizations.length > 0}
 						{account.organizations.map((org) => org.name).join(", ")}

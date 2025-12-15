@@ -21,7 +21,7 @@
 
 <WindowTitle title="Configuration" description="View and manage system configuration." />
 
-<form {...setConfig} class="max-w-125 space-y-4">
+<form {...setConfig} class="max-w-md space-y-4">
 	<Input
 		{...setConfig.fields.oidcDiscoveryUrl.as("text")}
 		label="OIDC Discovery URL"

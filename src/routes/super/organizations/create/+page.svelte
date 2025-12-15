@@ -7,7 +7,7 @@
 
 <WindowTitle title="Create Organization" description="Create a new organization." />
 
-<form {...createOrganization} class="max-w-125 space-y-4">
+<form {...createOrganization} class="max-w-md space-y-4">
 	<Input
 		{...createOrganization.fields.name.as("text")}
 		label="Name"

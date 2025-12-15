@@ -16,7 +16,7 @@ export async function getAccountCount() {
 
 export async function getAccountWithOrgsByUsername(username: string) {
 	try {
-		type AccountWithOrgs = FriendlyAccount & { organizationIds: string[] };
+		type AccountWithOrgs = FriendlyAccount & { organizations: { id: string; name: string }[] };
 		const [row] = await sql<AccountWithOrgs[]>`
             SELECT 
                 a.id,
@@ -28,12 +28,13 @@ export async function getAccountWithOrgsByUsername(username: string) {
                 a.updated_at,
                 a.archived,
                 a.password_enabled,
-                COALESCE(
-                  ARRAY_AGG(ao.organization_id) FILTER (WHERE ao.organization_id IS NOT NULL),
-                  ARRAY[]::text[]
-                ) AS "organization_ids"
+                (
+                    SELECT COALESCE(json_agg(json_build_object('id', o.id, 'name', o.name) ORDER BY o.name), '[]'::json)
+                    FROM organization o
+                    INNER JOIN account_organization ao ON o.id = ao.organization_id
+                    WHERE ao.account_id = a.id
+                ) AS organizations
             FROM account a
-            LEFT JOIN account_organization ao ON a.id = ao.account_id
             WHERE a.username = ${username}
             GROUP BY a.id;
         `;

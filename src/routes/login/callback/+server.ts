@@ -56,7 +56,7 @@ export const GET: RequestHandler = async (event) => {
 		return redirect(303, url);
 	}
 
-	if (account.organizationIds.length === 0 && account.role !== "superadmin") {
+	if (account.organizations.length === 0 && account.role !== "superadmin") {
 		return error(
 			403,
 			"Your account is not associated with any organizations. Please contact an administrator.",
@@ -65,7 +65,7 @@ export const GET: RequestHandler = async (event) => {
 
 	// if the user belongs to only one organization, select it automatically
 	const selectedOrganizationId =
-		account.organizationIds.length === 1 ? account.organizationIds[0] : null;
+		account.organizations.length === 1 ? account.organizations[0]!.id : null;
 
 	const { token, session } = await createSession(
 		account.id,

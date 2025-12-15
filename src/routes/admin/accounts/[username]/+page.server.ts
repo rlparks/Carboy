@@ -7,8 +7,8 @@ export const load = (async (event) => {
 	const { editAccount } = await event.parent();
 	if (
 		!event.locals.security.hasRole("superadmin") &&
-		!editAccount.organizationIds.some(
-			(orgId) => orgId === event.locals.session?.selectedOrganizationId,
+		!editAccount.organizations.some(
+			(org) => org.id === event.locals.session?.selectedOrganizationId,
 		)
 	) {
 		return error(403, "Forbidden");

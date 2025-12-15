@@ -14,7 +14,7 @@ export const load = (async (event) => {
 	// ensure admin can only access accounts within their organization unless they are superadmin
 	if (
 		!event.locals.security.hasRole("superadmin") &&
-		!account.organizationIds.some((orgId) => orgId === event.locals.session?.selectedOrganizationId)
+		!account.organizations.some((org) => org.id === event.locals.session?.selectedOrganizationId)
 	) {
 		return error(403, "Forbidden");
 	}
