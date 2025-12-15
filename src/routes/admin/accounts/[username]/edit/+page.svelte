@@ -41,9 +41,20 @@
 
 <header class="flex justify-between">
 	<PageTitle {title} />
-	<Button href={resolve("/admin/accounts/[username]", { username: data.editAccount.username })}>
-		Cancel
-	</Button>
+	<div class="flex gap-2">
+		{#if data.account?.role === "superadmin"}
+			<Button
+				href={resolve("/admin/accounts/[username]/organizations", {
+					username: data.editAccount.username,
+				})}
+			>
+				Organizations
+			</Button>
+		{/if}
+		<Button href={resolve("/admin/accounts/[username]", { username: data.editAccount.username })}>
+			Cancel
+		</Button>
+	</div>
 </header>
 
 <form {...editAccount} class="max-w-md space-y-4">

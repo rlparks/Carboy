@@ -2,12 +2,17 @@
 	import type { RemoteFormIssue } from "@sveltejs/kit";
 
 	type Props = {
-		name: string;
+		name?: string;
 		label?: string;
 		checked?: boolean;
 		issues?: RemoteFormIssue[];
+		oninput?: (
+			e: Event & {
+				currentTarget: EventTarget & HTMLInputElement;
+			},
+		) => void;
 	};
-	let { name, label, checked = $bindable(false), issues }: Props = $props();
+	let { name, label, checked = $bindable(false), issues, oninput }: Props = $props();
 
 	const id = $props.id();
 </script>
@@ -20,6 +25,7 @@
 			type="checkbox"
 			bind:checked
 			class="mr-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800"
+			{oninput}
 		/>
 
 		{#if label}
