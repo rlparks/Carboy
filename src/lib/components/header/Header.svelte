@@ -2,7 +2,7 @@
 	import Button from "$lib/components/Button.svelte";
 	import { logout } from "$lib/components/header/account.remote";
 	import NavLink from "$lib/components/header/NavLink.svelte";
-	import OrganizationSwitcher from "$lib/components/header/OrganizationSwitcher.svelte";
+	import OrganizationSwitcher from "$lib/components/header/org-switcher/OrganizationSwitcher.svelte";
 	import Title from "$lib/components/header/Title.svelte";
 	import type { FriendlyAccount } from "$lib/types/bonus";
 	import type { Organization } from "$lib/types/db";
