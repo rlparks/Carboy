@@ -2,7 +2,7 @@
 	import Button from "$lib/components/Button.svelte";
 	import Input from "$lib/components/Input.svelte";
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
-	import { createInitialSuperadmin } from "./setup.remote";
+	import { createInitialSuperadmin } from "$lib/server/db/queries/account";
 </script>
 
 <WindowTitle title="Carboy Setup" description="Set up the initial superadmin account." />

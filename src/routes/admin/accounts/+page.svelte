@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { resolve } from "$app/paths";
+	import Button from "$lib/components/Button.svelte";
 	import Link from "$lib/components/Link.svelte";
 	import Table from "$lib/components/table/Table.svelte";
 	import TableCell from "$lib/components/table/TableCell.svelte";
@@ -12,6 +13,10 @@
 </script>
 
 <WindowTitle title="Accounts" description="View and manage user accounts." />
+
+<header class="flex justify-end">
+	<Button href="/admin/accounts/create">Create</Button>
+</header>
 
 <Table {headers}>
 	{#await data.accounts}

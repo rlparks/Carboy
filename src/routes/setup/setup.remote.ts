@@ -1,10 +1,8 @@
 import { form, getRequestEvent } from "$app/server";
-import { generateTextId } from "$lib/server";
 import { createSession } from "$lib/server/auth";
 import { hashPassword, setSessionCookie } from "$lib/server/auth/helpers";
-import { sql } from "$lib/server/db/postgres";
+import { createAccount } from "$lib/server/db/queries/account";
 import { getAccountCount } from "$lib/server/db/queries/auth";
-import type { FriendlyAccount } from "$lib/types/bonus";
 import { EmailSchema, NameSchema, PasswordSchema, UsernameSchema } from "$lib/types/validation";
 import { error, redirect } from "@sveltejs/kit";
 import * as v from "valibot";
@@ -22,15 +20,16 @@ export const createInitialSuperadmin = form(
 			return error(400, "Setup has already been completed.");
 		}
 
-		const now = new Date();
-		const accountId = generateTextId();
 		const passwordHash = await hashPassword(password);
-
-		const [account] = await sql<FriendlyAccount[]>`
-                INSERT INTO account (id, name, email, username, role, archived, password_hash, password_enabled, created_at, updated_at)   
-                VALUES (${accountId}, ${name}, ${email}, ${username}, 'superadmin', false,  ${passwordHash}, true, ${now}, NULL)
-                RETURNING id, name, email, username, role, archived, password_enabled, created_at, updated_at
-        ;`;
+		const account = await createAccount({
+			username,
+			email,
+			name,
+			role: "superadmin",
+			passwordHash,
+			archived: false,
+			passwordEnabled: true,
+		});
 
 		if (!account) {
 			return {
