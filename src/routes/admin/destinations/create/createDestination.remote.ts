@@ -9,7 +9,7 @@ import * as v from "valibot";
 
 export const createDestination = form(
 	v.strictObject({
-		name: v.string(),
+		name: v.pipe(v.string(), v.minLength(1, "Name must be at least 1 character.")),
 		shortName: v.string(),
 		address: v.string(),
 	}),
