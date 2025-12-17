@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from "$app/paths";
 	import Button from "$lib/components/Button.svelte";
 	import Table from "$lib/components/table/Table.svelte";
 	import TableCell from "$lib/components/table/TableCell.svelte";
@@ -13,7 +14,7 @@
 <WindowTitle title="Organizations" description="View and manage organizations." />
 
 <header class="flex justify-end">
-	<Button href="/super/organizations/create">Create</Button>
+	<Button href={resolve("/super/organizations/create")}>Create</Button>
 </header>
 
 <Table {headers}>

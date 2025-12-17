@@ -1,8 +1,5 @@
-import { getDestinations } from "$lib/server/db/queries/destination";
 import type { PageServerLoad } from "./$types";
 
 export const load = (async (event) => {
 	event.locals.security.enforceRole("admin");
-
-	return { destinations: getDestinations() };
 }) satisfies PageServerLoad;
