@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from "$app/state";
 	import favicon from "$lib/assets/favicon.svg";
 	import Header from "$lib/components/header/Header.svelte";
 	import MainBody from "$lib/components/MainBody.svelte";
@@ -18,5 +19,9 @@
 />
 
 <MainBody>
-	{@render children?.()}
+	{#if data.selectedOrganizationId || page.route.id?.startsWith("/super")}
+		{@render children?.()}
+	{:else}
+		<p>Please select an organization.</p>
+	{/if}
 </MainBody>
