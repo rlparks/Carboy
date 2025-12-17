@@ -47,7 +47,8 @@ CREATE TABLE IF NOT EXISTS department (
     position INTEGER NOT NULL, -- position in lists
     created_at TIMESTAMPTZ NOT NULL,
     updated_at TIMESTAMPTZ,
-    UNIQUE (name, organization_id)
+    UNIQUE (name, organization_id),
+    UNIQUE (position, organization_id)
 );
 
 CREATE TABLE IF NOT EXISTS vehicle (

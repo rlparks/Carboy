@@ -8,6 +8,7 @@
 	<nav class="space-x-4">
 		<NavLink href="/admin/vehicles" text="Vehicles" mode="startsWith" />
 		<NavLink href="/admin/destinations" text="Destinations" mode="startsWith" />
+		<NavLink href="/admin/departments" text="Departments" mode="startsWith" />
 		<NavLink href="/admin/accounts" text="Accounts" mode="startsWith" />
 	</nav>
 </div>
