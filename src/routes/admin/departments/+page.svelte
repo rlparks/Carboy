@@ -28,7 +28,11 @@
 			<TableRow>
 				<TableCell>
 					<Link href={resolve("/admin/departments/[id]", { id: department.id })}>
-						{department.name}
+						{#if department.name}
+							{department.name}
+						{:else}
+							<span class="italic">&lt;blank&gt;</span>
+						{/if}
 					</Link>
 				</TableCell>
 			</TableRow>

@@ -16,7 +16,7 @@
 		label="Name"
 		{...createDepartment.fields.name.as("text")}
 		issues={createDepartment.fields.name.issues()}
-		helperText="Must be unique within the organization."
+		helperText="Must be unique within the organization. Can be blank."
 	/>
 
 	<Button type="submit">Submit</Button>

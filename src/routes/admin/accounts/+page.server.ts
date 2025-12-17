@@ -10,5 +10,6 @@ export const load = (async (event) => {
 		return error(400, "No organization selected.");
 	}
 
+	// TODO: way to see accounts that are not in organizations
 	return { accounts: getAccountsInOrganization(orgId) };
 }) satisfies PageServerLoad;

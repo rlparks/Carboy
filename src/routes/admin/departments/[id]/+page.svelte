@@ -3,7 +3,9 @@
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
 
 	let { data } = $props();
+
+	const title = $derived(data.department.name || "<blank>");
 </script>
 
-<WindowTitle title={data.department.name} description="View department details." />
-<PageTitle title={data.department.name} />
+<WindowTitle {title} description="View department details." />
+<PageTitle {title} />
