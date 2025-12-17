@@ -2,6 +2,8 @@ import { building } from "$app/environment";
 import { impersonateCookieName, sessionCookieName, validateSessionToken } from "$lib/server/auth";
 import { deleteSessionCookie, setSessionCookie } from "$lib/server/auth/helpers";
 import Security from "$lib/server/auth/Security";
+import { getOrganizations, getOrganizationsByAccountId } from "$lib/server/db/queries/organization";
+import { updateSelectedOrganization } from "$lib/server/db/queries/session";
 import { initCarboy } from "$lib/server/init";
 import type { Handle, ServerInit } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
@@ -30,6 +32,18 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 		setSessionCookie(event, token, session.expiresAt, Boolean(impersonatedToken));
 	} else {
 		deleteSessionCookie(event);
+	}
+
+	if (account && session && !session.selectedOrganizationId) {
+		// if no organization is selected, and the account has organizations, select the first one by default
+		const accountOrgs = await (account.role === "superadmin"
+			? getOrganizations()
+			: getOrganizationsByAccountId(account.id));
+
+		if (accountOrgs.length > 0 && accountOrgs[0]?.id) {
+			session.selectedOrganizationId = accountOrgs[0].id;
+			await updateSelectedOrganization(session.id, session.selectedOrganizationId);
+		}
 	}
 
 	event.locals.session = session;
