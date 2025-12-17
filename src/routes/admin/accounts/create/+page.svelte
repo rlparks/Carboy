@@ -1,11 +1,13 @@
 <script lang="ts">
 	import Button from "$lib/components/Button.svelte";
 	import Input from "$lib/components/Input.svelte";
+	import PageTitle from "$lib/components/PageTitle.svelte";
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
 	import { createAccount } from "./createAccount.remote";
 </script>
 
 <WindowTitle title="Create Account" description="Create a new account." />
+<PageTitle title="Create Account" />
 
 <form {...createAccount} class="max-w-md space-y-4">
 	<Input

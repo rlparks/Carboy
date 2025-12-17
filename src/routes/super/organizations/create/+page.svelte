@@ -1,11 +1,13 @@
 <script lang="ts">
 	import Button from "$lib/components/Button.svelte";
 	import Input from "$lib/components/Input.svelte";
+	import PageTitle from "$lib/components/PageTitle.svelte";
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
 	import { createOrganization } from "./createOrganization.remote";
 </script>
 
 <WindowTitle title="Create Organization" description="Create a new organization." />
+<PageTitle title="Create Organization" />
 
 <form {...createOrganization} class="max-w-md space-y-4">
 	<Input
