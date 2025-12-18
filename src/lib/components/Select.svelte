@@ -45,7 +45,7 @@
 			<option value="" disabled selected={value === ""}>{placeholder}</option>
 		{/if}
 		{#each options as option (option.value)}
-			<option value={option.value}>{option.label}</option>
+			<option value={option.value}>{option.label || "<blank>"}</option>
 		{/each}
 	</select>
 

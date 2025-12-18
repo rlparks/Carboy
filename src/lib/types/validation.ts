@@ -17,3 +17,11 @@ export const PasswordSchema = v.pipe(
 	v.minLength(8, "Password must be at least 8 characters long."),
 	v.maxLength(1000, "Password cannot exceed 1000 characters."),
 );
+
+export const VehicleMileageSchema = v.union([
+	v.pipe(
+		v.literal(""),
+		v.transform(() => null),
+	),
+	v.pipe(v.string(), v.transform(Number), v.integer("Mileage must be an integer.")),
+]);

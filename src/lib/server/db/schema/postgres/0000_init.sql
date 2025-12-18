@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS vehicle (
     created_at TIMESTAMPTZ NOT NULL,
     updated_at TIMESTAMPTZ
 );
+-- TODO: add archived
 
 CREATE TABLE IF NOT EXISTS destination (
     id TEXT PRIMARY KEY,

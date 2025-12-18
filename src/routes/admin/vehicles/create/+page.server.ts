@@ -1,4 +1,4 @@
-import { getVehiclesByOrganizationId } from "$lib/server/db/queries/vehicle";
+import { getDepartmentsByOrganizationId } from "$lib/server/db/queries/department";
 import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
@@ -10,5 +10,5 @@ export const load = (async (event) => {
 		return error(400, "No organization selected.");
 	}
 
-	return { vehicles: getVehiclesByOrganizationId(orgId) };
+	return { departments: await getDepartmentsByOrganizationId(orgId) };
 }) satisfies PageServerLoad;
