@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { resolve } from "$app/paths";
+	import Button from "$lib/components/Button.svelte";
 	import PageTitle from "$lib/components/PageTitle.svelte";
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
 
@@ -8,4 +10,21 @@
 </script>
 
 <WindowTitle {title} description="View department details." />
-<PageTitle {title} />
+<header class="flex justify-between">
+	<PageTitle {title} />
+	<Button href={resolve("/admin/departments/[id]/edit", { id: data.department.id })}>Edit</Button>
+</header>
+
+<div class="mt-4 grid max-w-md grid-cols-2 gap-4">
+	<p class="font-semibold">Name:</p>
+	<p>{data.department.name ?? "<blank>"}</p>
+
+	<p class="font-semibold">Position:</p>
+	<p>{data.department.position ?? ""}</p>
+
+	<p class="font-semibold">Created At:</p>
+	<p>{data.department.createdAt.toLocaleString()}</p>
+
+	<p class="font-semibold">Updated At:</p>
+	<p>{data.department.updatedAt?.toLocaleString() ?? "Never"}</p>
+</div>
