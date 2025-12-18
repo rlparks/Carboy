@@ -12,7 +12,7 @@
 
 	let { data } = $props();
 
-	const headers = ["Name"];
+	const headers = ["", "Name"];
 
 	let departments: Department[] = $derived(data.departments);
 	let draggedDepartmentId: string | null = $state(null);
@@ -68,6 +68,9 @@
 			ondrop={() => handleDrop()}
 			class={draggedOverIndex === index ? "bg-blue-100 dark:bg-blue-900" : ""}
 		>
+			<TableCell class="w-4">
+				<span class="select-none">⋮⋮</span>
+			</TableCell>
 			<TableCell>
 				<Link href={resolve("/admin/departments/[id]", { id: department.id })}>
 					{#if department.name}
