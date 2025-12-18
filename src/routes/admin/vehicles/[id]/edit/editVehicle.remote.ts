@@ -12,6 +12,17 @@ export const editVehicle = form(
 		name: v.pipe(v.string(), v.minLength(1, "Name must be at least 1 character.")),
 		departmentId: v.pipe(v.string(), v.minLength(1, "Department is required.")),
 		mileage: VehicleMileageSchema,
+		updateImage: v.optional(v.boolean(), false),
+		image: v.optional(
+			v.pipe(
+				v.file("Please select an image file."),
+				v.mimeType(
+					["image/jpeg", "image/png", "image/webp"],
+					"Please select a JPEG, PNG, or WebP file.",
+				),
+				v.maxSize(1024 * 1024 * 10, "Please select a file smaller than 10 MB."),
+			),
+		),
 	}),
 	async ({ id, number, name, departmentId, mileage }, issue) => {
 		const event = getRequestEvent();

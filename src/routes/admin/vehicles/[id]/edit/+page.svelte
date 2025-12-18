@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Button from "$lib/components/Button.svelte";
+	import Checkbox from "$lib/components/Checkbox.svelte";
 	import Input from "$lib/components/Input.svelte";
 	import PageTitle from "$lib/components/PageTitle.svelte";
 	import Select from "$lib/components/Select.svelte";
@@ -14,7 +15,7 @@
 <WindowTitle {title} description={`Edit vehicle: ${data.vehicle.number} (${data.vehicle.name})`} />
 <PageTitle {title} />
 
-<form {...editVehicle} class="max-w-md space-y-4">
+<form {...editVehicle} class="max-w-md space-y-4" enctype="multipart/form-data">
 	<input {...editVehicle.fields.id.as("hidden", data.vehicle.id)} />
 
 	<Input
@@ -52,6 +53,18 @@
 		value={data.vehicle.mileage ?? ""}
 		issues={editVehicle.fields.mileage.issues()}
 	/>
+
+	<Checkbox {...editVehicle.fields.updateImage.as("checkbox")} label="Update Image" />
+
+	{#if editVehicle.fields.updateImage.value()}
+		<Input
+			name="image"
+			type="file"
+			label="Image"
+			issues={editVehicle.fields.image.issues()}
+			accept="image/jpeg, image/png, image/webp"
+		/>
+	{/if}
 
 	<Button type="submit">Submit</Button>
 </form>

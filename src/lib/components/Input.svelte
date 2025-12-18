@@ -4,10 +4,11 @@
 	type Props = {
 		name: string;
 		label?: string;
-		type?: "text" | "password" | "email" | "number";
+		type?: "text" | "password" | "email" | "number" | "file";
 		placeholder?: string;
 		value?: string | number;
 		helperText?: string;
+		accept?: string;
 		issues?: RemoteFormIssue[];
 	};
 	let {
@@ -17,6 +18,7 @@
 		placeholder = "",
 		helperText = "",
 		value = $bindable(""),
+		accept,
 		issues,
 	}: Props = $props();
 
@@ -35,6 +37,7 @@
 		{name}
 		{type}
 		{placeholder}
+		{accept}
 		bind:value
 		class="block w-full rounded border border-gray-300 px-3 py-2 placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:placeholder-gray-500"
 	/>
