@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS department (
     created_at TIMESTAMPTZ NOT NULL,
     updated_at TIMESTAMPTZ,
     UNIQUE (name, organization_id),
-    UNIQUE (position, organization_id)
+    UNIQUE (position, organization_id) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE IF NOT EXISTS vehicle (

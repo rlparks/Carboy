@@ -120,3 +120,55 @@ export async function createDepartment(
 		throw parsePgError(err);
 	}
 }
+
+export async function updateDepartment(
+	id: string,
+	department: Omit<Department, "id" | "createdAt" | "updatedAt">,
+) {
+	try {
+		const [row] = await sql<Department[]>`
+            UPDATE department
+            SET
+                name = ${department.name},
+                position = ${department.position},
+                organization_id = ${department.organizationId},
+                updated_at = NOW()
+            WHERE
+                id = ${id}
+            RETURNING
+                id,
+                name,
+                position,
+                organization_id,
+                created_at,
+                updated_at
+        `;
+
+		return row;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
+
+export async function reorderDepartments(
+	organizationId: string,
+	departmentIdsInNewOrder: string[],
+) {
+	try {
+		if (departmentIdsInNewOrder.length === 0) {
+			return;
+		}
+
+		await sql`
+            WITH new_order AS (
+				SELECT * FROM UNNEST(${departmentIdsInNewOrder}::text[]) WITH ORDINALITY AS t(id, ord)
+			)
+			UPDATE department d
+			SET position = n.ord - 1, updated_at = NOW()
+			FROM new_order n
+			WHERE d.id = n.id AND d.organization_id = ${organizationId};
+        `;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
