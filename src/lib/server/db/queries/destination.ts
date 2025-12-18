@@ -99,3 +99,35 @@ export async function createDestination(
 		throw parsePgError(err);
 	}
 }
+
+export async function updateDestination(
+	id: string,
+	destination: Omit<Destination, "id" | "createdAt" | "updatedAt">,
+) {
+	try {
+		const [row] = await sql<Destination[]>`
+            UPDATE destination
+            SET
+                name = ${destination.name},
+                short_name = ${destination.shortName},
+                address = ${destination.address},
+                latitude = ${destination.latitude},
+                longitude = ${destination.longitude},
+                updated_at = NOW()
+            WHERE id = ${id}
+            RETURNING
+                id,
+                name,
+                short_name,
+                address,
+                latitude,
+                longitude,
+                created_at,
+                updated_at
+        `;
+
+		return row;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
