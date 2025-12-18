@@ -10,7 +10,7 @@
 
 	let { data } = $props();
 
-	const title = $derived(`Edit ${data.editAccount.name} (${data.editAccount.username})`);
+	const title = $derived(`Edit Account ${data.editAccount.name} (${data.editAccount.username})`);
 
 	const roleOptions = [
 		{ value: "", label: "None" },

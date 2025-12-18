@@ -7,7 +7,7 @@
 
 	let { data } = $props();
 
-	const title = $derived(`Edit ${data.department.name || "<blank>"}`);
+	const title = $derived(`Edit Department ${data.department.name || "<blank>"}`);
 </script>
 
 <WindowTitle {title} description={`Edit department: ${data.department.name}`} />

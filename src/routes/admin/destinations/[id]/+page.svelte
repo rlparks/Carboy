@@ -5,15 +5,14 @@
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
 
 	let { data } = $props();
+
+	const title = $derived(`Destination ${data.destination.name}`);
 </script>
 
-<WindowTitle
-	title={data.destination.name}
-	description={`Manage destination: ${data.destination.name}`}
-/>
+<WindowTitle {title} description={`Manage destination: ${data.destination.name}`} />
 
 <header class="flex justify-between">
-	<PageTitle title={data.destination.name} />
+	<PageTitle {title} />
 	<Button href={resolve("/admin/destinations/[id]/edit", { id: data.destination.id })}>Edit</Button>
 </header>
 

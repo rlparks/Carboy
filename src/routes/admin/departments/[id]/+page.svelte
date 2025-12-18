@@ -6,7 +6,7 @@
 
 	let { data } = $props();
 
-	const title = $derived(data.department.name || "<blank>");
+	const title = $derived(`Department ${data.department.name || "<blank>"}`);
 </script>
 
 <WindowTitle {title} description="View department details." />
