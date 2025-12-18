@@ -9,7 +9,7 @@
 
 	let { data } = $props();
 
-	const headers = ["Username", "Name", "Email", "Archived", "Organizations"];
+	const headers = ["Username", "Name", "Email", "Role", "Archived", "Organizations"];
 </script>
 
 <WindowTitle title="Accounts" description="View and manage user accounts." />
@@ -33,6 +33,7 @@
 				</TableCell>
 				<TableCell>{account.name}</TableCell>
 				<TableCell>{account.email}</TableCell>
+				<TableCell>{account.role ?? "None"}</TableCell>
 				<TableCell>{account.archived ? "Yes" : "No"}</TableCell>
 				<TableCell>
 					{#if account.organizations.length > 0}

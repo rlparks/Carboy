@@ -20,6 +20,7 @@
 <Table {headers}>
 	{#each data.organizations as org (org.id)}
 		<TableRow>
+			<!-- TODO: org page -->
 			<TableCell>{org.name}</TableCell>
 			<TableCell>{org.slug}</TableCell>
 			<TableCell>{org.createdAt}</TableCell>
