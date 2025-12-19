@@ -5,10 +5,14 @@
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
 	import type { Destination } from "$lib/types/db";
 	import { checkout } from "./checkout.remote";
+	import { searchDestinations } from "./searchDestinations.remote";
 
 	let { data } = $props();
 
 	const title = $derived(`Check Out ${data.vehicle.number}`);
+
+	let query = $state("");
+	const searchPromise = $derived(query ? searchDestinations(query) : undefined);
 
 	const destinations: Destination[] = $state([]);
 </script>
@@ -33,7 +37,24 @@
 
 			<div class="space-y-2">
 				<h2 class="text-3xl font-semibold">Destinations</h2>
-				<Input label="Search" issues={checkout.fields.destinationIds.issues()} />
+				<Input label="Search" issues={checkout.fields.destinationIds.issues()} bind:value={query} />
+
+				<!-- search results -->
+				<div>
+					{#await searchPromise}
+						<p aria-live="polite">Loading...</p>
+					{:then results}
+						<!-- results will be undefined if no query -->
+						{#if results}
+							{#each results as destination (destination.id)}
+								<p>{destination.name}</p>
+							{:else}
+								<p>No results found.</p>
+							{/each}
+						{/if}
+					{/await}
+				</div>
+
 				{#each destinations as destination (destination.id)}{:else}
 					<p class="italic">No destinations selected.</p>
 				{/each}

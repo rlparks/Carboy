@@ -21,8 +21,8 @@ export const searchDestinations = query(v.string(), async (query) => {
                 updated_at
             FROM destination
             WHERE
-                name ILIKE %${query}% OR
-                short_name ILIKE %${query}%
+                name ILIKE ${"%" + query + "%"} OR
+                short_name ILIKE ${"%" + query + "%"}
             LIMIT 5
             ;`;
 
