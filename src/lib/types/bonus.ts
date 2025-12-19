@@ -8,6 +8,7 @@ export type AccountWithOrganizations = FriendlyAccount & {
 export type VehicleWithDepartment = Vehicle & {
 	departmentName: string;
 	departmentId: string;
+	organizationId: string;
 	isCheckedOut: boolean;
 };
 

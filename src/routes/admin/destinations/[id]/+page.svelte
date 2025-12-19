@@ -7,6 +7,7 @@
 	let { data } = $props();
 
 	const title = $derived(`Destination ${data.destination.name}`);
+	// TODO: merge destinations
 </script>
 
 <WindowTitle {title} description={`Manage destination: ${data.destination.name}`} />

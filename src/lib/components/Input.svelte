@@ -2,7 +2,7 @@
 	import type { RemoteFormIssue } from "@sveltejs/kit";
 
 	type Props = {
-		name: string;
+		name?: string;
 		label?: string;
 		type?: "text" | "password" | "email" | "number" | "file";
 		placeholder?: string;

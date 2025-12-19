@@ -23,11 +23,13 @@ export async function getVehiclesByOrganizationId(organizationId: string) {
                     WHERE t.vehicle_id = v.id
                     ORDER BY t.created_at DESC
                     LIMIT 1
-                ), false) AS is_checked_out
+                ), false) AS is_checked_out,
+                o.id AS organization_id
             FROM
                 vehicle v
             INNER JOIN
                 department d ON v.department_id = d.id
+            INNER JOIN organization o ON d.organization_id = o.id
             WHERE
                 d.organization_id = ${organizationId}
             ORDER BY
@@ -65,19 +67,32 @@ export async function getVehicleById(id: string) {
 
 export async function getVehicleByNumber(number: string) {
 	try {
-		const [row] = await sql<Vehicle[]>`
+		const [row] = await sql<VehicleWithDepartment[]>`
             SELECT
-                id,
-                number,
-                name,
-                department_id,
-                mileage,
-                created_at,
-                updated_at
+                v.id,
+                v.number,
+                v.name,
+                v.department_id,
+                v.mileage,
+                v.created_at,
+                v.updated_at,
+                d.name AS department_name,
+                d.id AS department_id,
+                COALESCE((
+                    SELECT t.end_time IS NULL
+                    FROM trip t
+                    WHERE t.vehicle_id = v.id
+                    ORDER BY t.created_at DESC
+                    LIMIT 1
+                ), false) AS is_checked_out,
+                o.id AS organization_id
             FROM
-                vehicle
+                vehicle v
+            INNER JOIN
+                department d ON v.department_id = d.id
+            INNER JOIN organization o ON d.organization_id = o.id
             WHERE
-                number = ${number}
+                v.number = ${number}
         `;
 
 		return row;

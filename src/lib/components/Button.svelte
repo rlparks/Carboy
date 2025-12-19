@@ -16,7 +16,7 @@
 </script>
 
 {#if href}
-	<a {href} {onclick} class={standardButtonClasses}>
+	<a {href} {onclick} class={standardButtonClasses + " w-fit"}>
 		{@render children?.()}
 	</a>
 {:else}

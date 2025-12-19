@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from "$app/paths";
 	import Button from "$lib/components/Button.svelte";
 	import type { VehicleWithDepartment } from "$lib/types/bonus";
 
@@ -16,11 +17,15 @@
 
 		{#if !vehicle.isCheckedOut}
 			<div class="text-green-500">
-				<Button>Check Out</Button>
+				<Button href={resolve("/checkout/[vehicleNumber]", { vehicleNumber: vehicle.number })}>
+					Check Out
+				</Button>
 			</div>
 		{:else}
 			<div class="text-blue-500">
-				<Button>Check In</Button>
+				<Button href={resolve("/checkin/[vehicleNumber]", { vehicleNumber: vehicle.number })}>
+					Check In
+				</Button>
 			</div>
 		{/if}
 	</section>
