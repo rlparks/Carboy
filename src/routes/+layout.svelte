@@ -19,7 +19,7 @@
 />
 
 <MainBody>
-	{#if data.selectedOrganizationId || page.route.id?.startsWith("/super")}
+	{#if data.selectedOrganizationId || page.route.id?.startsWith("/super") || page.route.id === "/"}
 		{@render children?.()}
 	{:else}
 		<p>Please select an organization.</p>

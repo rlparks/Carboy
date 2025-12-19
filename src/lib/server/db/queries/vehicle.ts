@@ -16,7 +16,14 @@ export async function getVehiclesByOrganizationId(organizationId: string) {
                 v.created_at,
                 v.updated_at,
                 d.name AS department_name,
-                d.id AS department_id
+                d.id AS department_id,
+                COALESCE((
+                    SELECT t.end_time IS NULL
+                    FROM trip t
+                    WHERE t.vehicle_id = v.id
+                    ORDER BY t.created_at DESC
+                    LIMIT 1
+                ), false) AS is_checked_out
             FROM
                 vehicle v
             INNER JOIN
