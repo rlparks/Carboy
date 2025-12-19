@@ -107,3 +107,4 @@ CREATE TABLE IF NOT EXISTS configuration (
 CREATE INDEX IF NOT EXISTS idx_trip_vehicle_id ON trip(vehicle_id);
 CREATE INDEX IF NOT EXISTS idx_trip_started_by ON trip(started_by);
 CREATE INDEX IF NOT EXISTS idx_trip_ended_by ON trip(ended_by);
+CREATE INDEX IF NOT EXISTS idx_trip_start_time ON trip(start_time DESC);

@@ -63,6 +63,7 @@
 			label="Image"
 			issues={editVehicle.fields.image.issues()}
 			accept="image/jpeg, image/png, image/webp"
+			helperText="Leaving this blank will remove the vehicle's image."
 		/>
 	{/if}
 

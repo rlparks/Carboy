@@ -1,0 +1,106 @@
+import { parsePgError } from "$lib/server/db/error";
+import { sql } from "$lib/server/db/postgres";
+import type { TripWithVehicle } from "$lib/types/bonus";
+
+export type TripFilterOptions = {
+	vehicleNumber?: string;
+	organizationId?: string;
+	startTimeFrom?: Date;
+	startTimeTo?: Date;
+	endTimeFrom?: Date | null;
+	endTimeTo?: Date | null;
+	distance?: number | null;
+	distanceComparator?: "=" | "<" | ">" | "<=" | ">=";
+	duration?: number;
+	durationComparator?: "=" | "<" | ">" | "<=" | ">=";
+	startedBy?: string;
+	endedBy?: string | null;
+	endedByDifferent?: boolean;
+	limit?: number;
+	offset?: number;
+};
+
+export async function getTrips(opts: TripFilterOptions = {}) {
+	const vehicleNumber = opts.vehicleNumber
+		? sql`t.vehicle_id = (SELECT id FROM vehicle WHERE number = ${opts.vehicleNumber})`
+		: sql`TRUE`;
+
+	const organizationId = opts.organizationId
+		? sql`d.organization_id = ${opts.organizationId}`
+		: sql`TRUE`;
+
+	const startTimeFrom = opts.startTimeFrom ? sql`t.start_time >= ${opts.startTimeFrom}` : sql`TRUE`;
+
+	const startTimeTo = opts.startTimeTo ? sql`t.start_time <= ${opts.startTimeTo}` : sql`TRUE`;
+
+	const endTimeFrom = opts.endTimeFrom ? sql`t.end_time >= ${opts.endTimeFrom}` : sql`TRUE`;
+
+	const endTimeTo = opts.endTimeTo ? sql`t.end_time <= ${opts.endTimeTo}` : sql`TRUE`;
+
+	const distance =
+		opts.distance !== undefined && opts.distanceComparator !== undefined
+			? sql`t.distance ${opts.distanceComparator} ${opts.distance}`
+			: sql`TRUE`;
+
+	const duration =
+		opts.duration !== undefined && opts.durationComparator !== undefined
+			? sql`t.end_time - t.start_time ${opts.durationComparator} ${opts.duration}`
+			: sql`TRUE`;
+
+	const startedBy = opts.startedBy ? sql`s.username = ${opts.startedBy}` : sql`TRUE`;
+
+	const endedBy = opts.endedBy !== undefined ? sql`e.username = ${opts.endedBy}` : sql`TRUE`;
+
+	const endedByDifferent =
+		opts.endedByDifferent !== undefined && !opts.endedByDifferent
+			? sql`t.ended_by IS DISTINCT FROM t.started_by`
+			: sql`TRUE`;
+
+	try {
+		const rows = await sql<TripWithVehicle[]>`
+            SELECT
+                t.id,
+                t.vehicle_id,
+                t.start_time,
+                t.end_time,
+                t.start_mileage,
+                t.end_mileage,
+                t.end_mileage - t.start_mileage AS distance,
+                t.started_by,
+                t.ended_by,
+                t.created_at,
+                t.updated_at,
+                v.number AS vehicle_number,
+                v.name AS vehicle_name,
+                v.department_id AS department_id,
+                d.name AS department_name,
+                s.username AS started_by_username,
+                s.name AS started_by_name,
+                e.username AS ended_by_username,
+                e.name AS ended_by_name
+            FROM trip t
+            INNER JOIN vehicle v ON t.vehicle_id = v.id
+            INNER JOIN department d ON v.department_id = d.id
+            INNER JOIN account s ON t.started_by = s.id
+            LEFT JOIN account e ON t.ended_by = e.id
+            WHERE ${vehicleNumber}
+                AND ${organizationId}
+                AND ${startTimeFrom}
+                AND ${startTimeTo}
+                AND ${endTimeFrom}
+                AND ${endTimeTo}
+                AND ${distance}
+                AND ${duration}
+                AND ${startedBy}
+                AND ${endedBy}
+                AND ${endedByDifferent}
+            ORDER BY t.start_time DESC
+            LIMIT ${opts.limit || 100}
+            OFFSET ${opts.offset || 0} 
+            ;`;
+
+		return rows;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
