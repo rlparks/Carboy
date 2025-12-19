@@ -3,18 +3,21 @@
 	import Input from "$lib/components/Input.svelte";
 	import PageTitle from "$lib/components/PageTitle.svelte";
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
+	import type { Destination } from "$lib/types/db";
 	import { checkout } from "./checkout.remote";
 
 	let { data } = $props();
 
 	const title = $derived(`Check Out ${data.vehicle.number}`);
+
+	const destinations: Destination[] = $state([]);
 </script>
 
 <WindowTitle {title} description="Check out a vehicle." />
-<PageTitle title="Check Out" />
 
-<div class="flex justify-around">
+<div class="justify-around md:flex">
 	<section class="w-md space-y-2">
+		<PageTitle title="Check Out" />
 		<h2 class="text-3xl font-semibold">{data.vehicle.number}</h2>
 		<p class="text-xl">{data.vehicle.name}</p>
 		{#if data.vehicle.mileage !== null}
@@ -24,12 +27,23 @@
 			</p>
 		{/if}
 	</section>
-	<section class="w-md">
+	<section class="container w-md">
 		<form {...checkout} class="space-y-4">
 			<input {...checkout.fields.vehicleId.as("hidden", data.vehicle.id)} />
 
-			<h2>Destinations</h2>
-			<Input {...checkout.fields.note.as("text")} label="Note (optional)" />
+			<div class="space-y-2">
+				<h2 class="text-3xl font-semibold">Destinations</h2>
+				<Input label="Search" issues={checkout.fields.destinationIds.issues()} />
+				{#each destinations as destination (destination.id)}{:else}
+					<p class="italic">No destinations selected.</p>
+				{/each}
+			</div>
+
+			<div class="space-y-2">
+				<h2 class="text-3xl font-semibold">Note</h2>
+
+				<Input {...checkout.fields.note.as("text")} helperText="Optional" />
+			</div>
 
 			<Button type="submit">Submit</Button>
 		</form>
