@@ -92,7 +92,8 @@ CREATE TABLE IF NOT EXISTS trip_destination (
     position INTEGER NOT NULL,
     created_at TIMESTAMPTZ NOT NULL,
     updated_at TIMESTAMPTZ,
-    PRIMARY KEY (trip_id, destination_id)
+    PRIMARY KEY (trip_id, destination_id),
+    UNIQUE(position, trip_id) DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE IF NOT EXISTS configuration (
