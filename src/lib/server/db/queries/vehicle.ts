@@ -1,11 +1,12 @@
 import { generateTextId } from "$lib/server";
 import { parsePgError } from "$lib/server/db/error";
 import { sql } from "$lib/server/db/postgres";
+import type { VehicleWithDepartment } from "$lib/types/bonus";
 import type { Vehicle } from "$lib/types/db";
 
 export async function getVehiclesByOrganizationId(organizationId: string) {
 	try {
-		const rows = await sql<Vehicle[]>`
+		const rows = await sql<VehicleWithDepartment[]>`
             SELECT
                 v.id,
                 v.number,
@@ -13,15 +14,17 @@ export async function getVehiclesByOrganizationId(organizationId: string) {
                 v.department_id,
                 v.mileage,
                 v.created_at,
-                v.updated_at
+                v.updated_at,
+                d.name AS department_name,
+                d.id AS department_id
             FROM
                 vehicle v
-            JOIN
+            INNER JOIN
                 department d ON v.department_id = d.id
             WHERE
                 d.organization_id = ${organizationId}
             ORDER BY
-                v.created_at DESC
+                d.position, v.number
         `;
 
 		return rows;

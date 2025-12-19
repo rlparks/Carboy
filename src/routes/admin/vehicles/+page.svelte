@@ -9,7 +9,7 @@
 
 	let { data } = $props();
 
-	const headers = ["Number", "Name", "Mileage"];
+	const headers = ["Number", "Name", "Mileage", "Department"];
 	// TODO: department name, trip count
 </script>
 
@@ -34,6 +34,11 @@
 				</TableCell>
 				<TableCell>{vehicle.name}</TableCell>
 				<TableCell>{vehicle.mileage ?? "N/A"}</TableCell>
+				<TableCell>
+					<Link href={resolve("/admin/departments/[id]", { id: vehicle.departmentId })}>
+						{vehicle.departmentName}
+					</Link>
+				</TableCell>
 			</TableRow>
 		{:else}
 			<TableRow>
