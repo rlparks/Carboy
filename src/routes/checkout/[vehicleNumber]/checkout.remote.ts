@@ -1,4 +1,8 @@
-import { form } from "$app/server";
+import { form, getRequestEvent } from "$app/server";
+import { getDepartmentById } from "$lib/server/db/queries/department";
+import { checkoutVehicle, getTrips } from "$lib/server/db/queries/trip";
+import { getVehicleById } from "$lib/server/db/queries/vehicle";
+import { error, invalid, redirect } from "@sveltejs/kit";
 import * as v from "valibot";
 
 export const checkout = form(
@@ -6,11 +10,37 @@ export const checkout = form(
 		{
 			vehicleId: v.string(),
 			destinationIds: v.array(v.string()),
-			note: v.optional(v.string()),
+			note: v.optional(v.pipe(v.string(), v.trim())),
 		},
 		"At least one destination is required.",
 	),
-	async (data) => {
-		console.log(data);
+	async ({ vehicleId, destinationIds, note }) => {
+		const event = getRequestEvent();
+		event.locals.security.enforceAuthenticated();
+
+		const vehicle = await getVehicleById(vehicleId);
+
+		if (!vehicle) {
+			return error(404, "Vehicle not found");
+		}
+
+		const department = await getDepartmentById(vehicle.departmentId);
+		if (!department || department.organizationId !== event.locals.session?.selectedOrganizationId) {
+			return error(403, "Incorrect organization selected");
+		}
+
+		const [mostRecentTrip] = await getTrips({ vehicleNumber: vehicle.number, limit: 1 });
+		if (mostRecentTrip && !mostRecentTrip.endTime) {
+			return invalid("Vehicle is already checked out.");
+		}
+
+		try {
+			await checkoutVehicle(event.locals.account!.id, vehicle.id, destinationIds, note);
+		} catch (err) {
+			console.error(err);
+			return error(500, "Something went wrong while creating the trip");
+		}
+
+		return redirect(303, "/?success=checkout");
 	},
 );

@@ -1,6 +1,9 @@
+import { generateTextId } from "$lib/server";
 import { parsePgError } from "$lib/server/db/error";
 import { sql } from "$lib/server/db/postgres";
 import type { TripWithVehicle } from "$lib/types/bonus";
+import type { Trip, TripDestination } from "$lib/types/db";
+import { error } from "@sveltejs/kit";
 
 export type TripFilterOptions = {
 	vehicleNumber?: string;
@@ -100,6 +103,58 @@ export async function getTrips(opts: TripFilterOptions = {}) {
             ;`;
 
 		return rows;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
+
+export async function checkoutVehicle(
+	startedById: string,
+	vehicleId: string,
+	destinationIds: string[],
+	note: string | undefined,
+) {
+	const now = new Date();
+	try {
+		await sql.begin(async (tx) => {
+			const [newTrip] = await tx<Trip[]>`
+                INSERT INTO trip (id, vehicle_id, start_time, end_time, start_mileage, end_mileage, started_by, ended_by, created_at, updated_at)
+                VALUES (
+                    ${generateTextId()},
+                    ${vehicleId},
+                    ${now},
+                    NULL,
+                    (SELECT mileage FROM vehicle WHERE id = ${vehicleId}),
+                    NULL,
+                    ${startedById},
+                    NULL,
+                    ${now},
+                    NULL
+                )
+                RETURNING id, vehicle_id, start_time, end_time, start_mileage, end_mileage, started_by, ended_by, created_at, updated_at
+            ;`;
+
+			if (!newTrip) {
+				return error(500, "Unable to create trip");
+			}
+
+			for (let i = 0; i < destinationIds.length; i++) {
+				const destinationId = destinationIds[i]!;
+				const tripDestination = await tx<TripDestination[]>`
+                    INSERT INTO trip_destination (trip_id, destination_id, position, created_at, updated_at)
+                    VALUES (${newTrip.id}, ${destinationId}, ${i}, ${now}, NULL)
+                    RETURNING trip_id, destination_id, position, created_at, updated_at
+                ;`;
+
+				if (!tripDestination) {
+					return error(500, "Unable to create trip destination");
+				}
+			}
+
+			if (note) {
+				// TODO: create note :)
+			}
+		});
 	} catch (err) {
 		throw parsePgError(err);
 	}
