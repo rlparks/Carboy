@@ -46,7 +46,7 @@
 					{:then results}
 						<!-- results will be undefined if no query -->
 						{#if results}
-							<ul>
+							<ul class="divide-y">
 								{#each results as destination (destination.id)}
 									<li class="dark:bg-gray-800 dark:hover:bg-gray-700">
 										<button
@@ -58,7 +58,7 @@
 										>
 											<div>
 												<p>{destination.name}</p>
-												<p>{destination.shortName ?? ""}</p>
+												<p>{destination.shortName ?? " "}</p>
 											</div>
 											<p class="text-2xl">+</p>
 										</button>
@@ -72,11 +72,27 @@
 				</div>
 
 				<!-- actual destination list for trip -->
-				{#each destinations as destination (destination.id)}
-					<p>{destination.name}</p>
-				{:else}
-					<p class="italic">No destinations selected.</p>
-				{/each}
+				<ol class="">
+					{#each destinations as destination, i (destination.id)}
+						<li class="dark:bg-gray-800">
+							<div class="flex w-full items-center justify-between p-4 text-left">
+								<div class="flex items-center gap-4">
+									<p class="space-x-2 text-xl font-semibold select-none">
+										<span class="pb-4">⋮⋮</span>
+										<span>{i + 1}</span>
+									</p>
+									<div>
+										<p>{destination.name}</p>
+										<p>{destination.shortName}</p>
+									</div>
+								</div>
+								<button class="cursor-pointer text-xl">✕</button>
+							</div>
+						</li>
+					{:else}
+						<p class="italic">No destinations selected.</p>
+					{/each}
+				</ol>
 			</div>
 
 			<div class="space-y-2">
