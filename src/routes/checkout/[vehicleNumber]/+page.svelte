@@ -46,16 +46,35 @@
 					{:then results}
 						<!-- results will be undefined if no query -->
 						{#if results}
-							{#each results as destination (destination.id)}
-								<p>{destination.name}</p>
-							{:else}
-								<p>No results found.</p>
-							{/each}
+							<ul>
+								{#each results as destination (destination.id)}
+									<li class="dark:bg-gray-800 dark:hover:bg-gray-700">
+										<button
+											class="flex w-full cursor-pointer items-center justify-between p-4 text-left"
+											onclick={() => {
+												destinations.push(destination);
+												query = "";
+											}}
+										>
+											<div>
+												<p>{destination.name}</p>
+												<p>{destination.shortName ?? ""}</p>
+											</div>
+											<p class="text-2xl">+</p>
+										</button>
+									</li>
+								{:else}
+									<li>No results found.</li>
+								{/each}
+							</ul>
 						{/if}
 					{/await}
 				</div>
 
-				{#each destinations as destination (destination.id)}{:else}
+				<!-- actual destination list for trip -->
+				{#each destinations as destination (destination.id)}
+					<p>{destination.name}</p>
+				{:else}
 					<p class="italic">No destinations selected.</p>
 				{/each}
 			</div>
