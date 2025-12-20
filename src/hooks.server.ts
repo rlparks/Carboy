@@ -62,12 +62,10 @@ const setHeaders: Handle = async ({ event, resolve }) => {
 
 	const result = await resolve(event);
 
-	if (!event.isSubRequest) {
-		const remoteFnText = event.isRemoteRequest ? " (remote)" : "";
-		console.log(
-			`${event.request.method} ${event.url.pathname}: ${(performance.now() - start).toFixed(2)}ms${remoteFnText}`,
-		);
-	}
+	const remoteFnText = event.isRemoteRequest ? " (remote function)" : "";
+	console.log(
+		`${new Date().toLocaleString()} - ${event.locals.account?.username ?? "Unauthenticated"} - ${event.request.method} ${event.url.pathname}: ${(performance.now() - start).toFixed(2)}ms${remoteFnText}`,
+	);
 
 	result.headers.set("referrer-policy", "strict-origin-when-cross-origin");
 	result.headers.set("x-content-type-options", "nosniff");
