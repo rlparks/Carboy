@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { page } from "$app/state";
-	import type { RouteId } from "$app/types";
 
 	type Props = {
-		href: RouteId;
+		href: string;
 		comparePath?: string;
 		text: string;
 		mode: "exact" | "startsWith";

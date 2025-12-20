@@ -64,7 +64,7 @@ const setHeaders: Handle = async ({ event, resolve }) => {
 
 	const remoteFnText = event.isRemoteRequest ? " (remote function)" : "";
 	console.log(
-		`${new Date().toLocaleString()} - ${event.locals.account?.username ?? "Unauthenticated"} - ${event.request.method} ${event.url.pathname}: ${(performance.now() - start).toFixed(2)}ms${remoteFnText}`,
+		`${new Date().toLocaleString()} - ${event.locals.account?.username ?? "Unauthenticated"} - ${event.request.method} ${event.url.pathname} - ${(performance.now() - start).toFixed(2)}ms${remoteFnText}`,
 	);
 
 	result.headers.set("referrer-policy", "strict-origin-when-cross-origin");
