@@ -14,7 +14,37 @@
 	let query = $state("");
 	const searchPromise = $derived(query ? searchDestinations(query) : undefined);
 
-	const destinations: Destination[] = $state([]);
+	let destinations: Destination[] = $state([]);
+
+	let draggedDestinationId: string | null = $state(null);
+	let draggedOverIndex: number | null = $state(null);
+
+	function handleDragStart(id: string) {
+		draggedDestinationId = id;
+	}
+
+	function handleDragOver(event: DragEvent, overId: string) {
+		event.preventDefault();
+
+		const fromIndex = destinations.findIndex((d) => d.id === draggedDestinationId);
+		const toIndex = destinations.findIndex((d) => d.id === overId);
+		draggedOverIndex = toIndex;
+
+		const updated = [...destinations];
+		const [movedItem] = updated.splice(fromIndex, 1);
+		if (!movedItem) return;
+		updated.splice(toIndex, 0, movedItem);
+		destinations = updated;
+	}
+
+	function handleDragLeave() {
+		draggedOverIndex = null;
+	}
+
+	function handleDrop() {
+		draggedDestinationId = null;
+		draggedOverIndex = null;
+	}
 </script>
 
 <WindowTitle {title} description="Check out a vehicle." />
@@ -74,11 +104,18 @@
 				<!-- actual destination list for trip -->
 				<ol class="">
 					{#each destinations as destination, i (destination.id)}
-						<li class="dark:bg-gray-800">
+						<li
+							class={draggedOverIndex === i ? "bg-blue-100 dark:bg-blue-900" : "dark:bg-gray-800"}
+							draggable={true}
+							ondragstart={() => handleDragStart(destination.id)}
+							ondragover={(e) => handleDragOver(e, destination.id)}
+							ondragleave={handleDragLeave}
+							ondrop={() => handleDrop()}
+						>
 							<div class="flex w-full items-center justify-between p-4 text-left">
 								<div class="flex items-center gap-4">
 									<p class="space-x-2 text-xl font-semibold select-none">
-										<span class="pb-4">⋮⋮</span>
+										<span>⋮⋮</span>
 										<span>{i + 1}</span>
 									</p>
 									<div>
