@@ -86,7 +86,9 @@
 										<p>{destination.shortName}</p>
 									</div>
 								</div>
-								<button class="cursor-pointer text-xl">✕</button>
+								<button class="cursor-pointer text-xl" onclick={() => destinations.splice(i, 1)}>
+									✕
+								</button>
 							</div>
 						</li>
 					{:else}
