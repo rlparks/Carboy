@@ -124,21 +124,23 @@
 						{#if results}
 							<ul class="divide-y">
 								{#each results as destination (destination.id)}
-									<li class="dark:bg-gray-800 dark:hover:bg-gray-700">
-										<button
-											class="flex w-full cursor-pointer items-center justify-between p-4 text-left"
-											onclick={() => {
-												destinations.push(destination);
-												query = "";
-											}}
-										>
-											<div>
-												<p>{destination.name}</p>
-												<p>{destination.shortName ?? " "}</p>
-											</div>
-											<p class="text-2xl">+</p>
-										</button>
-									</li>
+									{#if !destinations.find((d) => d.id === destination.id)}
+										<li class="dark:bg-gray-800 dark:hover:bg-gray-700">
+											<button
+												class="flex w-full cursor-pointer items-center justify-between p-4 text-left"
+												onclick={() => {
+													destinations.push(destination);
+													query = "";
+												}}
+											>
+												<div>
+													<p>{destination.name}</p>
+													<p>{destination.shortName ?? " "}</p>
+												</div>
+												<p class="text-2xl">+</p>
+											</button>
+										</li>
+									{/if}
 								{:else}
 									<li>No results found.</li>
 								{/each}
