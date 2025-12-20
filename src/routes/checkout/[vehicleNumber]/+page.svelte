@@ -45,6 +45,52 @@
 		draggedDestinationId = null;
 		draggedOverIndex = null;
 	}
+
+	function handleTouchStart(id: string) {
+		if (typeof document === "undefined") return;
+		draggedDestinationId = id;
+
+		// prevent page scrolling during touch drag
+		document.addEventListener("touchmove", handleTouchMove, { passive: false });
+		document.addEventListener("touchend", handleTouchEnd);
+		document.body && (document.body.style.touchAction = "none");
+	}
+
+	function handleTouchMove(event: TouchEvent) {
+		if (typeof document === "undefined") return;
+		event.preventDefault();
+
+		const touch = event.touches && event.touches[0];
+		if (!touch) return;
+
+		const el = document.elementFromPoint(touch.clientX, touch.clientY) as HTMLElement | null;
+		const li = el?.closest("li") as HTMLElement | null;
+		if (!li) return;
+
+		const overId = li.dataset.destinationId;
+		if (!overId) return;
+
+		const fromIndex = destinations.findIndex((d) => d.id === draggedDestinationId);
+		const toIndex = destinations.findIndex((d) => d.id === overId);
+		draggedOverIndex = toIndex;
+
+		if (fromIndex === -1 || toIndex === -1) return;
+
+		const updated = [...destinations];
+		const [movedItem] = updated.splice(fromIndex, 1);
+		if (!movedItem) return;
+		updated.splice(toIndex, 0, movedItem);
+		destinations = updated;
+	}
+
+	function handleTouchEnd() {
+		// remove listeners and restore touch-action
+		document.removeEventListener("touchmove", handleTouchMove);
+		document.removeEventListener("touchend", handleTouchEnd);
+		document.body && (document.body.style.touchAction = "");
+
+		handleDrop();
+	}
 </script>
 
 <WindowTitle {title} description="Check out a vehicle." />
@@ -105,12 +151,16 @@
 				<ol class="">
 					{#each destinations as destination, i (destination.id)}
 						<li
+							data-destination-id={destination.id}
 							class={draggedOverIndex === i ? "bg-blue-100 dark:bg-blue-900" : "dark:bg-gray-800"}
 							draggable={true}
 							ondragstart={() => handleDragStart(destination.id)}
 							ondragover={(e) => handleDragOver(e, destination.id)}
 							ondragleave={handleDragLeave}
 							ondrop={() => handleDrop()}
+							ontouchstart={(e) => handleTouchStart(destination.id)}
+							ontouchmove={handleTouchMove}
+							ontouchend={handleTouchEnd}
 						>
 							<div class="flex w-full items-center justify-between p-4 text-left">
 								<div class="flex items-center gap-4">
