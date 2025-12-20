@@ -127,6 +127,7 @@
 									{#if !destinations.find((d) => d.id === destination.id)}
 										<li class="dark:bg-gray-800 dark:hover:bg-gray-700">
 											<button
+												type="button"
 												class="flex w-full cursor-pointer items-center justify-between p-4 text-left"
 												onclick={() => {
 													destinations.push(destination);
@@ -175,7 +176,11 @@
 										<p>{destination.shortName}</p>
 									</div>
 								</div>
-								<button class="cursor-pointer text-xl" onclick={() => destinations.splice(i, 1)}>
+								<button
+									type="button"
+									class="cursor-pointer text-xl"
+									onclick={() => destinations.splice(i, 1)}
+								>
 									✕
 								</button>
 							</div>
