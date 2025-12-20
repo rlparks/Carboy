@@ -90,6 +90,7 @@
 									✕
 								</button>
 							</div>
+							<input name="destinationIds[]" type="hidden" value={destination.id} />
 						</li>
 					{:else}
 						<p class="italic">No destinations selected.</p>
