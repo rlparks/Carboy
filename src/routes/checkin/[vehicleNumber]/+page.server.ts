@@ -19,6 +19,10 @@ export const load = (async (event) => {
 		return error(403, "Organization does not match.");
 	}
 
+	if (vehicle.archived) {
+		return error(400, "Vehicle is archived.");
+	}
+
 	const [mostRecentTrip] = await getTrips({ vehicleNumber: vehicle.number, limit: 1 });
 	if (!mostRecentTrip || mostRecentTrip.endTime) {
 		return redirect(303, "/?error=checkin");

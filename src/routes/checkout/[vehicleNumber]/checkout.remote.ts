@@ -29,6 +29,10 @@ export const checkout = form(
 			return error(403, "Incorrect organization selected");
 		}
 
+		if (vehicle.archived) {
+			return error(400, "Vehicle is archived.");
+		}
+
 		const [mostRecentTrip] = await getTrips({ vehicleNumber: vehicle.number, limit: 1 });
 		if (mostRecentTrip && !mostRecentTrip.endTime) {
 			return invalid("Vehicle is already checked out.");

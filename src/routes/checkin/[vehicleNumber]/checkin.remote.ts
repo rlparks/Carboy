@@ -41,6 +41,10 @@ export const checkin = form(
 			return error(403, "Incorrect organization selected");
 		}
 
+		if (vehicle.archived) {
+			return error(400, "Vehicle is archived.");
+		}
+
 		if (trip.endTime) {
 			return redirect(303, "/?error=checkin");
 		}

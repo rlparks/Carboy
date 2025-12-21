@@ -24,5 +24,9 @@ export const load = (async (event) => {
 		return redirect(303, "/?error=checkout");
 	}
 
+	if (vehicle.archived) {
+		return error(400, "Vehicle is archived.");
+	}
+
 	return { vehicle };
 }) satisfies PageServerLoad;
