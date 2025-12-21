@@ -4,17 +4,19 @@
 	import PageTitle from "$lib/components/PageTitle.svelte";
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
 	import type { Destination } from "$lib/types/db";
-	import { checkout } from "./checkout.remote";
-	import { searchDestinations } from "./searchDestinations.remote";
+	import { searchDestinations } from "../../checkout/[vehicleNumber]/searchDestinations.remote";
+	import { checkin } from "./checkin.remote";
 
 	let { data } = $props();
 
-	const title = $derived(`Check Out ${data.vehicle.number}`);
+	const title = $derived(`Check In ${data.vehicle.number}`);
 
 	let query = $state("");
 	const searchPromise = $derived(query ? searchDestinations(query) : undefined);
 
-	let destinations: Destination[] = $state([]);
+	// this just starts with the value from data
+	// svelte-ignore state_referenced_locally
+	let destinations: Destination[] = $state(data.trip.destinations);
 
 	let draggedDestinationId: string | null = $state(null);
 	let draggedOverIndex: number | null = $state(null);
@@ -93,27 +95,54 @@
 	}
 </script>
 
-<WindowTitle {title} description="Check out a vehicle." />
+<WindowTitle {title} description="Check in a vehicle." />
 
-<div class="justify-around md:flex">
-	<section class="w-md space-y-2">
-		<PageTitle title="Check Out" />
-		<h2 class="text-3xl font-semibold">{data.vehicle.number}</h2>
-		<p class="text-xl">{data.vehicle.name}</p>
-		{#if data.vehicle.mileage !== null}
-			<p class="text-xl">
-				{data.vehicle.mileage}
-				{data.vehicle.mileage === 1 ? "mile" : "miles"}
-			</p>
-		{/if}
+<div class="justify-around space-y-4 md:flex">
+	<section class="w-md space-y-4">
+		<div class="space-y-2">
+			<PageTitle title="Check In" />
+			<h2 class="text-3xl font-semibold">{data.vehicle.number}</h2>
+			<p class="text-xl">{data.vehicle.name}</p>
+			{#if data.vehicle.mileage !== null}
+				<p class="text-xl">
+					{data.vehicle.mileage}
+					{data.vehicle.mileage === 1 ? "mile" : "miles"}
+				</p>
+			{/if}
+		</div>
+
+		<div class="space-y-2">
+			<h2 class="text-3xl font-semibold">Trip</h2>
+			<aside>
+				<h3 class="text-2xl">Start time</h3>
+				<p>{data.trip.startTime.toLocaleString()}</p>
+			</aside>
+			<aside>
+				<h3 class="text-2xl">Started by</h3>
+				<p>{data.trip.startedByName}</p>
+			</aside>
+		</div>
 	</section>
+
 	<section class="container w-md">
-		<form {...checkout} class="space-y-4">
-			<input {...checkout.fields.vehicleId.as("hidden", data.vehicle.id)} />
+		<form {...checkin} class="space-y-4">
+			<input {...checkin.fields.tripId.as("hidden", data.trip.id)} />
+
+			{#if data.vehicle.mileage !== null && data.trip.startMileage !== null}
+				<div class="space-y-2">
+					<h2 class="text-3xl font-semibold">Ending Mileage</h2>
+					<Input
+						type="number"
+						name="endMileage"
+						value={data.trip.startMileage}
+						issues={checkin.fields.endMileage.issues()}
+					/>
+				</div>
+			{/if}
 
 			<div class="space-y-2">
 				<h2 class="text-3xl font-semibold">Destinations</h2>
-				<Input label="Search" issues={checkout.fields.destinationIds.issues()} bind:value={query} />
+				<Input label="Search" issues={checkin.fields.destinationIds.issues()} bind:value={query} />
 
 				<!-- search results -->
 				<div>
@@ -195,7 +224,7 @@
 			<div class="space-y-2">
 				<h2 class="text-3xl font-semibold">Note</h2>
 
-				<Input {...checkout.fields.note.as("text")} helperText="Optional" />
+				<Input {...checkin.fields.note.as("text")} helperText="Optional" />
 			</div>
 
 			<Button type="submit">Submit</Button>

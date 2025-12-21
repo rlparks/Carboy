@@ -39,7 +39,7 @@
 		{placeholder}
 		{accept}
 		bind:value
-		class="block w-full rounded border border-gray-300 px-3 py-2 placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:placeholder-gray-500"
+		class="block w-full border border-gray-300 px-3 py-2 placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:placeholder-gray-500"
 	/>
 
 	{#if helperText}

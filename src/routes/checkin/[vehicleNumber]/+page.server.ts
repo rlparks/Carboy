@@ -1,4 +1,4 @@
-import { getTrips } from "$lib/server/db/queries/trip";
+import { getTrips, getTripWithDestinations } from "$lib/server/db/queries/trip";
 import { getVehicleByNumber } from "$lib/server/db/queries/vehicle";
 import { error, redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
@@ -14,15 +14,20 @@ export const load = (async (event) => {
 		return error(404, "Vehicle not found");
 	}
 
-	// TODO: switch or error
 	if (vehicle.organizationId !== event.locals.session?.selectedOrganizationId) {
 		return error(403, "Organization does not match.");
 	}
 
 	const [mostRecentTrip] = await getTrips({ vehicleNumber: vehicle.number, limit: 1 });
-	if (mostRecentTrip && !mostRecentTrip.endTime) {
-		return redirect(303, "/?error=checkout");
+	if (!mostRecentTrip || mostRecentTrip.endTime) {
+		return redirect(303, "/?error=checkin");
 	}
 
-	return { vehicle };
+	const fullTrip = await getTripWithDestinations(mostRecentTrip.id);
+
+	if (!fullTrip) {
+		return error(500, "Error fetching full trip.");
+	}
+
+	return { vehicle, trip: fullTrip };
 }) satisfies PageServerLoad;

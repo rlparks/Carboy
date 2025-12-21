@@ -24,7 +24,7 @@
 			{name}
 			type="checkbox"
 			bind:checked
-			class="mr-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800"
+			class="mr-1 h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800"
 			{oninput}
 		/>
 

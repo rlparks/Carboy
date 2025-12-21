@@ -1,7 +1,7 @@
 import { generateTextId } from "$lib/server";
 import { parsePgError } from "$lib/server/db/error";
 import { sql } from "$lib/server/db/postgres";
-import type { TripWithVehicle } from "$lib/types/bonus";
+import type { TripWithDestinations, TripWithVehicle } from "$lib/types/bonus";
 import type { Trip, TripDestination } from "$lib/types/db";
 import { error } from "@sveltejs/kit";
 
@@ -103,6 +103,60 @@ export async function getTrips(opts: TripFilterOptions = {}) {
             ;`;
 
 		return rows;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
+
+export async function getTripWithDestinations(tripId: string) {
+	try {
+		const [row] = await sql<TripWithDestinations[]>`
+            SELECT
+                t.id,
+                t.vehicle_id,
+                t.start_time,
+                t.end_time,
+                t.start_mileage,
+                t.end_mileage,
+                t.end_mileage - t.start_mileage AS distance,
+                t.started_by,
+                t.ended_by,
+                t.created_at,
+                t.updated_at,
+                v.number AS vehicle_number,
+                v.name AS vehicle_name,
+                v.department_id AS department_id,
+                d.name AS department_name,
+                s.username AS started_by_username,
+                s.name AS started_by_name,
+                e.username AS ended_by_username,
+                e.name AS ended_by_name,
+                (
+                    SELECT array_agg(
+                        json_build_object(
+                            'id', dest.id,
+                            'name', dest.name,
+                            'short_name', dest.short_name,
+                            'address', dest.address,
+                            'latitude', dest.latitude,
+                            'longitude', dest.longitude,
+                            'created_at', dest.created_at,
+                            'updated_at', dest.updated_at
+                        ) ORDER BY td.position
+                    )
+                    FROM trip_destination td
+                    JOIN destination dest ON td.destination_id = dest.id
+                    WHERE td.trip_id = t.id
+                ) AS destinations
+            FROM trip t
+            INNER JOIN vehicle v ON t.vehicle_id = v.id
+            INNER JOIN department d ON v.department_id = d.id
+            INNER JOIN account s ON t.started_by = s.id
+            LEFT JOIN account e ON t.ended_by = e.id
+            WHERE t.id = ${tripId}
+        ;`;
+
+		return row;
 	} catch (err) {
 		throw parsePgError(err);
 	}

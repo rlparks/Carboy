@@ -3,6 +3,8 @@ import { getOidcConfig } from "$lib/server/config/oidc";
 import { setValue } from "$lib/server/db/queries/configuration";
 import * as v from "valibot";
 
+// TODO: set distance thresholds for checkin warning/error
+
 export const getConfig = query(async () => {
 	getRequestEvent().locals.security.enforceRole("superadmin");
 
