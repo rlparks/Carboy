@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { resolve } from "$app/paths";
 	import Button from "$lib/components/Button.svelte";
+	import Link from "$lib/components/Link.svelte";
 	import Table from "$lib/components/table/Table.svelte";
 	import TableCell from "$lib/components/table/TableCell.svelte";
 	import TableRow from "$lib/components/table/TableRow.svelte";
@@ -20,8 +21,11 @@
 <Table {headers}>
 	{#each data.organizations as org (org.id)}
 		<TableRow>
-			<!-- TODO: org page -->
-			<TableCell>{org.name}</TableCell>
+			<TableCell>
+				<Link href={resolve("/super/organizations/[id]", { id: org.id })}>
+					{org.name}
+				</Link>
+			</TableCell>
 			<TableCell>{org.createdAt}</TableCell>
 		</TableRow>
 	{/each}

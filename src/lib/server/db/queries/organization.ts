@@ -31,6 +31,20 @@ export async function getOrganizationsByAccountId(accountId: string) {
 	}
 }
 
+export async function getOrganizationById(id: string) {
+	try {
+		const [row] = await sql<Organization[]>`
+            SELECT id, name, created_at, updated_at
+            FROM organization
+            WHERE id = ${id}
+            ;`;
+
+		return row;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
+
 export async function createOrganization(
 	organization: Omit<Organization, "id" | "createdAt" | "updatedAt">,
 ) {
@@ -41,6 +55,23 @@ export async function createOrganization(
 		await sql`
             INSERT INTO organization (id, name, created_at, updated_at)
             VALUES (${id}, ${organization.name}, ${now}, NULL)
+            ;`;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
+
+export async function updateOrganization(
+	id: string,
+	organization: Omit<Organization, "id" | "createdAt" | "updatedAt">,
+) {
+	const now = new Date();
+
+	try {
+		await sql`
+            UPDATE organization
+            SET name = ${organization.name}, updated_at = ${now}
+            WHERE id = ${id}
             ;`;
 	} catch (err) {
 		throw parsePgError(err);
