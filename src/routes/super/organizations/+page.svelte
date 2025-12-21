@@ -8,7 +8,7 @@
 
 	let { data } = $props();
 
-	const headers = ["Name", "Slug", "Created At"];
+	const headers = ["Name", "Created At"];
 </script>
 
 <WindowTitle title="Organizations" description="View and manage organizations." />
@@ -22,7 +22,6 @@
 		<TableRow>
 			<!-- TODO: org page -->
 			<TableCell>{org.name}</TableCell>
-			<TableCell>{org.slug}</TableCell>
 			<TableCell>{org.createdAt}</TableCell>
 		</TableRow>
 	{/each}

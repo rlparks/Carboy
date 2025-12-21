@@ -6,7 +6,7 @@ import type { Organization } from "$lib/types/db";
 export async function getOrganizations() {
 	try {
 		const rows = await sql<Organization[]>`
-            SELECT id, name, slug, created_at, updated_at
+            SELECT id, name, created_at, updated_at
             FROM organization
             ORDER BY name ASC
             ;`;
@@ -19,7 +19,7 @@ export async function getOrganizations() {
 export async function getOrganizationsByAccountId(accountId: string) {
 	try {
 		const rows = await sql<Organization[]>`
-            SELECT o.id, o.name, o.slug, o.created_at, o.updated_at
+            SELECT o.id, o.name, o.created_at, o.updated_at
             FROM organization o
             INNER JOIN account_organization ao ON ao.organization_id = o.id
             WHERE ao.account_id = ${accountId}
@@ -39,8 +39,8 @@ export async function createOrganization(
 
 	try {
 		await sql`
-            INSERT INTO organization (id, name, slug, created_at, updated_at)
-            VALUES (${id}, ${organization.name}, ${organization.slug}, ${now}, NULL)
+            INSERT INTO organization (id, name, created_at, updated_at)
+            VALUES (${id}, ${organization.name}, ${now}, NULL)
             ;`;
 	} catch (err) {
 		throw parsePgError(err);

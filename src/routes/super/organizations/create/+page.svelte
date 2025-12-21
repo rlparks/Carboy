@@ -17,12 +17,5 @@
 		issues={createOrganization.fields.name.issues()}
 	/>
 
-	<Input
-		{...createOrganization.fields.slug.as("text")}
-		label="Slug"
-		helperText="Used in URLs and must be unique"
-		issues={createOrganization.fields.slug.issues()}
-	/>
-
 	<Button type="submit">Submit</Button>
 </form>
