@@ -66,7 +66,9 @@
 			ondragover={(e) => handleDragOver(e, department.id)}
 			ondragleave={handleDragLeave}
 			ondrop={() => handleDrop()}
-			class={draggedOverIndex === index ? "bg-blue-100 dark:bg-blue-900" : ""}
+			class={draggedOverIndex === index
+				? "cursor-grab bg-blue-100 dark:bg-blue-900"
+				: "cursor-grab"}
 		>
 			<TableCell class="w-4">
 				<span class="select-none">⋮⋮</span>
