@@ -1,8 +1,8 @@
 import { form, getRequestEvent } from "$app/server";
 import { getDepartmentById } from "$lib/server/db/queries/department";
-import { getTripWithDestinations } from "$lib/server/db/queries/trip";
+import { checkinVehicle, getTrips, getTripWithDestinations } from "$lib/server/db/queries/trip";
 import { getVehicleById } from "$lib/server/db/queries/vehicle";
-import { error, invalid } from "@sveltejs/kit";
+import { error, invalid, redirect } from "@sveltejs/kit";
 import * as v from "valibot";
 
 export const checkin = form(
@@ -40,10 +40,37 @@ export const checkin = form(
 			return error(403, "Incorrect organization selected");
 		}
 
+		if (trip.endTime) {
+			return redirect(303, "/?error=checkin");
+		}
+
+		const [mostRecentTrip] = await getTrips({ vehicleNumber: vehicle.number, limit: 1 });
+		if (mostRecentTrip?.id !== data.tripId) {
+			console.error("Attempted check in of old trip!");
+			return redirect(303, "/?error=checkin");
+		}
+
 		if (trip.startMileage !== null && (data.endMileage === undefined || isNaN(data.endMileage))) {
 			return invalid(issue.endMileage("End mileage is required."));
 		}
 
-		console.log(data);
+		if (vehicle.mileage === null && data.endMileage !== undefined) {
+			return invalid(issue.endMileage("Vehicle does not support mileage."));
+		}
+
+		try {
+			await checkinVehicle(
+				event.locals.account!.id,
+				trip.id,
+				data.endMileage ?? null,
+				data.destinationIds,
+				data.note,
+			);
+		} catch (err) {
+			console.error(err);
+			return error(500, "Something went wrong while updating the trip");
+		}
+
+		return redirect(303, "/?success=checkin");
 	},
 );

@@ -213,3 +213,60 @@ export async function checkoutVehicle(
 		throw parsePgError(err);
 	}
 }
+
+export async function checkinVehicle(
+	endedById: string,
+	tripId: string,
+	endMileage: number | null,
+	destinationIds: string[],
+	note: string | undefined,
+) {
+	const now = new Date();
+	try {
+		await sql.begin(async (tx) => {
+			const [updatedTrip] = await tx<Trip[]>`
+                UPDATE trip SET
+                    end_time = ${now},
+                    end_mileage = ${endMileage},
+                    ended_by = ${endedById},
+                    updated_at = ${now}
+                WHERE id = ${tripId}
+                RETURNING id, vehicle_id, start_time, end_time, start_mileage, end_mileage, started_by, ended_by, created_at, updated_at
+            ;`;
+
+			if (!updatedTrip) {
+				return error(500, "Unable to update trip");
+			}
+
+			await tx`
+                UPDATE vehicle SET
+                    mileage = ${endMileage}
+                WHERE id = ${updatedTrip.vehicleId}
+            ;`;
+
+			await tx`
+                DELETE FROM trip_destination
+                WHERE trip_id = ${updatedTrip.id}
+            ;`;
+
+			for (let i = 0; i < destinationIds.length; i++) {
+				const destinationId = destinationIds[i]!;
+				const tripDestination = await tx<TripDestination[]>`
+                    INSERT INTO trip_destination (trip_id, destination_id, position, created_at, updated_at)
+                    VALUES (${updatedTrip.id}, ${destinationId}, ${i}, ${now}, NULL)
+                    RETURNING trip_id, destination_id, position, created_at, updated_at
+                ;`;
+
+				if (!tripDestination) {
+					return error(500, "Unable to create trip destination");
+				}
+			}
+
+			if (note) {
+				// TODO: create note :)
+			}
+		});
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
