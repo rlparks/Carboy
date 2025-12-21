@@ -97,7 +97,9 @@ export async function getTrips(opts: TripFilterOptions = {}) {
                 AND ${startedBy}
                 AND ${endedBy}
                 AND ${endedByDifferent}
-            ORDER BY t.start_time DESC
+            ORDER BY 
+                CASE WHEN t.end_time IS NULL THEN 0 ELSE 1 END,
+                t.start_time DESC
             LIMIT ${opts.limit || 100}
             OFFSET ${opts.offset || 0} 
             ;`;
