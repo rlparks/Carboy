@@ -12,7 +12,7 @@
 <WindowTitle title="Create Vehicle" description="Create a new vehicle." />
 <PageTitle title="Create Vehicle" />
 
-<form {...createVehicle} class="max-w-md space-y-4">
+<form {...createVehicle} class="max-w-md space-y-4" enctype="multipart/form-data">
 	<Input
 		{...createVehicle.fields.number.as("text")}
 		label="Number"
@@ -36,10 +36,20 @@
 	/>
 
 	<Input
-		{...createVehicle.fields.mileage.as("text")}
+		name="mileage"
+		type="text"
 		label="Mileage"
 		helperText="Leave blank if not applicable."
 		issues={createVehicle.fields.mileage.issues()}
+	/>
+
+	<Input
+		name="image"
+		type="file"
+		label="Image"
+		issues={createVehicle.fields.image.issues()}
+		accept="image/jpeg, image/png, image/webp"
+		helperText="Optional"
 	/>
 
 	<Button type="submit">Submit</Button>
