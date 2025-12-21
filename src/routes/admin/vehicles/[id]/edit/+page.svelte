@@ -36,6 +36,7 @@
 		helperText="e.g. 2016 Ford Explorer"
 	/>
 
+	<!-- TODO: allow superadmins to move to other organization's department -->
 	<Select
 		name="departmentId"
 		label="Department"

@@ -27,6 +27,7 @@
 				<li>
 					<NavLink href="/trips" text="Trips" mode="exact" />
 				</li>
+				<!-- TODO: dashboard -->
 			{/if}
 
 			{#if account?.role === "admin" || account?.role === "superadmin"}

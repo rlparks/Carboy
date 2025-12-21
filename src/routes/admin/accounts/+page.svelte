@@ -46,7 +46,7 @@
 		{:else}
 			<TableRow>
 				<TableCell colspan={headers.length} class="text-center italic">
-					No accounts found...?
+					No accounts found.
 				</TableCell>
 			</TableRow>
 		{/each}
