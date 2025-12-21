@@ -125,7 +125,30 @@
 	</section>
 
 	<section class="container w-md">
-		<form {...checkin} class="space-y-4">
+		<form
+			{...checkin.enhance((e) => {
+				if (data.distanceWarningStart) {
+					const tripDistance =
+						data.vehicle.mileage &&
+						e.data.endMileage !== undefined &&
+						parseInt(e.data.endMileage) &&
+						parseInt(e.data.endMileage) - data.vehicle.mileage;
+
+					if (typeof tripDistance === "number" && tripDistance >= data.distanceWarningStart) {
+						const userConfirmed = confirm(
+							`Trip distance is ${data.distanceWarningStart} miles or greater. Are you sure this is correct?`,
+						);
+
+						if (!userConfirmed) {
+							return;
+						}
+					}
+				}
+
+				e.submit();
+			})}
+			class="space-y-4"
+		>
 			<input {...checkin.fields.tripId.as("hidden", data.trip.id)} />
 
 			{#if data.vehicle.mileage !== null && data.trip.startMileage !== null}

@@ -2,8 +2,6 @@ import { form, getRequestEvent } from "$app/server";
 import { setValue } from "$lib/server/db/queries/configuration";
 import * as v from "valibot";
 
-// TODO: set distance thresholds for checkin warning/error
-
 export const setOidcConfig = form(
 	v.strictObject({
 		oidcDiscoveryUrl: v.pipe(v.string(), v.url("Invalid URL")),

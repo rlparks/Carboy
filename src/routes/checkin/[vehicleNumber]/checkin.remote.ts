@@ -1,4 +1,5 @@
 import { form, getRequestEvent } from "$app/server";
+import { getDistanceConfig } from "$lib/server/config/distance";
 import { getDepartmentById } from "$lib/server/db/queries/department";
 import { checkinVehicle, getTrips, getTripWithDestinations } from "$lib/server/db/queries/trip";
 import { getVehicleById } from "$lib/server/db/queries/vehicle";
@@ -58,14 +59,23 @@ export const checkin = form(
 			return invalid(issue.endMileage("Vehicle does not support mileage."));
 		}
 
-		if (
-			data.endMileage !== undefined &&
-			vehicle.mileage !== null &&
-			data.endMileage < vehicle.mileage
-		) {
-			return invalid(
-				issue.endMileage("Ending mileage cannot be less than vehicle's current mileage."),
-			);
+		if (data.endMileage !== undefined && vehicle.mileage !== null) {
+			if (data.endMileage < vehicle.mileage) {
+				return invalid(
+					issue.endMileage("Ending mileage cannot be less than vehicle's current mileage."),
+				);
+			}
+
+			const distanceConfig = await getDistanceConfig();
+			const tripDistance = data.endMileage - vehicle.mileage;
+
+			if (distanceConfig.errorStart && tripDistance >= distanceConfig.errorStart) {
+				return invalid(
+					issue.endMileage(
+						`Trip distance cannot be greater than ${distanceConfig.errorStart} miles.`,
+					),
+				);
+			}
 		}
 
 		try {

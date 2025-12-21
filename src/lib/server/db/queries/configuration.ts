@@ -6,7 +6,9 @@ type ConfigKey =
 	| "oidcClientId"
 	| "oidcClientSecret"
 	| "oidcUsernameClaim"
-	| "signOutOfIdp";
+	| "signOutOfIdp"
+	| "distanceWarningStart"
+	| "distanceErrorStart";
 
 export async function getValue(key: ConfigKey) {
 	try {

@@ -1,3 +1,4 @@
+import { getDistanceConfig } from "$lib/server/config/distance";
 import { getTrips, getTripWithDestinations } from "$lib/server/db/queries/trip";
 import { getVehicleByNumber } from "$lib/server/db/queries/vehicle";
 import { error, redirect } from "@sveltejs/kit";
@@ -29,5 +30,7 @@ export const load = (async (event) => {
 		return error(500, "Error fetching full trip.");
 	}
 
-	return { vehicle, trip: fullTrip };
+	const distanceConfig = await getDistanceConfig();
+
+	return { vehicle, trip: fullTrip, distanceWarningStart: distanceConfig.warningStart };
 }) satisfies PageServerLoad;
