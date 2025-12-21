@@ -1,5 +1,6 @@
+import { getTrips } from "$lib/server/db/queries/trip";
 import { getVehicleByNumber } from "$lib/server/db/queries/vehicle";
-import { error } from "@sveltejs/kit";
+import { error, redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
 export const load = (async (event) => {
@@ -15,6 +16,11 @@ export const load = (async (event) => {
 
 	if (vehicle.organizationId !== event.locals.session?.selectedOrganizationId) {
 		return error(403, "Organization does not match.");
+	}
+
+	const [mostRecentTrip] = await getTrips({ vehicleNumber: vehicle.number, limit: 1 });
+	if (mostRecentTrip && !mostRecentTrip.endTime) {
+		return redirect(303, "/?error=checkout");
 	}
 
 	return { vehicle };
