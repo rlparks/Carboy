@@ -29,7 +29,10 @@ function getFilterParams(params: URLSearchParams, orgId: string): TripFilterOpti
 		durationComparator: getComparator(params.get("durationComparator")),
 		startedBy: params.get("startedBy") ?? undefined,
 		endedBy: params.get("endedBy") ?? undefined,
-		endedByDifferent: params.get("endedByDifferentUser") === "true",
+		endedByDifferent:
+			params.get("endedByDifferentUser") !== null
+				? params.get("endedByDifferentUser") === "true"
+				: undefined,
 		limit: params.get("limit") !== null ? parseInt(params.get("limit")!) : undefined,
 		offset: params.get("page") !== null ? (parseInt(params.get("page")!) - 1) * perPage : undefined,
 	};

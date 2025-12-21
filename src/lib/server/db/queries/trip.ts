@@ -55,7 +55,7 @@ export async function getTrips(opts: TripFilterOptions = {}) {
 	const endedBy = opts.endedBy !== undefined ? sql`e.username = ${opts.endedBy}` : sql`TRUE`;
 
 	const endedByDifferent =
-		opts.endedByDifferent !== undefined && !opts.endedByDifferent
+		opts.endedByDifferent !== undefined && opts.endedByDifferent
 			? sql`t.ended_by IS DISTINCT FROM t.started_by`
 			: sql`TRUE`;
 
