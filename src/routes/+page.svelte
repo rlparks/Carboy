@@ -31,19 +31,21 @@
 
 {#if data.departments && data.groupedVehicles}
 	{#each data.groupedVehicles as topLevelSection (topLevelSection.name)}
-		<h1 class="text-4xl font-bold">{topLevelSection.name}</h1>
+		{#if Object.values(topLevelSection.vehicles).some((vehicles) => vehicles?.length && vehicles.length > 0)}
+			<h1 class="text-4xl font-bold">{topLevelSection.name}</h1>
 
-		{#each data.departments as department (topLevelSection.name + department.id)}
-			{#if topLevelSection.vehicles[department.id]?.length}
-				<h2 class="text-3xl font-semibold">{department.name}</h2>
+			{#each data.departments as department (topLevelSection.name + department.id)}
+				{#if topLevelSection.vehicles[department.id]?.length}
+					<h2 class="text-3xl font-semibold">{department.name}</h2>
 
-				<section class="grid grid-cols-2 gap-4 md:grid-cols-5">
-					{#each topLevelSection.vehicles[department.id] as vehicle (vehicle.id)}
-						<VehicleCard {vehicle} />
-					{/each}
-				</section>
-			{/if}
-		{/each}
+					<section class="grid grid-cols-2 gap-4 md:grid-cols-5">
+						{#each topLevelSection.vehicles[department.id] as vehicle (vehicle.id)}
+							<VehicleCard {vehicle} />
+						{/each}
+					</section>
+				{/if}
+			{/each}
+		{/if}
 	{/each}
 {:else}
 	<p>Welcome to Carboy 2.</p>

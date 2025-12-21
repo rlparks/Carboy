@@ -33,5 +33,6 @@ export const load = (async (event) => {
 
 		return { departments, groupedVehicles };
 	}
+
 	return {};
 }) satisfies PageServerLoad;
