@@ -101,11 +101,14 @@
 	<section class="w-md space-y-4">
 		<div class="space-y-2">
 			<PageTitle title="Check In" />
+
+			<img alt="Image of {data.vehicle.number}" src="/api/images/vehicles/{data.vehicle.number}" />
+
 			<h2 class="text-3xl font-semibold">{data.vehicle.number}</h2>
 			<p class="text-xl">{data.vehicle.name}</p>
 			{#if data.vehicle.mileage !== null}
 				<p class="text-xl">
-					{data.vehicle.mileage}
+					{data.vehicle.mileage.toLocaleString()}
 					{data.vehicle.mileage === 1 ? "mile" : "miles"}
 				</p>
 			{/if}
