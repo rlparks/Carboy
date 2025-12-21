@@ -1,19 +1,10 @@
-import { form, getRequestEvent, query } from "$app/server";
-import { getOidcConfig } from "$lib/server/config/oidc";
+import { form, getRequestEvent } from "$app/server";
 import { setValue } from "$lib/server/db/queries/configuration";
 import * as v from "valibot";
 
 // TODO: set distance thresholds for checkin warning/error
 
-export const getConfig = query(async () => {
-	getRequestEvent().locals.security.enforceRole("superadmin");
-
-	const config = await getOidcConfig();
-
-	return config;
-});
-
-export const setConfig = form(
+export const setOidcConfig = form(
 	v.strictObject({
 		oidcDiscoveryUrl: v.pipe(v.string(), v.url("Invalid URL")),
 		oidcClientId: v.string(),

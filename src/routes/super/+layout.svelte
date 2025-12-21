@@ -14,7 +14,7 @@
 			text="All Accounts"
 			mode="startsWith"
 		/>
-		<NavLink href="/super/config" text="OIDC Config" mode="startsWith" />
+		<NavLink href="/super/oidc" text="SSO Setup" mode="startsWith" />
 	</nav>
 </div>
 

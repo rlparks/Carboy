@@ -3,14 +3,14 @@
 	import Checkbox from "$lib/components/Checkbox.svelte";
 	import Input from "$lib/components/Input.svelte";
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
-	import { setConfig } from "./config.remote";
+	import { setOidcConfig } from "./oidcConfig.remote";
 
 	let { data } = $props();
 
 	// svelte-ignore state_referenced_locally
 	const initialConfig = data.config;
 
-	setConfig.fields.set({
+	setOidcConfig.fields.set({
 		oidcClientId: initialConfig.clientId ?? "",
 		oidcClientSecret: initialConfig.clientSecret ?? "",
 		oidcDiscoveryUrl: initialConfig.discoveryUrl ?? "",
@@ -21,33 +21,33 @@
 
 <WindowTitle title="Configuration" description="View and manage system configuration." />
 
-<form {...setConfig} class="max-w-md space-y-4">
+<form {...setOidcConfig} class="max-w-md space-y-4">
 	<Input
-		{...setConfig.fields.oidcDiscoveryUrl.as("text")}
+		{...setOidcConfig.fields.oidcDiscoveryUrl.as("text")}
 		label="OIDC Discovery URL"
-		issues={setConfig.fields.oidcDiscoveryUrl.issues()}
+		issues={setOidcConfig.fields.oidcDiscoveryUrl.issues()}
 	/>
 
 	<Input
-		{...setConfig.fields.oidcClientId.as("text")}
+		{...setOidcConfig.fields.oidcClientId.as("text")}
 		label="OIDC Client ID"
-		issues={setConfig.fields.oidcClientId.issues()}
+		issues={setOidcConfig.fields.oidcClientId.issues()}
 	/>
 
 	<Input
-		{...setConfig.fields.oidcClientSecret.as("text")}
+		{...setOidcConfig.fields.oidcClientSecret.as("text")}
 		label="OIDC Client Secret"
-		issues={setConfig.fields.oidcClientId.issues()}
+		issues={setOidcConfig.fields.oidcClientId.issues()}
 	/>
 
 	<Input
-		{...setConfig.fields.oidcUsernameClaim.as("text")}
+		{...setOidcConfig.fields.oidcUsernameClaim.as("text")}
 		label="OIDC Username Claim"
-		issues={setConfig.fields.oidcUsernameClaim.issues()}
+		issues={setOidcConfig.fields.oidcUsernameClaim.issues()}
 	/>
 
 	<Checkbox
-		{...setConfig.fields.signOutOfIdp.as("checkbox")}
+		{...setOidcConfig.fields.signOutOfIdp.as("checkbox")}
 		label="Sign out of identity provider on logout"
 	/>
 
