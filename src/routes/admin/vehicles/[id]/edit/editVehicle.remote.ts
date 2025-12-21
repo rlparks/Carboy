@@ -1,6 +1,10 @@
 import { resolve } from "$app/paths";
 import { form, getRequestEvent } from "$app/server";
-import { getVehicleByNumber, updateVehicle as updateDb } from "$lib/server/db/queries/vehicle";
+import {
+	getVehicleById,
+	getVehicleByNumber,
+	updateVehicle as updateDb,
+} from "$lib/server/db/queries/vehicle";
 import { VehicleMileageSchema } from "$lib/types/validation";
 import { error, invalid, redirect } from "@sveltejs/kit";
 import { mkdir, unlink, writeFile } from "fs/promises";
@@ -31,17 +35,25 @@ export const editVehicle = form(
 		const event = getRequestEvent();
 		event.locals.security.enforceRole("admin");
 
+		const currentVehicle = await getVehicleById(id);
+		if (!currentVehicle) {
+			return error(404, "Vehicle not found");
+		}
+
 		const existingVehicleWithNumber = await getVehicleByNumber(number);
 		if (existingVehicleWithNumber && existingVehicleWithNumber.id !== id) {
 			return invalid(issue.number("A vehicle with this number already exists."));
 		}
 
 		try {
+			const hasImage = updateImage ? Boolean(image) : currentVehicle.hasImage;
+
 			const updatedVehicle = await updateDb(id, {
 				number,
 				name,
 				departmentId,
 				mileage: mileage ?? null,
+				hasImage,
 			});
 			if (!updatedVehicle) {
 				throw new Error("Failed to update vehicle.");

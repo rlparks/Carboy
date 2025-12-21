@@ -56,6 +56,7 @@ export type Vehicle = {
 	name: string;
 	departmentId: string;
 	mileage: number | null;
+	hasImage: boolean;
 	createdAt: Date;
 	updatedAt: Date | null;
 };

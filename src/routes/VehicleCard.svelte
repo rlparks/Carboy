@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { resolve } from "$app/paths";
+	import noImageImage from "$lib/assets/noimage.webp";
 	import Button from "$lib/components/Button.svelte";
 	import type { VehicleWithDepartment } from "$lib/types/bonus";
 
@@ -11,7 +12,10 @@
 </script>
 
 <div class={["border", vehicle.isCheckedOut ? "border-blue-500" : "border-green-500"]}>
-	<img alt="Image of {vehicle.number}" src="/api/images/vehicles/{vehicle.number}" />
+	<img
+		alt={vehicle.hasImage ? `Vehicle ${vehicle.number} parked` : "Solid black placeholder"}
+		src={vehicle.hasImage ? `/api/images/vehicles/${vehicle.number}` : noImageImage}
+	/>
 	<section class="space-y-2 p-4">
 		<p class="truncate text-xl text-ellipsis">{vehicle.number}</p>
 		<p class="truncate text-ellipsis">{vehicle.name}</p>

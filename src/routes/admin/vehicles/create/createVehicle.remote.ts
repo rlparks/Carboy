@@ -44,6 +44,7 @@ export const createVehicle = form(
 				name,
 				departmentId,
 				mileage: mileage ?? null,
+				hasImage: Boolean(image),
 			});
 			if (!newVehicle) {
 				throw new Error("Failed to create vehicle.");

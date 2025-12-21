@@ -13,6 +13,7 @@ export async function getVehiclesByOrganizationId(organizationId: string) {
                 v.name,
                 v.department_id,
                 v.mileage,
+                v.has_image,
                 v.created_at,
                 v.updated_at,
                 d.name AS department_name,
@@ -51,6 +52,7 @@ export async function getVehicleById(id: string) {
                 name,
                 department_id,
                 mileage,
+                has_image,
                 created_at,
                 updated_at
             FROM
@@ -74,6 +76,7 @@ export async function getVehicleByNumber(number: string) {
                 v.name,
                 v.department_id,
                 v.mileage,
+                v.has_image,
                 v.created_at,
                 v.updated_at,
                 d.name AS department_name,
@@ -105,14 +108,15 @@ export async function createVehicle(vehicle: Omit<Vehicle, "id" | "createdAt" | 
 	const id = generateTextId();
 	try {
 		const [row] = await sql<Vehicle[]>`
-            INSERT INTO vehicle (id, number, name, department_id, mileage, created_at, updated_at)
-            VALUES (${id}, ${vehicle.number}, ${vehicle.name}, ${vehicle.departmentId}, ${vehicle.mileage}, NOW(), NULL)
+            INSERT INTO vehicle (id, number, name, department_id, mileage, has_image, created_at, updated_at)
+            VALUES (${id}, ${vehicle.number}, ${vehicle.name}, ${vehicle.departmentId}, ${vehicle.mileage}, ${vehicle.hasImage}, NOW(), NULL)
             RETURNING
                 id,
                 number,
                 name,
                 department_id,
                 mileage,
+                has_image,
                 created_at,
                 updated_at
         `;
@@ -135,6 +139,7 @@ export async function updateVehicle(
                 name = ${vehicle.name},
                 department_id = ${vehicle.departmentId},
                 mileage = ${vehicle.mileage},
+                has_image = ${vehicle.hasImage},
                 updated_at = NOW()
             WHERE
                 id = ${id}
@@ -144,6 +149,7 @@ export async function updateVehicle(
                 name,
                 department_id,
                 mileage,
+                has_image,
                 created_at,
                 updated_at
         `;

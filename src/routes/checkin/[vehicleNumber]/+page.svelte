@@ -102,7 +102,12 @@
 		<div class="space-y-2">
 			<PageTitle title="Check In" />
 
-			<img alt="Image of {data.vehicle.number}" src="/api/images/vehicles/{data.vehicle.number}" />
+			{#if data.vehicle.hasImage}
+				<img
+					alt="Vehicle {data.vehicle.number} parked"
+					src="/api/images/vehicles/{data.vehicle.number}"
+				/>
+			{/if}
 
 			<h2 class="text-3xl font-semibold">{data.vehicle.number}</h2>
 			<p class="text-xl">{data.vehicle.name}</p>
