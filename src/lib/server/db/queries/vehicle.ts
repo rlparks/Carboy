@@ -25,7 +25,13 @@ export async function getVehiclesByOrganizationId(organizationId: string) {
                     ORDER BY t.created_at DESC
                     LIMIT 1
                 ), false) AS is_checked_out,
-                o.id AS organization_id
+                o.id AS organization_id,
+                (
+                    SELECT count(*)
+                    FROM trip_destination td
+                    INNER JOIN trip t ON t.id = td.trip_id
+                    WHERE t.vehicle_id = v.id
+                ) AS trip_count
             FROM
                 vehicle v
             INNER JOIN

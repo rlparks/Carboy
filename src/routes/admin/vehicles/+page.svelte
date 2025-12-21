@@ -9,8 +9,7 @@
 
 	let { data } = $props();
 
-	const headers = ["Number", "Name", "Mileage", "Department"];
-	// TODO: department name, trip count
+	const headers = ["Number", "Name", "Mileage", "Department", "Trip Count"];
 </script>
 
 <WindowTitle title="Vehicles" description="View and manage vehicles." />
@@ -36,9 +35,14 @@
 				<TableCell>{vehicle.mileage ?? "N/A"}</TableCell>
 				<TableCell>
 					<Link href={resolve("/admin/departments/[id]", { id: vehicle.departmentId })}>
-						{vehicle.departmentName}
+						{#if vehicle.departmentName}
+							{vehicle.departmentName}
+						{:else}
+							<span class="italic">&lt;blank&gt;</span>
+						{/if}
 					</Link>
 				</TableCell>
+				<TableCell>{vehicle.tripCount}</TableCell>
 			</TableRow>
 		{:else}
 			<TableRow>

@@ -10,6 +10,7 @@ export type VehicleWithDepartment = Vehicle & {
 	departmentId: string;
 	organizationId: string;
 	isCheckedOut: boolean;
+	tripCount: number;
 };
 
 export type TripWithVehicle = Trip & {
