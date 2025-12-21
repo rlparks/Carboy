@@ -11,7 +11,7 @@
 </script>
 
 <div class={["border", vehicle.isCheckedOut ? "border-blue-500" : "border-green-500"]}>
-	<img alt="Image of {vehicle.number}" src="" />
+	<img alt="Image of {vehicle.number}" src="/api/images/vehicles/{vehicle.number}" />
 	<section class="space-y-2 p-4">
 		<p class="truncate text-xl text-ellipsis">{vehicle.number}</p>
 		<p class="truncate text-ellipsis">{vehicle.name}</p>

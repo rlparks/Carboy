@@ -3,6 +3,9 @@ import { form, getRequestEvent } from "$app/server";
 import { getVehicleByNumber, updateVehicle as updateDb } from "$lib/server/db/queries/vehicle";
 import { VehicleMileageSchema } from "$lib/types/validation";
 import { error, invalid, redirect } from "@sveltejs/kit";
+import { mkdir, unlink, writeFile } from "fs/promises";
+import { join } from "path";
+import sharp from "sharp";
 import * as v from "valibot";
 
 export const editVehicle = form(
@@ -24,7 +27,7 @@ export const editVehicle = form(
 			),
 		),
 	}),
-	async ({ id, number, name, departmentId, mileage }, issue) => {
+	async ({ id, number, name, departmentId, mileage, updateImage, image }, issue) => {
 		const event = getRequestEvent();
 		event.locals.security.enforceRole("admin");
 
@@ -42,6 +45,23 @@ export const editVehicle = form(
 			});
 			if (!updatedVehicle) {
 				throw new Error("Failed to update vehicle.");
+			}
+
+			if (updateImage) {
+				const imageDir = join(process.cwd(), "images", "vehicles");
+				await mkdir(imageDir, { recursive: true });
+				const imagePath = join(imageDir, `${id}.webp`);
+
+				if (image) {
+					const buffer = await image.arrayBuffer();
+					const processedImage = await sharp(Buffer.from(buffer))
+						.resize({ height: 500, width: 667, fit: "inside" })
+						.webp()
+						.toBuffer();
+					await writeFile(imagePath, processedImage);
+				} else {
+					await unlink(imagePath);
+				}
 			}
 		} catch {
 			return error(500, "An error occurred while updating the vehicle.");
