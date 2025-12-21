@@ -18,7 +18,7 @@ export async function getDestinations() {
             FROM
                 destination
             ORDER BY
-                created_at DESC
+                name
         `;
 
 		return rows;
