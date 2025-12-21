@@ -58,6 +58,16 @@ export const checkin = form(
 			return invalid(issue.endMileage("Vehicle does not support mileage."));
 		}
 
+		if (
+			data.endMileage !== undefined &&
+			vehicle.mileage !== null &&
+			data.endMileage < vehicle.mileage
+		) {
+			return invalid(
+				issue.endMileage("Ending mileage cannot be less than vehicle's current mileage."),
+			);
+		}
+
 		try {
 			await checkinVehicle(
 				event.locals.account!.id,
