@@ -37,9 +37,11 @@
 			{#if topLevelSection.vehicles[department.id]?.length}
 				<h2 class="text-3xl font-semibold">{department.name}</h2>
 
-				{#each topLevelSection.vehicles[department.id] as vehicle (vehicle.id)}
-					<VehicleCard {vehicle} />
-				{/each}
+				<section class="grid grid-cols-2 gap-4 md:grid-cols-5">
+					{#each topLevelSection.vehicles[department.id] as vehicle (vehicle.id)}
+						<VehicleCard {vehicle} />
+					{/each}
+				</section>
 			{/if}
 		{/each}
 	{/each}
