@@ -10,7 +10,7 @@
 	let { vehicle }: Props = $props();
 </script>
 
-<div class="border">
+<div class={["border", vehicle.isCheckedOut ? "border-blue-500" : "border-green-500"]}>
 	<section class="space-y-2 p-4">
 		<p class="text-xl">{vehicle.number}</p>
 		<p>{vehicle.name}</p>
