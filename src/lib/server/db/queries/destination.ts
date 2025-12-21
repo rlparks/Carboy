@@ -1,11 +1,12 @@
 import { generateTextId } from "$lib/server";
 import { parsePgError } from "$lib/server/db/error";
 import { sql } from "$lib/server/db/postgres";
+import type { DestinationWithCount } from "$lib/types/bonus";
 import type { Destination } from "$lib/types/db";
 
 export async function getDestinations() {
 	try {
-		const rows = await sql<Destination[]>`
+		const rows = await sql<DestinationWithCount[]>`
             SELECT
                 id,
                 name,
@@ -14,11 +15,16 @@ export async function getDestinations() {
                 latitude,
                 longitude,
                 created_at,
-                updated_at
+                updated_at,
+                (
+                    SELECT count(*)
+                    FROM trip_destination
+                    WHERE trip_destination.destination_id = destination.id
+                ) as trip_count
             FROM
                 destination
             ORDER BY
-                name
+                trip_count DESC, name
         `;
 
 		return rows;

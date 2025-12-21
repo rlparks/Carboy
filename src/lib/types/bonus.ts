@@ -29,3 +29,7 @@ export type TripWithDestinations = TripWithVehicle & {
 	destinations: Destination[];
 	// TODO: note
 };
+
+export type DestinationWithCount = Destination & {
+	tripCount: number;
+};

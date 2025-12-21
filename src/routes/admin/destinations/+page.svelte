@@ -9,8 +9,7 @@
 
 	let { data } = $props();
 
-	const headers = ["Name", "Short Name", "Address"];
-	// TODO: trip count
+	const headers = ["Name", "Short Name", "Address", "Trip Count"];
 </script>
 
 <WindowTitle title="Destinations" description="View and manage destinations." />
@@ -35,6 +34,7 @@
 				</TableCell>
 				<TableCell>{destination.shortName}</TableCell>
 				<TableCell>{destination.address}</TableCell>
+				<TableCell>{destination.tripCount}</TableCell>
 			</TableRow>
 		{:else}
 			<TableRow>
