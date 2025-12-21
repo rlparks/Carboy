@@ -9,7 +9,7 @@
 
 	let { data } = $props();
 
-	const headers = ["Number", "Name", "Mileage", "Department", "Trip Count"];
+	const headers = ["Number", "Name", "Mileage", "Department", "Archived", "Trip Count"];
 </script>
 
 <WindowTitle title="Vehicles" description="View and manage vehicles." />
@@ -42,6 +42,7 @@
 						{/if}
 					</Link>
 				</TableCell>
+				<TableCell>{vehicle.archived ? "Yes" : "No"}</TableCell>
 				<TableCell>{vehicle.tripCount}</TableCell>
 			</TableRow>
 		{:else}

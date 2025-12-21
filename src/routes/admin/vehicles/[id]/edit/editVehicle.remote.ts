@@ -19,6 +19,7 @@ export const editVehicle = form(
 		name: v.pipe(v.string(), v.minLength(1, "Name must be at least 1 character.")),
 		departmentId: v.pipe(v.string(), v.minLength(1, "Department is required.")),
 		mileage: VehicleMileageSchema,
+		archived: v.optional(v.boolean(), false),
 		updateImage: v.optional(v.boolean(), false),
 		image: v.optional(
 			v.pipe(
@@ -31,7 +32,7 @@ export const editVehicle = form(
 			),
 		),
 	}),
-	async ({ id, number, name, departmentId, mileage, updateImage, image }, issue) => {
+	async ({ id, number, name, departmentId, mileage, archived, updateImage, image }, issue) => {
 		const event = getRequestEvent();
 		event.locals.security.enforceRole("admin");
 
@@ -54,6 +55,7 @@ export const editVehicle = form(
 				departmentId,
 				mileage: mileage ?? null,
 				hasImage,
+				archived,
 			});
 			if (!updatedVehicle) {
 				throw new Error("Failed to update vehicle.");

@@ -10,5 +10,5 @@ export const load = (async (event) => {
 		return error(400, "No organization selected.");
 	}
 
-	return { vehicles: getVehiclesByOrganizationId(orgId) };
+	return { vehicles: getVehiclesByOrganizationId(orgId, true) };
 }) satisfies PageServerLoad;

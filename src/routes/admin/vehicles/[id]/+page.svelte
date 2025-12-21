@@ -29,6 +29,9 @@
 	<p class="font-semibold">Mileage:</p>
 	<p>{data.vehicle.mileage?.toLocaleString() ?? "N/A"}</p>
 
+	<p class="font-semibold">Archived:</p>
+	<p>{data.vehicle.archived ? "Yes" : "No"}</p>
+
 	<p class="font-semibold">Created At:</p>
 	<p>{data.vehicle.createdAt.toLocaleString()}</p>
 

@@ -4,7 +4,10 @@ import { sql } from "$lib/server/db/postgres";
 import type { VehicleWithDepartment } from "$lib/types/bonus";
 import type { Vehicle } from "$lib/types/db";
 
-export async function getVehiclesByOrganizationId(organizationId: string) {
+export async function getVehiclesByOrganizationId(
+	organizationId: string,
+	includeArchived: boolean = false,
+) {
 	try {
 		const rows = await sql<VehicleWithDepartment[]>`
             SELECT
@@ -14,6 +17,7 @@ export async function getVehiclesByOrganizationId(organizationId: string) {
                 v.department_id,
                 v.mileage,
                 v.has_image,
+                v.archived,
                 v.created_at,
                 v.updated_at,
                 d.name AS department_name,
@@ -39,6 +43,7 @@ export async function getVehiclesByOrganizationId(organizationId: string) {
             INNER JOIN organization o ON d.organization_id = o.id
             WHERE
                 d.organization_id = ${organizationId}
+                AND (v.archived = false OR ${includeArchived})
             ORDER BY
                 d.position, v.number
         `;
@@ -59,6 +64,7 @@ export async function getVehicleById(id: string) {
                 department_id,
                 mileage,
                 has_image,
+                archived,
                 created_at,
                 updated_at
             FROM
@@ -83,6 +89,7 @@ export async function getVehicleByNumber(number: string) {
                 v.department_id,
                 v.mileage,
                 v.has_image,
+                v.archived,
                 v.created_at,
                 v.updated_at,
                 d.name AS department_name,
@@ -114,8 +121,8 @@ export async function createVehicle(vehicle: Omit<Vehicle, "id" | "createdAt" | 
 	const id = generateTextId();
 	try {
 		const [row] = await sql<Vehicle[]>`
-            INSERT INTO vehicle (id, number, name, department_id, mileage, has_image, created_at, updated_at)
-            VALUES (${id}, ${vehicle.number}, ${vehicle.name}, ${vehicle.departmentId}, ${vehicle.mileage}, ${vehicle.hasImage}, NOW(), NULL)
+            INSERT INTO vehicle (id, number, name, department_id, mileage, has_image, archived, created_at, updated_at)
+            VALUES (${id}, ${vehicle.number}, ${vehicle.name}, ${vehicle.departmentId}, ${vehicle.mileage}, ${vehicle.hasImage}, ${vehicle.archived}, NOW(), NULL)
             RETURNING
                 id,
                 number,
@@ -123,6 +130,7 @@ export async function createVehicle(vehicle: Omit<Vehicle, "id" | "createdAt" | 
                 department_id,
                 mileage,
                 has_image,
+                archived,
                 created_at,
                 updated_at
         `;
@@ -146,6 +154,7 @@ export async function updateVehicle(
                 department_id = ${vehicle.departmentId},
                 mileage = ${vehicle.mileage},
                 has_image = ${vehicle.hasImage},
+                archived = ${vehicle.archived},
                 updated_at = NOW()
             WHERE
                 id = ${id}
@@ -156,6 +165,7 @@ export async function updateVehicle(
                 department_id,
                 mileage,
                 has_image,
+                archived,
                 created_at,
                 updated_at
         `;
