@@ -3,24 +3,36 @@
 	import Button from "$lib/components/Button.svelte";
 	import PageTitle from "$lib/components/PageTitle.svelte";
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
+	import { impersonate } from "./impersonate.remote";
 
 	let { data } = $props();
 
 	const title = $derived(`Account ${data.editAccount.name} (${data.editAccount.username})`);
 	// TODO: impersonation
+
+	const isImpersonating = $derived(data.impersonatedBy !== null);
+	const canImpersonate = $derived(data.account?.role === "superadmin");
 </script>
 
 <WindowTitle {title} description="View account information." />
 
 <header class="flex justify-between">
 	<PageTitle {title} />
-	{#if data.account?.role === "superadmin" || data.editAccount.role !== "superadmin"}
-		<Button
-			href={resolve("/admin/accounts/[username]/edit", { username: data.editAccount.username })}
-		>
-			Edit
-		</Button>
-	{/if}
+	<div class="flex gap-2">
+		{#if canImpersonate && !isImpersonating}
+			<form {...impersonate}>
+				<input {...impersonate.fields.accountId.as("hidden", data.editAccount.id)} />
+				<Button type="submit">Impersonate</Button>
+			</form>
+		{/if}
+		{#if data.account?.role === "superadmin" || data.editAccount.role !== "superadmin"}
+			<Button
+				href={resolve("/admin/accounts/[username]/edit", { username: data.editAccount.username })}
+			>
+				Edit
+			</Button>
+		{/if}
+	</div>
 </header>
 
 <div class="grid max-w-md grid-cols-2 gap-4">

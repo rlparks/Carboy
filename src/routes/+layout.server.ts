@@ -14,5 +14,6 @@ export const load: LayoutServerLoad = async (event) => {
 		account: event.locals.account,
 		accountOrganizations,
 		selectedOrganizationId,
+		impersonatedBy: event.locals.session?.impersonatedBy ?? null,
 	};
 };

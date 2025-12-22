@@ -8,14 +8,16 @@
 	import type { FriendlyAccount } from "$lib/types/bonus";
 	import type { Organization } from "$lib/types/db";
 	import { slide } from "svelte/transition";
+	import { stopImpersonating } from "../../../routes/admin/accounts/[username]/impersonate.remote";
 
 	type Props = {
 		account: FriendlyAccount | null;
 		organizations: Organization[];
 		selectedOrganizationId: string | null;
+		isImpersonating: boolean;
 	};
 
-	let { account, organizations, selectedOrganizationId }: Props = $props();
+	let { account, organizations, selectedOrganizationId, isImpersonating }: Props = $props();
 
 	let mobileNavOpen = $state(false);
 
@@ -103,6 +105,11 @@
 	{#if !account}
 		<Button href="/login/oidc">Login</Button>
 	{:else}
+		{#if isImpersonating}
+			<form {...stopImpersonating}>
+				<Button type="submit">Stop Impersonating</Button>
+			</form>
+		{/if}
 		<OrganizationSwitcher {organizations} {selectedOrganizationId} />
 		<p>{account.name}</p>
 		<form {...logout}>

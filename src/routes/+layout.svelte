@@ -16,6 +16,7 @@
 	account={data.account}
 	organizations={data.accountOrganizations}
 	selectedOrganizationId={data.selectedOrganizationId}
+	isImpersonating={data.impersonatedBy !== null}
 />
 
 <MainBody>

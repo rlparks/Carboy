@@ -12,7 +12,7 @@
 	let { href, onclick, children, type = "button", disabled }: Props = $props();
 
 	const standardButtonClasses =
-		"flex items-center border px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50";
+		"flex items-center border px-2 py-1 hover:bg-gray-200 h-full dark:hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50";
 </script>
 
 {#if href}
