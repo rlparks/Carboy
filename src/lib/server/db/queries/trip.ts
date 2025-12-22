@@ -303,6 +303,24 @@ export async function checkinVehicle(
 	}
 }
 
+export async function updateTrip(
+	id: string,
+	startMileage: number | null,
+	endMileage: number | null,
+) {
+	try {
+		await sql`
+            UPDATE trip SET
+                start_mileage = ${startMileage},
+                end_mileage = ${endMileage},
+                updated_at = NOW()
+            WHERE id = ${id}
+        ;`;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
+
 export async function createTripNote(note: Omit<TripNote, "id" | "createdAt" | "updatedAt">) {
 	try {
 		await sql`

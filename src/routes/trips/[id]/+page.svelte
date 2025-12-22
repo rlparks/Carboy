@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from "$app/paths";
 	import Button from "$lib/components/Button.svelte";
 	import Input from "$lib/components/Input.svelte";
 	import PageTitle from "$lib/components/PageTitle.svelte";
@@ -28,7 +29,12 @@
 <div class="justify-around space-y-4 md:flex">
 	<section class="w-md space-y-4">
 		<div class="space-y-2">
-			<PageTitle {title} />
+			<header class="flex justify-between">
+				<PageTitle {title} />
+				{#if data.account?.role === "superadmin"}
+					<Button href={resolve("/trips/[id]/edit", { id: data.trip.id })}>Edit</Button>
+				{/if}
+			</header>
 
 			{#if data.trip.vehicleHasImage}
 				<img
