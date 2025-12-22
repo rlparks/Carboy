@@ -8,7 +8,15 @@
 
 	let { data } = $props();
 
-	const headers = ["", "Vehicle", "Driver", "Start Time", "End Time", "Distance", "Notes"];
+	const headers = [
+		"",
+		"Vehicle",
+		"Started By",
+		"Starting Time",
+		"Ending Time",
+		"Distance",
+		"Notes",
+	];
 </script>
 
 <WindowTitle title="Trips" description="View and manage trips." />
@@ -22,7 +30,7 @@
 		{#each trips as trip (trip.id)}
 			<TableRow>
 				<TableCell>
-					<Link href={resolve("/trips/[id]", { id: trip.id })}>View</Link>
+					<Link href={resolve("/trips/[id]", { id: trip.id })}>Details</Link>
 				</TableCell>
 				<TableCell>{trip.vehicleNumber}</TableCell>
 				<TableCell>{trip.startedByName}</TableCell>
