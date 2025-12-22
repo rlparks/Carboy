@@ -16,9 +16,11 @@ export type VehicleWithDepartment = Vehicle & {
 export type TripWithVehicle = Trip & {
 	vehicleNumber: string;
 	vehicleName: string;
+	vehicleHasImage: boolean;
 	vehicleId: string;
 	departmentName: string;
 	departmentId: string;
+	organizationId: string;
 	distance: number | null;
 	startedByUsername: string;
 	startedByName: string;

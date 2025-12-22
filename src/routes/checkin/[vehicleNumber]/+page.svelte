@@ -138,7 +138,7 @@
 					{#each data.trip.notes as note (note.id)}
 						<li class="p-4 dark:bg-gray-800">
 							<p class="text-xl">{note.text}</p>
-							<p>{note.authorName}</p>
+							<p class="text-lg">{note.authorName}</p>
 							<p>{new Date(note.createdAt).toLocaleString()}</p>
 						</li>
 					{/each}
