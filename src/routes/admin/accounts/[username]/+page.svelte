@@ -8,7 +8,6 @@
 	let { data } = $props();
 
 	const title = $derived(`Account ${data.editAccount.name} (${data.editAccount.username})`);
-	// TODO: impersonation
 
 	const isImpersonating = $derived(data.impersonatedBy !== null);
 	const canImpersonate = $derived(data.account?.role === "superadmin");

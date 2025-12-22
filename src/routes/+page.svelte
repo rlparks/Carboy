@@ -7,6 +7,8 @@
 
 	const successMessage = $derived(page.url.searchParams.get("success"));
 	const errorMessage = $derived(page.url.searchParams.get("error"));
+
+	// TODO: fix message when no org selected
 </script>
 
 <WindowTitle title="Carboy" description="Vehicle checkout as you've never seen it before." />
