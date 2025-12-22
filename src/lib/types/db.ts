@@ -92,6 +92,15 @@ export type TripDestination = {
 	updatedAt: Date | null;
 };
 
+export type TripNote = {
+	id: string;
+	text: string;
+	accountId: string;
+	tripId: string;
+	createdAt: Date;
+	updatedAt: Date | null;
+};
+
 export type Configuration = {
 	key: string;
 	value: string | null;

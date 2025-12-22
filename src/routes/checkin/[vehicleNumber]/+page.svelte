@@ -130,6 +130,21 @@
 				<p>{data.trip.startedByName}</p>
 			</aside>
 		</div>
+
+		{#if data.trip.notes.length}
+			<div class="space-y-2">
+				<h2 class="text-3xl font-semibold">Notes</h2>
+				<ol class="space-y-2">
+					{#each data.trip.notes as note (note.id)}
+						<li class="p-4 dark:bg-gray-800">
+							<p class="text-xl">{note.text}</p>
+							<p>{note.authorName}</p>
+							<p>{new Date(note.createdAt).toLocaleString()}</p>
+						</li>
+					{/each}
+				</ol>
+			</div>
+		{/if}
 	</section>
 
 	<section class="container w-md">
@@ -211,7 +226,7 @@
 				</div>
 
 				<!-- actual destination list for trip -->
-				<ol class="">
+				<ol class="space-y-2">
 					{#each destinations as destination, i (destination.id)}
 						<li
 							data-destination-id={destination.id}

@@ -1,4 +1,4 @@
-import type { Account, Destination, Trip, Vehicle } from "$lib/types/db";
+import type { Account, Destination, Trip, TripNote, Vehicle } from "$lib/types/db";
 
 export type FriendlyAccount = Omit<Account, "passwordHash">;
 export type AccountWithOrganizations = FriendlyAccount & {
@@ -26,9 +26,14 @@ export type TripWithVehicle = Trip & {
 	endedByName: string | null;
 };
 
+export type TripNoteWithAuthor = TripNote & {
+	authorUsername: string;
+	authorName: string;
+};
+
 export type TripWithDestinations = TripWithVehicle & {
 	destinations: Destination[];
-	// TODO: note
+	notes: TripNoteWithAuthor[];
 };
 
 export type DestinationWithCount = Destination & {

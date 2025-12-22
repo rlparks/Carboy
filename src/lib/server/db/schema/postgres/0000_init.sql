@@ -102,8 +102,6 @@ CREATE TABLE IF NOT EXISTS configuration (
     updated_at TIMESTAMPTZ
 );
 
--- TODO: add trip_note table
-
 CREATE INDEX IF NOT EXISTS idx_trip_vehicle_id ON trip(vehicle_id);
 CREATE INDEX IF NOT EXISTS idx_trip_started_by ON trip(started_by);
 CREATE INDEX IF NOT EXISTS idx_trip_ended_by ON trip(ended_by);

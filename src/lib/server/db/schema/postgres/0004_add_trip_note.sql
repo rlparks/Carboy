@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS trip_note (
+    id TEXT PRIMARY KEY,
+    text TEXT NOT NULL,
+    account_id TEXT NOT NULL REFERENCES account(id) ON DELETE RESTRICT,
+    trip_id TEXT NOT NULL REFERENCES trip(id) ON DELETE RESTRICT,
+    created_at TIMESTAMPTZ NOT NULL,
+    updated_at TIMESTAMPTZ
+);

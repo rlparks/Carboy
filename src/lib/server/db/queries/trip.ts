@@ -2,7 +2,7 @@ import { generateTextId } from "$lib/server";
 import { parsePgError } from "$lib/server/db/error";
 import { sql } from "$lib/server/db/postgres";
 import type { TripWithDestinations, TripWithVehicle } from "$lib/types/bonus";
-import type { Trip, TripDestination } from "$lib/types/db";
+import type { Trip, TripDestination, TripNote } from "$lib/types/db";
 import { error } from "@sveltejs/kit";
 
 export type TripFilterOptions = {
@@ -138,18 +138,35 @@ export async function getTripWithDestinations(tripId: string) {
                         json_build_object(
                             'id', dest.id,
                             'name', dest.name,
-                            'short_name', dest.short_name,
+                            'shortName', dest.short_name,
                             'address', dest.address,
                             'latitude', dest.latitude,
                             'longitude', dest.longitude,
-                            'created_at', dest.created_at,
-                            'updated_at', dest.updated_at
+                            'createdAt', dest.created_at,
+                            'updatedAt', dest.updated_at
                         ) ORDER BY td.position
                     )
                     FROM trip_destination td
                     JOIN destination dest ON td.destination_id = dest.id
                     WHERE td.trip_id = t.id
-                ) AS destinations
+                ) AS destinations,
+                (
+                    SELECT COALESCE(array_agg(
+                        json_build_object(
+                            'id', tn.id,
+                            'text', tn.text,
+                            'accountId', tn.account_id,
+                            'tripId', tn.trip_id,
+                            'createdAt', tn.created_at,
+                            'updatedAt', tn.updated_at,
+                            'authorUsername', a.username,
+                            'authorName', a.name
+                        ) ORDER BY tn.created_at
+                    ), '{}')
+                    FROM trip_note tn
+                    INNER JOIN account a ON a.id = tn.account_id
+                    WHERE tn.trip_id = t.id
+                ) AS notes
             FROM trip t
             INNER JOIN vehicle v ON t.vehicle_id = v.id
             INNER JOIN department d ON v.department_id = d.id
@@ -208,7 +225,10 @@ export async function checkoutVehicle(
 			}
 
 			if (note) {
-				// TODO: create note :)
+				await tx<TripNote[]>`
+                    INSERT INTO trip_note (id, text, account_id, trip_id, created_at, updated_at)
+                    VALUES (${generateTextId()}, ${note}, ${startedById}, ${newTrip.id}, ${now}, NULL)
+                ;`;
 			}
 		});
 	} catch (err) {
@@ -265,7 +285,10 @@ export async function checkinVehicle(
 			}
 
 			if (note) {
-				// TODO: create note :)
+				await tx<TripNote[]>`
+                    INSERT INTO trip_note (id, text, account_id, trip_id, created_at, updated_at)
+                    VALUES (${generateTextId()}, ${note}, ${endedById}, ${updatedTrip.id}, ${now}, NULL)
+                ;`;
 			}
 		});
 	} catch (err) {

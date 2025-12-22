@@ -159,7 +159,7 @@
 				</div>
 
 				<!-- actual destination list for trip -->
-				<ol class="">
+				<ol class="space-y-2">
 					{#each destinations as destination, i (destination.id)}
 						<li
 							data-destination-id={destination.id}
