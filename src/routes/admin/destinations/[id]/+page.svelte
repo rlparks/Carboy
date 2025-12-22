@@ -7,14 +7,20 @@
 	let { data } = $props();
 
 	const title = $derived(`Destination ${data.destination.name}`);
-	// TODO: merge destinations
 </script>
 
 <WindowTitle {title} description={`Manage destination: ${data.destination.name}`} />
 
 <header class="flex justify-between">
 	<PageTitle {title} />
-	<Button href={resolve("/admin/destinations/[id]/edit", { id: data.destination.id })}>Edit</Button>
+	<div class="flex gap-2">
+		<Button href={resolve("/admin/destinations/[id]/merge", { id: data.destination.id })}>
+			Merge
+		</Button>
+		<Button href={resolve("/admin/destinations/[id]/edit", { id: data.destination.id })}>
+			Edit
+		</Button>
+	</div>
 </header>
 
 <div class="grid max-w-md grid-cols-2 gap-4">

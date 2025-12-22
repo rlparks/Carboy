@@ -210,15 +210,24 @@
 												}}
 											>
 												<div>
-													<p>{destination.name}</p>
-													<p>{destination.shortName ?? " "}</p>
+													<p class="font-semibold">{destination.name}</p>
+													{#if destination.shortName}
+														<p class="text-sm text-gray-600 dark:text-gray-400">
+															{destination.shortName}
+														</p>
+													{/if}
+													{#if destination.address}
+														<p class="text-sm text-gray-600 dark:text-gray-400">
+															{destination.address}
+														</p>
+													{/if}
 												</div>
 												<p class="text-2xl">+</p>
 											</button>
 										</li>
 									{/if}
 								{:else}
-									<li>No results found.</li>
+									<li class="italic">No results found.</li>
 								{/each}
 							</ul>
 						{/if}
@@ -253,7 +262,7 @@
 								</div>
 								<button
 									type="button"
-									class="cursor-pointer text-xl"
+									class="cursor-pointer text-xl text-red-600 hover:text-red-800"
 									onclick={() => destinations.splice(i, 1)}
 								>
 									✕

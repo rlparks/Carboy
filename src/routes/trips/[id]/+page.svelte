@@ -114,12 +114,16 @@
 							<div class="flex items-center gap-4">
 								<p class="text-xl font-semibold">{i + 1}</p>
 								<div>
-									<p class="text-xl">{destination.name}</p>
+									<p class="font-semibold">{destination.name}</p>
 									{#if destination.shortName}
-										<p class="text-lg">{destination.shortName}</p>
+										<p class="text-sm text-gray-600 dark:text-gray-400">
+											{destination.shortName}
+										</p>
 									{/if}
 									{#if destination.address}
-										<p class="text-base">{destination.address}</p>
+										<p class="text-sm text-gray-600 dark:text-gray-400">
+											{destination.address}
+										</p>
 									{/if}
 								</div>
 							</div>

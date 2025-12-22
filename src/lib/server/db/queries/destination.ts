@@ -137,3 +137,35 @@ export async function updateDestination(
 		throw parsePgError(err);
 	}
 }
+
+export async function mergeDestinations(finalDestinationId: string, oldDestinationIds: string[]) {
+	if (oldDestinationIds.includes(finalDestinationId)) {
+		throw new Error("Cannot merge destination into itself!");
+	}
+
+	try {
+		await sql.begin(async (tx) => {
+			await tx`
+				DELETE FROM trip_destination
+				WHERE
+                    destination_id = ANY(${oldDestinationIds})
+                    AND trip_id IN (
+                        SELECT trip_id FROM trip_destination WHERE destination_id = ${finalDestinationId}
+                    )
+			;`;
+
+			await tx`
+                UPDATE trip_destination
+                SET destination_id = ${finalDestinationId}
+                WHERE destination_id = ANY(${oldDestinationIds})
+            ;`;
+
+			await tx`
+                DELETE FROM destination
+                WHERE id = ANY(${oldDestinationIds})
+            ;`;
+		});
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
