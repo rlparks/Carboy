@@ -1,18 +1,18 @@
 <script lang="ts">
-	import type { ResolvedPathname } from "$app/types";
 	import type { Snippet } from "svelte";
 
 	type Props = {
-		href?: ResolvedPathname;
+		href?: string;
 		onclick?: () => void;
 		children: Snippet;
 		type?: "button" | "submit" | "reset";
+		disabled?: boolean;
 	};
 
-	let { href, onclick, children, type = "button" }: Props = $props();
+	let { href, onclick, children, type = "button", disabled }: Props = $props();
 
 	const standardButtonClasses =
-		"flex items-center border px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-700";
+		"flex items-center border px-2 py-1 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-50";
 </script>
 
 {#if href}
@@ -20,7 +20,7 @@
 		{@render children?.()}
 	</a>
 {:else}
-	<button {onclick} class={[standardButtonClasses, "cursor-pointer"]} {type}>
+	<button {onclick} class={[standardButtonClasses, "cursor-pointer"]} {disabled} {type}>
 		{@render children?.()}
 	</button>
 {/if}

@@ -115,6 +115,70 @@ export async function getTrips(opts: TripFilterOptions = {}) {
 	}
 }
 
+export async function getTripCount(opts: TripFilterOptions = {}) {
+	const vehicleNumber = opts.vehicleNumber
+		? sql`t.vehicle_id = (SELECT id FROM vehicle WHERE number = ${opts.vehicleNumber})`
+		: sql`TRUE`;
+
+	const organizationId = opts.organizationId
+		? sql`d.organization_id = ${opts.organizationId}`
+		: sql`TRUE`;
+
+	const startTimeFrom = opts.startTimeFrom ? sql`t.start_time >= ${opts.startTimeFrom}` : sql`TRUE`;
+
+	const startTimeTo = opts.startTimeTo ? sql`t.start_time <= ${opts.startTimeTo}` : sql`TRUE`;
+
+	const endTimeFrom = opts.endTimeFrom ? sql`t.end_time >= ${opts.endTimeFrom}` : sql`TRUE`;
+
+	const endTimeTo = opts.endTimeTo ? sql`t.end_time <= ${opts.endTimeTo}` : sql`TRUE`;
+
+	const distance =
+		opts.distance !== undefined && opts.distanceComparator !== undefined
+			? sql`t.distance ${opts.distanceComparator} ${opts.distance}`
+			: sql`TRUE`;
+
+	const duration =
+		opts.duration !== undefined && opts.durationComparator !== undefined
+			? sql`t.end_time - t.start_time ${opts.durationComparator} ${opts.duration}`
+			: sql`TRUE`;
+
+	const startedBy = opts.startedBy ? sql`s.username = ${opts.startedBy}` : sql`TRUE`;
+
+	const endedBy = opts.endedBy !== undefined ? sql`e.username = ${opts.endedBy}` : sql`TRUE`;
+
+	const endedByDifferent =
+		opts.endedByDifferent !== undefined && opts.endedByDifferent
+			? sql`t.ended_by IS DISTINCT FROM t.started_by`
+			: sql`TRUE`;
+
+	try {
+		const [row] = await sql<{ count: number }[]>`
+            SELECT
+                count(t.id)::int AS count
+            FROM trip t
+            INNER JOIN vehicle v ON t.vehicle_id = v.id
+            INNER JOIN department d ON v.department_id = d.id
+            INNER JOIN account s ON t.started_by = s.id
+            LEFT JOIN account e ON t.ended_by = e.id
+            WHERE ${vehicleNumber}
+                AND ${organizationId}
+                AND ${startTimeFrom}
+                AND ${startTimeTo}
+                AND ${endTimeFrom}
+                AND ${endTimeTo}
+                AND ${distance}
+                AND ${duration}
+                AND ${startedBy}
+                AND ${endedBy}
+                AND ${endedByDifferent}
+            ;`;
+
+		return row?.count ?? 0;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
+
 export async function getTripWithDestinations(tripId: string) {
 	try {
 		const [row] = await sql<TripWithDestinations[]>`

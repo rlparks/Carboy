@@ -1,4 +1,4 @@
-import { getTrips, type TripFilterOptions } from "$lib/server/db/queries/trip";
+import { getTripCount, getTrips, type TripFilterOptions } from "$lib/server/db/queries/trip";
 import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
@@ -12,7 +12,8 @@ export const load = (async (event) => {
 		return error(400, "No organization selected.");
 	}
 
-	return { trips: getTrips(getFilterParams(event.url.searchParams, orgId)) };
+	const opts = getFilterParams(event.url.searchParams, orgId);
+	return { trips: getTrips(opts), totalCount: getTripCount(opts) };
 }) satisfies PageServerLoad;
 
 function getFilterParams(params: URLSearchParams, orgId: string): TripFilterOptions {
