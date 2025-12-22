@@ -2,6 +2,7 @@
 	import { resolve } from "$app/paths";
 	import { page } from "$app/state";
 	import Button from "$lib/components/Button.svelte";
+	import Input from "$lib/components/Input.svelte";
 	import Link from "$lib/components/Link.svelte";
 	import Table from "$lib/components/table/Table.svelte";
 	import TableCell from "$lib/components/table/TableCell.svelte";
@@ -40,20 +41,53 @@
 		return url.pathname + url.search;
 	});
 
+	const downloadHref = $derived.by(() => {
+		const url = new URL(page.url);
+		url.searchParams.delete("page");
+
+		const paramString = url.searchParams.toString();
+		return paramString ? `/trips/download?${url.searchParams.toString()}` : "/trips/download";
+	});
+
 	let showFilter = $state(false);
 </script>
 
 <WindowTitle title="Trips" description="View and manage trips." />
 
 <div class="space-y-2">
-	{#await data.totalCount}
-		<p>Loading count...</p>
-	{:then totalCount}
-		{@const startNum = Math.min(offset + 1, totalCount)}
-		{@const endNum = Math.min(offset + limit, totalCount)}
+	<div class="flex items-end justify-between">
+		{#await data.totalCount}
+			<p>Loading count...</p>
+		{:then totalCount}
+			{@const startNum = Math.min(offset + 1, totalCount)}
+			{@const endNum = Math.min(offset + limit, totalCount)}
 
-		<p>{startNum.toLocaleString()} - {endNum.toLocaleString()} of {totalCount.toLocaleString()}</p>
-	{/await}
+			<p>
+				{startNum.toLocaleString()} - {endNum.toLocaleString()} of {totalCount.toLocaleString()}
+			</p>
+		{/await}
+
+		<div class="flex gap-2">
+			<div class="h-fit">
+				<Button href={downloadHref}>Download</Button>
+			</div>
+			<div class="flex flex-col items-end gap-2">
+				<Button onclick={() => (showFilter = !showFilter)}>
+					{#if !showFilter}
+						Filter
+					{:else}
+						Close Filter
+					{/if}
+				</Button>
+				{#if showFilter}
+					<form class="space-y-2">
+						<Input label="Vehicle Number" name="vehicleNumber" />
+						<Button type="submit">Submit</Button>
+					</form>
+				{/if}
+			</div>
+		</div>
+	</div>
 
 	<Table {headers}>
 		{#await data.trips}

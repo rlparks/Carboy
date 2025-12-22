@@ -7,6 +7,7 @@
 	let { data } = $props();
 
 	const title = $derived(`Account ${data.editAccount.name} (${data.editAccount.username})`);
+	// TODO: impersonation
 </script>
 
 <WindowTitle {title} description="View account information." />
