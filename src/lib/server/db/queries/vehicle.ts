@@ -26,7 +26,7 @@ export async function getVehiclesByOrganizationId(
                     SELECT t.end_time IS NULL
                     FROM trip t
                     WHERE t.vehicle_id = v.id
-                    ORDER BY t.created_at DESC
+                    ORDER BY t.start_time DESC
                     LIMIT 1
                 ), false) AS is_checked_out,
                 o.id AS organization_id,

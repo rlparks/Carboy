@@ -9,6 +9,8 @@
 
 	let { data } = $props();
 
+	// TODO: create destination
+
 	const title = $derived(`Check Out ${data.vehicle.number}`);
 
 	let query = $state("");
