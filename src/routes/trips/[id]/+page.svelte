@@ -1,10 +1,21 @@
 <script lang="ts">
 	import PageTitle from "$lib/components/PageTitle.svelte";
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
+	import type { TripNoteWithAuthor } from "$lib/types/bonus.js";
 
 	let { data } = $props();
 
 	const title = "Trip Details";
+
+	function getNoteType(note: TripNoteWithAuthor) {
+		const noteTime = new Date(note.createdAt).getTime();
+		const startTime = data.trip.startTime.getTime();
+		const endTime = data.trip.endTime?.getTime();
+
+		if (noteTime === startTime) return "checkout";
+		if (endTime && noteTime === endTime) return "checkin";
+		return null;
+	}
 </script>
 
 <WindowTitle {title} description="View trip details." />
@@ -58,7 +69,7 @@
 						</aside>
 						<aside>
 							<h3 class="text-2xl">Ended By</h3>
-							<p>{data.trip.endedByName} ({data.trip.endedByUsername})</p>
+							<p>{data.trip.endedByName}</p>
 						</aside>
 						{#if data.trip.endMileage !== null}
 							<aside>
@@ -112,9 +123,17 @@
 				<h2 class="text-3xl font-semibold">Notes</h2>
 				<ol class="space-y-2">
 					{#each data.trip.notes as note (note.id)}
-						<li class="p-4 dark:bg-gray-800">
-							<p class="text-xl">{note.text}</p>
-							<p class="text-lg">{note.authorName} ({note.authorUsername})</p>
+						{@const noteType = getNoteType(note)}
+						<li class="relative p-4 dark:bg-gray-800">
+							{#if noteType}
+								<span
+									class="absolute top-2 right-2 rounded bg-bulldog px-2 py-1 text-xs text-white"
+								>
+									{noteType}
+								</span>
+							{/if}
+							<p class="pr-16 text-xl">{note.text}</p>
+							<p class="text-lg">{note.authorName}</p>
 							<p>{new Date(note.createdAt).toLocaleString()}</p>
 						</li>
 					{/each}
