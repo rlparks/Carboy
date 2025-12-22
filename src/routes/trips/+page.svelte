@@ -105,7 +105,9 @@
 					<TableCell>{trip.startedByName}</TableCell>
 					<TableCell>{trip.startTime.toLocaleString()}</TableCell>
 					<TableCell>{trip.endTime?.toLocaleString() ?? ""}</TableCell>
-					<TableCell class="truncate text-ellipsis">{trip.destinations}</TableCell>
+					<TableCell class="max-w-50 truncate text-ellipsis">
+						<span title={trip.destinations}>{trip.destinations}</span>
+					</TableCell>
 					<TableCell>{trip.distance !== null ? trip.distance.toLocaleString() : "N/A"}</TableCell>
 					<TableCell>{trip.noteCount}</TableCell>
 				</TableRow>

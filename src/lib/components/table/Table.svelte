@@ -10,20 +10,22 @@
 	let { headers, children }: Props = $props();
 </script>
 
-<table class="w-full divide-y overflow-x-auto border">
-	{#if headers.length > 0}
-		<TableHead>
-			<tr>
-				{#each headers as header (header)}
-					<TableHeadCell>
-						{header}
-					</TableHeadCell>
-				{/each}
-			</tr>
-		</TableHead>
-	{/if}
+<div class="w-full overflow-x-auto">
+	<table class="w-full min-w-max divide-y border">
+		{#if headers.length > 0}
+			<TableHead>
+				<tr>
+					{#each headers as header (header)}
+						<TableHeadCell>
+							{header}
+						</TableHeadCell>
+					{/each}
+				</tr>
+			</TableHead>
+		{/if}
 
-	<tbody class="divide-y">
-		{@render children()}
-	</tbody>
-</table>
+		<tbody class="divide-y">
+			{@render children()}
+		</tbody>
+	</table>
+</div>
