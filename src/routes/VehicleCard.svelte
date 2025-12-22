@@ -34,5 +34,20 @@
 			</div>
 		{/if}
 	</section>
-	<!-- TODO: add checked out info -->
+	{#if vehicle.destinations}
+		<section
+			class="truncate border-t border-blue-500 px-4 py-2 text-nowrap"
+			title={vehicle.destinations}
+		>
+			{vehicle.destinations}
+		</section>
+	{/if}
+	{#if vehicle.startedByName}
+		<section
+			class="truncate border-t border-blue-500 px-4 py-2 text-nowrap"
+			title={vehicle.startedByName}
+		>
+			{vehicle.startedByName}
+		</section>
+	{/if}
 </div>

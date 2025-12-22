@@ -22,6 +22,29 @@ export async function getVehiclesByOrganizationId(
                 v.updated_at,
                 d.name AS department_name,
                 d.id AS department_id,
+                (
+                    SELECT s.username
+                    FROM trip t
+                    INNER JOIN account s ON t.started_by = s.id
+                    WHERE t.vehicle_id = v.id AND t.end_time IS NULL
+                    ORDER BY t.start_time DESC
+                    LIMIT 1
+                ) AS started_by_username,
+                (
+                    SELECT s.name
+                    FROM trip t
+                    INNER JOIN account s ON t.started_by = s.id
+                    WHERE t.vehicle_id = v.id AND t.end_time IS NULL
+                    ORDER BY t.start_time DESC
+                    LIMIT 1
+                ) AS started_by_name,
+                (
+                    SELECT string_agg(dest.name, ', ' ORDER BY td.position)
+                    FROM trip_destination td
+                    INNER JOIN destination dest ON td.destination_id = dest.id
+                    INNER JOIN trip t ON td.trip_id = t.id
+                    WHERE t.vehicle_id = v.id AND t.end_time IS NULL
+                ) AS destinations,
                 COALESCE((
                     SELECT t.end_time IS NULL
                     FROM trip t
@@ -94,6 +117,29 @@ export async function getVehicleByNumber(number: string) {
                 v.updated_at,
                 d.name AS department_name,
                 d.id AS department_id,
+                (
+                    SELECT s.username
+                    FROM trip t
+                    INNER JOIN account s ON t.started_by = s.id
+                    WHERE t.vehicle_id = v.id AND t.end_time IS NULL
+                    ORDER BY t.start_time DESC
+                    LIMIT 1
+                ) AS started_by_username,
+                (
+                    SELECT s.name
+                    FROM trip t
+                    INNER JOIN account s ON t.started_by = s.id
+                    WHERE t.vehicle_id = v.id AND t.end_time IS NULL
+                    ORDER BY t.start_time DESC
+                    LIMIT 1
+                ) AS started_by_name,
+                (
+                    SELECT string_agg(dest.name, ', ' ORDER BY td.position)
+                    FROM trip_destination td
+                    INNER JOIN destination dest ON td.destination_id = dest.id
+                    INNER JOIN trip t ON td.trip_id = t.id
+                    WHERE t.vehicle_id = v.id AND t.end_time IS NULL
+                ) AS destinations,
                 COALESCE((
                     SELECT t.end_time IS NULL
                     FROM trip t

@@ -11,6 +11,9 @@ export type VehicleWithDepartment = Vehicle & {
 	organizationId: string;
 	isCheckedOut: boolean;
 	tripCount: number;
+	destinations: string | null;
+	startedByUsername: string | null;
+	startedByName: string | null;
 };
 
 export type TripWithVehicle = Trip & {
