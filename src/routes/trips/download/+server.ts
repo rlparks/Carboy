@@ -37,7 +37,6 @@ export const GET: RequestHandler = async (event) => {
 	const origin = event.url.origin;
 	const urlPrefix = `${origin}/trips/`;
 
-	// TODO: add destinations
 	const formattedData = trips.map((t) => ({
 		"Vehicle Number": t.vehicleNumber,
 		"Vehicle Name": t.vehicleName,
@@ -49,6 +48,7 @@ export const GET: RequestHandler = async (event) => {
 		"Starting Mileage": t.startMileage,
 		"Ending Mileage": t.endMileage,
 		Distance: t.endMileage && t.startMileage ? t.endMileage - t.startMileage : "",
+		Destinations: t.destinations,
 		"Trip URL": `${urlPrefix}${t.id}`,
 		"Created At": formatDateForCsv(t.createdAt),
 		"Updated At": formatDateForCsv(t.updatedAt),

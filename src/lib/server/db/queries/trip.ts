@@ -85,7 +85,13 @@ export async function getTrips(opts: TripFilterOptions = {}) {
                     SELECT count(*)
                     FROM trip_note
                     WHERE trip_note.trip_id = t.id
-                ) AS note_count
+                ) AS note_count,
+                (
+                    SELECT string_agg(dest.name, ', ' ORDER BY td.position)
+                    FROM trip_destination td
+                    INNER JOIN destination dest ON td.destination_id = dest.id
+                    WHERE td.trip_id = t.id
+                ) AS destinations
             FROM trip t
             INNER JOIN vehicle v ON t.vehicle_id = v.id
             INNER JOIN department d ON v.department_id = d.id

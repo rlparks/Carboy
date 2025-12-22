@@ -27,6 +27,7 @@ export type TripWithVehicle = Trip & {
 	endedByUsername: string | null;
 	endedByName: string | null;
 	noteCount: number;
+	destinations: string;
 };
 
 export type TripNoteWithAuthor = TripNote & {
