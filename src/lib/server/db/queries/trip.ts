@@ -302,3 +302,14 @@ export async function checkinVehicle(
 		throw parsePgError(err);
 	}
 }
+
+export async function createTripNote(note: Omit<TripNote, "id" | "createdAt" | "updatedAt">) {
+	try {
+		await sql`
+            INSERT INTO trip_note (id, text, account_id, trip_id, created_at, updated_at)
+            VALUES (${generateTextId()}, ${note.text}, ${note.accountId}, ${note.tripId}, NOW(), NULL)
+        ;`;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}

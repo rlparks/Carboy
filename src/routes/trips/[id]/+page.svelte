@@ -1,7 +1,10 @@
 <script lang="ts">
+	import Button from "$lib/components/Button.svelte";
+	import Input from "$lib/components/Input.svelte";
 	import PageTitle from "$lib/components/PageTitle.svelte";
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
-	import type { TripNoteWithAuthor } from "$lib/types/bonus.js";
+	import type { TripNoteWithAuthor } from "$lib/types/bonus";
+	import { addNote } from "./addNote.remote";
 
 	let { data } = $props();
 
@@ -16,6 +19,8 @@
 		if (endTime && noteTime === endTime) return "checkin";
 		return null;
 	}
+
+	let addingNote = $state(false);
 </script>
 
 <WindowTitle {title} description="View trip details." />
@@ -118,9 +123,9 @@
 			</div>
 		{/if}
 
-		{#if data.trip.notes.length}
-			<div class="space-y-2">
-				<h2 class="text-3xl font-semibold">Notes</h2>
+		<div class="space-y-2">
+			<h2 class="text-3xl font-semibold">Notes</h2>
+			{#if data.trip.notes.length}
 				<ol class="space-y-2">
 					{#each data.trip.notes as note (note.id)}
 						{@const noteType = getNoteType(note)}
@@ -138,7 +143,32 @@
 						</li>
 					{/each}
 				</ol>
-			</div>
-		{/if}
+			{/if}
+
+			{#if addingNote}
+				<form
+					{...addNote.enhance(async (e) => {
+						await e.submit();
+						addingNote = false;
+					})}
+					class="space-y-2"
+				>
+					<input {...addNote.fields.tripId.as("hidden", data.trip.id)} />
+					<Input
+						label="Note"
+						{...addNote.fields.note.as("text")}
+						issues={addNote.fields.note.issues()}
+						autofocus
+					/>
+
+					<div class="flex gap-2">
+						<Button type="submit">Submit</Button>
+						<Button type="button" onclick={() => (addingNote = false)}>Cancel</Button>
+					</div>
+				</form>
+			{:else}
+				<Button onclick={() => (addingNote = true)}>Add Note</Button>
+			{/if}
+		</div>
 	</section>
 </div>
