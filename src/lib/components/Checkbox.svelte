@@ -29,7 +29,7 @@
 		/>
 
 		{#if label}
-			<label for={id} class="text-sm font-medium text-gray-700 dark:text-gray-300">
+			<label for={id} class="text-sm font-medium text-gray-700 select-none dark:text-gray-300">
 				{label}
 			</label>
 		{/if}

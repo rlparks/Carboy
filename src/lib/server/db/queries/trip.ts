@@ -40,15 +40,51 @@ export async function getTrips(opts: TripFilterOptions = {}) {
 
 	const endTimeTo = opts.endTimeTo ? sql`t.end_time <= ${opts.endTimeTo}` : sql`TRUE`;
 
-	const distance =
-		opts.distance !== undefined && opts.distanceComparator !== undefined
-			? sql`t.distance ${opts.distanceComparator} ${opts.distance}`
-			: sql`TRUE`;
+	let distance = sql`TRUE`;
+	if (opts.distance !== undefined && opts.distanceComparator !== undefined) {
+		switch (opts.distanceComparator) {
+			case "=":
+				distance = sql`t.end_mileage - t.start_mileage = ${opts.distance}`;
+				break;
+			case ">":
+				distance = sql`t.end_mileage - t.start_mileage > ${opts.distance}`;
+				break;
+			case "<":
+				distance = sql`t.end_mileage - t.start_mileage < ${opts.distance}`;
+				break;
+			case ">=":
+				distance = sql`t.end_mileage - t.start_mileage >= ${opts.distance}`;
+				break;
+			case "<=":
+				distance = sql`t.end_mileage - t.start_mileage <= ${opts.distance}`;
+				break;
+			default:
+				distance = sql`t.end_mileage - t.start_mileage = ${opts.distance}`;
+		}
+	}
 
-	const duration =
-		opts.duration !== undefined && opts.durationComparator !== undefined
-			? sql`t.end_time - t.start_time ${opts.durationComparator} ${opts.duration}`
-			: sql`TRUE`;
+	let duration = sql`TRUE`;
+	if (opts.duration !== undefined && opts.durationComparator !== undefined) {
+		switch (opts.durationComparator) {
+			case "=":
+				duration = sql`t.end_time - t.start_time = ${opts.duration}`;
+				break;
+			case ">":
+				duration = sql`t.end_time - t.start_time > ${opts.duration}`;
+				break;
+			case "<":
+				duration = sql`t.end_time - t.start_time < ${opts.duration}`;
+				break;
+			case ">=":
+				duration = sql`t.end_time - t.start_time >= ${opts.duration}`;
+				break;
+			case "<=":
+				duration = sql`t.end_time - t.start_time <= ${opts.duration}`;
+				break;
+			default:
+				duration = sql`t.end_time - t.start_time = ${opts.duration}`;
+		}
+	}
 
 	const startedBy = opts.startedBy ? sql`s.username = ${opts.startedBy}` : sql`TRUE`;
 
@@ -138,15 +174,51 @@ export async function getTripCount(opts: TripFilterOptions = {}) {
 
 	const endTimeTo = opts.endTimeTo ? sql`t.end_time <= ${opts.endTimeTo}` : sql`TRUE`;
 
-	const distance =
-		opts.distance !== undefined && opts.distanceComparator !== undefined
-			? sql`t.distance ${opts.distanceComparator} ${opts.distance}`
-			: sql`TRUE`;
+	let distance = sql`TRUE`;
+	if (opts.distance !== undefined && opts.distanceComparator !== undefined) {
+		switch (opts.distanceComparator) {
+			case "=":
+				distance = sql`t.end_mileage - t.start_mileage = ${opts.distance}`;
+				break;
+			case ">":
+				distance = sql`t.end_mileage - t.start_mileage > ${opts.distance}`;
+				break;
+			case "<":
+				distance = sql`t.end_mileage - t.start_mileage < ${opts.distance}`;
+				break;
+			case ">=":
+				distance = sql`t.end_mileage - t.start_mileage >= ${opts.distance}`;
+				break;
+			case "<=":
+				distance = sql`t.end_mileage - t.start_mileage <= ${opts.distance}`;
+				break;
+			default:
+				distance = sql`t.end_mileage - t.start_mileage = ${opts.distance}`;
+		}
+	}
 
-	const duration =
-		opts.duration !== undefined && opts.durationComparator !== undefined
-			? sql`t.end_time - t.start_time ${opts.durationComparator} ${opts.duration}`
-			: sql`TRUE`;
+	let duration = sql`TRUE`;
+	if (opts.duration !== undefined && opts.durationComparator !== undefined) {
+		switch (opts.durationComparator) {
+			case "=":
+				duration = sql`t.end_time - t.start_time = ${opts.duration}`;
+				break;
+			case ">":
+				duration = sql`t.end_time - t.start_time > ${opts.duration}`;
+				break;
+			case "<":
+				duration = sql`t.end_time - t.start_time < ${opts.duration}`;
+				break;
+			case ">=":
+				duration = sql`t.end_time - t.start_time >= ${opts.duration}`;
+				break;
+			case "<=":
+				duration = sql`t.end_time - t.start_time <= ${opts.duration}`;
+				break;
+			default:
+				duration = sql`t.end_time - t.start_time = ${opts.duration}`;
+		}
+	}
 
 	const startedBy = opts.startedBy ? sql`s.username = ${opts.startedBy}` : sql`TRUE`;
 

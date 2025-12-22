@@ -18,21 +18,27 @@ export const load = (async (event) => {
 
 function getFilterParams(params: URLSearchParams, orgId: string): TripFilterOptions {
 	const filterParams: TripFilterOptions = {
-		vehicleNumber: params.get("vehicleNumber") ?? undefined,
+		vehicleNumber: params.get("vehicleNumber") || undefined,
 		organizationId: orgId,
 		startTimeFrom: getDate(params.get("startTimeFrom")),
 		startTimeTo: getDate(params.get("startTimeTo")),
 		endTimeFrom: getDate(params.get("endTimeFrom")),
 		endTimeTo: getDate(params.get("endTimeTo")),
-		distance: params.get("distance") !== null ? parseInt(params.get("distance")!) : undefined,
+		distance:
+			params.get("distance") !== null && params.get("distance") !== ""
+				? parseInt(params.get("distance")!)
+				: undefined,
 		distanceComparator: getComparator(params.get("distanceComparator")),
-		duration: params.get("duration") !== null ? parseInt(params.get("duration")!) : undefined,
+		duration:
+			params.get("duration") !== null && params.get("duration") !== ""
+				? parseInt(params.get("duration")!)
+				: undefined,
 		durationComparator: getComparator(params.get("durationComparator")),
-		startedBy: params.get("startedBy") ?? undefined,
-		endedBy: params.get("endedBy") ?? undefined,
+		startedBy: params.get("startedBy") || undefined,
+		endedBy: params.get("endedBy") || undefined,
 		endedByDifferent:
 			params.get("endedByDifferentUser") !== null
-				? params.get("endedByDifferentUser") === "true"
+				? params.get("endedByDifferentUser") === "on"
 				: undefined,
 		limit: params.get("limit") !== null ? parseInt(params.get("limit")!) : undefined,
 		offset: params.get("page") !== null ? (parseInt(params.get("page")!) - 1) * perPage : undefined,
