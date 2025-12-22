@@ -100,10 +100,7 @@
 		<PageTitle title="Check Out" />
 
 		{#if data.vehicle.hasImage}
-			<img
-				alt="Vehicle {data.vehicle.number} parked"
-				src="/api/images/vehicles/{data.vehicle.number}"
-			/>
+			<img alt="Vehicle {data.vehicle.number}" src="/api/images/vehicles/{data.vehicle.number}" />
 		{/if}
 
 		<h2 class="text-3xl font-semibold">{data.vehicle.number}</h2>

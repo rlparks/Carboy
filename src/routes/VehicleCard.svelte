@@ -13,7 +13,7 @@
 
 <div class={["border", vehicle.isCheckedOut ? "border-blue-500" : "border-green-500"]}>
 	<img
-		alt={vehicle.hasImage ? `Vehicle ${vehicle.number} parked` : "Solid black placeholder"}
+		alt={vehicle.hasImage ? `Vehicle ${vehicle.number}` : "Solid black placeholder"}
 		src={vehicle.hasImage ? `/api/images/vehicles/${vehicle.number}` : noImageImage}
 	/>
 	<section class="space-y-2 p-4">
@@ -34,4 +34,5 @@
 			</div>
 		{/if}
 	</section>
+	<!-- TODO: add checked out info -->
 </div>
