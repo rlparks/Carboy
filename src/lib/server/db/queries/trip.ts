@@ -80,7 +80,12 @@ export async function getTrips(opts: TripFilterOptions = {}) {
                 s.username AS started_by_username,
                 s.name AS started_by_name,
                 e.username AS ended_by_username,
-                e.name AS ended_by_name
+                e.name AS ended_by_name,
+                (
+                    SELECT count(*)
+                    FROM trip_note
+                    WHERE trip_note.trip_id = t.id
+                ) AS note_count
             FROM trip t
             INNER JOIN vehicle v ON t.vehicle_id = v.id
             INNER JOIN department d ON v.department_id = d.id
