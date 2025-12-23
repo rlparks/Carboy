@@ -13,7 +13,7 @@ export const load = (async (event) => {
 	}
 
 	const opts = getFilterParams(event.url.searchParams, orgId);
-	return { trips: getTrips(opts), totalCount: getTripCount(opts) };
+	return { trips: getTrips(opts), totalCount: getTripCount(opts), chips: getChips(opts) };
 }) satisfies PageServerLoad;
 
 function getFilterParams(params: URLSearchParams, orgId: string): TripFilterOptions {
@@ -65,4 +65,14 @@ function getDate(param: string | null) {
 	}
 
 	return new Date(param);
+}
+
+function getChips(opts: TripFilterOptions) {
+	const values = [];
+
+	if (opts.vehicleNumber) {
+		values.push({ name: "vehicleNumber", displayName: "Vehicle", value: opts.vehicleNumber });
+	}
+
+	return values;
 }

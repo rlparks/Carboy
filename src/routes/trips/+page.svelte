@@ -3,6 +3,7 @@
 	import { page } from "$app/state";
 	import Button from "$lib/components/Button.svelte";
 	import Checkbox from "$lib/components/Checkbox.svelte";
+	import FilterChip from "$lib/components/FilterChip.svelte";
 	import Input from "$lib/components/Input.svelte";
 	import Link from "$lib/components/Link.svelte";
 	import Select from "$lib/components/Select.svelte";
@@ -57,7 +58,6 @@
 
 <WindowTitle title="Trips" description="View and manage trips." />
 
-<!-- TODO: trips chips -->
 <div class="space-y-2">
 	<div class="flex items-end justify-between">
 		{#await data.totalCount}
@@ -209,6 +209,14 @@
 			</div>
 		</div>
 	</div>
+
+	{#if data.chips.length > 0}
+		<section>
+			{#each data.chips as chip (chip.name + chip.value)}
+				<FilterChip {...chip} />
+			{/each}
+		</section>
+	{/if}
 
 	<Table {headers}>
 		{#await data.trips}
