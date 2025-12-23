@@ -87,7 +87,9 @@
 
 	<Checkbox {...editAccount.fields.archived.as("checkbox")} label="Archived" />
 
-	<Checkbox {...editAccount.fields.passwordEnabled.as("checkbox")} label="Password Enabled" />
+	{#if data.account?.role === "superadmin"}
+		<Checkbox {...editAccount.fields.passwordEnabled.as("checkbox")} label="Password Enabled" />
+	{/if}
 
 	<Button type="submit">Submit</Button>
 </form>

@@ -59,8 +59,10 @@
 	<p class="font-semibold">Archived:</p>
 	<p>{data.editAccount.archived ? "Yes" : "No"}</p>
 
-	<p class="font-semibold">Password Enabled:</p>
-	<p>{data.editAccount.passwordEnabled ? "Yes" : "No"}</p>
+	{#if data.account?.role === "superadmin"}
+		<p class="font-semibold">Password Enabled:</p>
+		<p>{data.editAccount.passwordEnabled ? "Yes" : "No"}</p>
+	{/if}
 
 	<p class="font-semibold">Created At:</p>
 	<p>{data.editAccount.createdAt.toLocaleString()}</p>

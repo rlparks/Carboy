@@ -34,6 +34,13 @@ export const editAccount = form(
 			return error(403, "Forbidden");
 		}
 
+		if (!event.locals.security.hasRole("superadmin") && passwordEnabled) {
+			// this may lead to errors when editing accounts for admins?
+			// hopefully no use case for this :)
+			console.log("Non-superadmin attempted to enable password:", event.locals.account);
+			return error(403, "Forbidden");
+		}
+
 		if (role === "superadmin" && !event.locals.security.hasRole("superadmin")) {
 			return error(403, "Cannot assign superadmin role");
 		}
