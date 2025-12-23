@@ -99,7 +99,7 @@
 <WindowTitle {title} description="Check out a vehicle." />
 
 <div class="justify-around space-y-4 md:flex">
-	<section class="w-md space-y-2">
+	<section class="max-w-md space-y-2">
 		{#if !creatingDestination}
 			<PageTitle title="Check Out" />
 
@@ -154,7 +154,7 @@
 			</form>
 		{/if}
 	</section>
-	<section class="container w-md">
+	<section class="container max-w-md">
 		<form {...checkout} class="space-y-4">
 			<input {...checkout.fields.vehicleId.as("hidden", data.vehicle.id)} />
 

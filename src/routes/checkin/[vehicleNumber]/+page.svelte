@@ -144,7 +144,7 @@
 		{/if}
 	</section>
 
-	<section class="container w-md">
+	<section class="container max-w-md">
 		<form
 			{...checkin.enhance((e) => {
 				if (data.distanceWarningStart) {
