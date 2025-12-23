@@ -24,7 +24,7 @@ export async function getAccounts() {
                     WHERE ao.account_id = a.id
                 ) AS organizations
             FROM account a
-            ORDER BY created_at DESC;
+            ORDER BY archived, username;
         `;
 
 		return rows;
@@ -55,7 +55,7 @@ export async function getAccountsInOrganization(organizationId: string) {
             FROM account a
             INNER JOIN account_organization ao ON a.id = ao.account_id
             WHERE ao.organization_id = ${organizationId}
-            ORDER BY a.created_at DESC;
+            ORDER BY archived, a.username;
         `;
 
 		return rows;
