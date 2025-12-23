@@ -23,7 +23,6 @@ export const load = (async (event) => {
 	if (event.locals.security.hasRole("superadmin")) {
 		const departments = await getDepartments();
 		const departmentGroups = Object.groupBy(departments, (d) => d.organizationName);
-		console.log(departmentGroups);
 
 		const groupOptions = [];
 
