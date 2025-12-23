@@ -104,7 +104,7 @@
 		</div>
 	</section>
 
-	<section class="max-w-md space-y-4">
+	<section class="max-w-md space-y-4 md:w-md">
 		{#if data.trip.destinations.length}
 			<div class="space-y-2">
 				<h2 class="text-3xl font-semibold">Destinations</h2>
