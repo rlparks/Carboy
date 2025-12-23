@@ -78,7 +78,7 @@
 			<NavLink href="/" text="Home" mode="exact" />
 		</li>
 		<li>
-			<NavLink href="/trips" text="Trips" mode="exact" />
+			<NavLink href="/trips" text="Trips" mode="startsWith" />
 		</li>
 		<!-- TODO: dashboard -->
 	{/if}
