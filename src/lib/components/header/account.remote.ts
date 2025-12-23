@@ -1,8 +1,7 @@
 import { resolve } from "$app/paths";
 import { form, getRequestEvent } from "$app/server";
 import { deleteSession } from "$lib/server/auth";
-import { deleteSessionCookie } from "$lib/server/auth/helpers";
-import { getOidcUrls } from "$lib/server/auth/oidc";
+import { deleteSessionCookie, endOidcSession } from "$lib/server/auth/helpers";
 import { getOidcConfig } from "$lib/server/config/oidc";
 import { redirect } from "@sveltejs/kit";
 
@@ -26,12 +25,3 @@ export const logout = form(async () => {
 
 	return redirect(303, resolve("/"));
 });
-
-async function endOidcSession(origin: string, id_token: string) {
-	const { endSessionEndpoint } = await getOidcUrls();
-	const logoutUrl = new URL(endSessionEndpoint);
-	logoutUrl.searchParams.set("id_token_hint", id_token);
-	logoutUrl.searchParams.set("post_logout_redirect_uri", origin + "/");
-
-	return redirect(303, logoutUrl.toString());
-}

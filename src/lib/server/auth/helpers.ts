@@ -1,5 +1,6 @@
 import { impersonateCookieName, sessionCookieName } from "$lib/server/auth";
-import type { RequestEvent } from "@sveltejs/kit";
+import { getOidcUrls } from "$lib/server/auth/oidc";
+import { redirect, type RequestEvent } from "@sveltejs/kit";
 import crypto from "crypto";
 
 export function setSessionCookie(
@@ -55,4 +56,13 @@ export async function verifyPassword(password: string, passwordHash: string): Pr
 			resolve(key == derivedKey.toString("hex"));
 		});
 	});
+}
+
+export async function endOidcSession(origin: string, id_token: string) {
+	const { endSessionEndpoint } = await getOidcUrls();
+	const logoutUrl = new URL(endSessionEndpoint);
+	logoutUrl.searchParams.set("id_token_hint", id_token);
+	logoutUrl.searchParams.set("post_logout_redirect_uri", origin + "/");
+
+	return redirect(303, logoutUrl.toString());
 }
