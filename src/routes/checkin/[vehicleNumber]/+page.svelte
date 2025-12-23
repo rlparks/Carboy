@@ -241,7 +241,13 @@
 					<button
 						class="h-9.5 w-9.5 cursor-pointer border border-gray-300 px-3 dark:border-gray-600 dark:bg-gray-800"
 						type="button"
-						onclick={() => (creatingDestination = !creatingDestination)}
+						onclick={() => {
+							creatingDestination = !creatingDestination;
+							if (creatingDestination) {
+								// ensure newly visible form is not out of frame
+								window.scrollTo(0, 0);
+							}
+						}}
 					>
 						{#if !creatingDestination}
 							+
