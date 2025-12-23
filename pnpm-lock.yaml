@@ -10,6 +10,10 @@ overrides:
 importers:
 
   .:
+    dependencies:
+      sharp:
+        specifier: ^0.34.5
+        version: 0.34.5
     devDependencies:
       '@eslint/compat':
         specifier: ^2.0.0
@@ -68,9 +72,6 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.7.2
         version: 0.7.2(prettier-plugin-svelte@3.4.1(prettier@3.7.4)(svelte@5.46.0))(prettier@3.7.4)
-      sharp:
-        specifier: ^0.34.5
-        version: 0.34.5
       svelte:
         specifier: ^5.46.0
         version: 5.46.0
