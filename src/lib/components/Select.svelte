@@ -6,6 +6,11 @@
 		label: string;
 	};
 
+	type OptionGroups = {
+		label: string;
+		options: Option[];
+	};
+
 	type Props = {
 		name?: string;
 		label?: string;
@@ -13,6 +18,7 @@
 		placeholder?: string;
 		helperText?: string;
 		options?: Option[];
+		optionGroups?: OptionGroups[];
 		issues?: RemoteFormIssue[];
 	};
 	let {
@@ -22,6 +28,7 @@
 		placeholder = "",
 		helperText = "",
 		options = [],
+		optionGroups = [],
 		issues,
 	}: Props = $props();
 
@@ -44,9 +51,20 @@
 		{#if placeholder}
 			<option value="" disabled selected={value === ""}>{placeholder}</option>
 		{/if}
-		{#each options as option (option.value)}
-			<option value={option.value}>{option.label || "<blank>"}</option>
-		{/each}
+
+		{#if optionGroups.length > 0}
+			{#each optionGroups as group (group.label)}
+				<optgroup label={group.label}>
+					{#each group.options as option (option.value)}
+						<option value={option.value}>{option.label || "<blank>"}</option>
+					{/each}
+				</optgroup>
+			{/each}
+		{:else}
+			{#each options as option (option.value)}
+				<option value={option.value}>{option.label || "<blank>"}</option>
+			{/each}
+		{/if}
 	</select>
 
 	{#if helperText}
