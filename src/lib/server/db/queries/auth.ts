@@ -82,3 +82,17 @@ export async function getAccountPasswordHashById(accountId: string) {
 		throw parsePgError(err);
 	}
 }
+
+export async function setAccountPasswordHash(accountId: string, passwordHash: string) {
+	try {
+		await sql`
+            UPDATE account
+            SET
+                password_hash = ${passwordHash},
+                updated_at = NOW()
+            WHERE id = ${accountId}
+        ;`;
+	} catch (err) {
+		return parsePgError(err);
+	}
+}

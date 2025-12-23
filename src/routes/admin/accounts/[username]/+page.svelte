@@ -24,6 +24,15 @@
 				<Button type="submit">Impersonate</Button>
 			</form>
 		{/if}
+		{#if data.account?.role === "superadmin" && data.editAccount.passwordEnabled}
+			<Button
+				href={resolve("/admin/accounts/[username]/setpassword", {
+					username: data.editAccount.username,
+				})}
+			>
+				Set Password
+			</Button>
+		{/if}
 		{#if data.account?.role === "superadmin" || data.editAccount.role !== "superadmin"}
 			<Button
 				href={resolve("/admin/accounts/[username]/edit", { username: data.editAccount.username })}
