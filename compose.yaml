@@ -7,6 +7,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_URL: postgres://root:carboypassword@carboy-db:5432/carboy
+      BODY_SIZE_LIMIT: 15M
       # Analytics
       PUBLIC_RYBBIT_ID: 1
     depends_on:
