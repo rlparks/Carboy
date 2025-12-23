@@ -1,5 +1,6 @@
 import {
 	getDepartmentById,
+	getDepartments,
 	getDepartmentsByOrganizationId,
 } from "$lib/server/db/queries/department";
 import { error } from "@sveltejs/kit";
@@ -17,6 +18,28 @@ export const load = (async (event) => {
 	const department = await getDepartmentById(vehicle.departmentId);
 	if (department?.organizationId !== orgId) {
 		return error(403, "Vehicle does not belong to the selected organization.");
+	}
+
+	if (event.locals.security.hasRole("superadmin")) {
+		const departments = await getDepartments();
+		const departmentGroups = Object.groupBy(departments, (d) => d.organizationName);
+		console.log(departmentGroups);
+
+		const groupOptions = [];
+
+		for (const org of Object.keys(departmentGroups)) {
+			const departments = departmentGroups[org];
+			if (departments) {
+				const departmentOptions = departments.map((dept) => ({
+					value: dept.id,
+					label: dept.name,
+				}));
+
+				groupOptions.push({ label: org, options: departmentOptions });
+			}
+		}
+
+		return { departmentGroups: groupOptions };
 	}
 
 	return { departments: await getDepartmentsByOrganizationId(orgId) };

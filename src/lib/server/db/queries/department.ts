@@ -3,6 +3,29 @@ import { parsePgError } from "$lib/server/db/error";
 import { sql } from "$lib/server/db/postgres";
 import type { Department } from "$lib/types/db";
 
+export async function getDepartments() {
+	try {
+		const rows = await sql<(Department & { organizationName: string })[]>`
+            SELECT
+                d.id,
+                d.name,
+                d.position,
+                d.organization_id,
+                d.created_at,
+                d.updated_at,
+                o.name AS organization_name
+            FROM department d
+            INNER JOIN organization o ON o.id = d.organization_id
+            ORDER BY
+                d.position
+        ;`;
+
+		return rows;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
+
 export async function getDepartmentsByOrganizationId(organizationId: string) {
 	try {
 		const rows = await sql<Department[]>`

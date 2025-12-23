@@ -36,15 +36,25 @@
 		helperText="e.g. 2016 Ford Explorer"
 	/>
 
-	<!-- TODO: allow superadmins to move to other organization's department -->
-	<Select
-		name="departmentId"
-		label="Department"
-		options={data.departments.map((dept) => ({ value: dept.id, label: dept.name }))}
-		value={data.vehicle.departmentId}
-		placeholder="Select a department"
-		issues={editVehicle.fields.departmentId.issues()}
-	/>
+	{#if data.departments}
+		<Select
+			name="departmentId"
+			label="Department"
+			options={data.departments.map((dept) => ({ value: dept.id, label: dept.name }))}
+			value={data.vehicle.departmentId}
+			placeholder="Select a department"
+			issues={editVehicle.fields.departmentId.issues()}
+		/>
+	{:else}
+		<Select
+			name="departmentId"
+			label="Department"
+			optionGroups={data.departmentGroups}
+			value={data.vehicle.departmentId}
+			placeholder="Select a department"
+			issues={editVehicle.fields.departmentId.issues()}
+		/>
+	{/if}
 
 	<Input
 		name="mileage"
