@@ -14,8 +14,6 @@ export type TripFilterOptions = {
 	endTimeTo?: Date | null;
 	distance?: number | null;
 	distanceComparator?: "=" | "<" | ">" | "<=" | ">=";
-	duration?: number;
-	durationComparator?: "=" | "<" | ">" | "<=" | ">=";
 	startedBy?: string;
 	endedBy?: string | null;
 	endedByDifferent?: boolean;
@@ -60,29 +58,6 @@ export async function getTrips(opts: TripFilterOptions = {}) {
 				break;
 			default:
 				distance = sql`t.end_mileage - t.start_mileage = ${opts.distance}`;
-		}
-	}
-
-	let duration = sql`TRUE`;
-	if (opts.duration !== undefined && opts.durationComparator !== undefined) {
-		switch (opts.durationComparator) {
-			case "=":
-				duration = sql`t.end_time - t.start_time = ${opts.duration}`;
-				break;
-			case ">":
-				duration = sql`t.end_time - t.start_time > ${opts.duration}`;
-				break;
-			case "<":
-				duration = sql`t.end_time - t.start_time < ${opts.duration}`;
-				break;
-			case ">=":
-				duration = sql`t.end_time - t.start_time >= ${opts.duration}`;
-				break;
-			case "<=":
-				duration = sql`t.end_time - t.start_time <= ${opts.duration}`;
-				break;
-			default:
-				duration = sql`t.end_time - t.start_time = ${opts.duration}`;
 		}
 	}
 
@@ -140,7 +115,6 @@ export async function getTrips(opts: TripFilterOptions = {}) {
                 AND ${endTimeFrom}
                 AND ${endTimeTo}
                 AND ${distance}
-                AND ${duration}
                 AND ${startedBy}
                 AND ${endedBy}
                 AND ${endedByDifferent}
@@ -197,29 +171,6 @@ export async function getTripCount(opts: TripFilterOptions = {}) {
 		}
 	}
 
-	let duration = sql`TRUE`;
-	if (opts.duration !== undefined && opts.durationComparator !== undefined) {
-		switch (opts.durationComparator) {
-			case "=":
-				duration = sql`t.end_time - t.start_time = ${opts.duration}`;
-				break;
-			case ">":
-				duration = sql`t.end_time - t.start_time > ${opts.duration}`;
-				break;
-			case "<":
-				duration = sql`t.end_time - t.start_time < ${opts.duration}`;
-				break;
-			case ">=":
-				duration = sql`t.end_time - t.start_time >= ${opts.duration}`;
-				break;
-			case "<=":
-				duration = sql`t.end_time - t.start_time <= ${opts.duration}`;
-				break;
-			default:
-				duration = sql`t.end_time - t.start_time = ${opts.duration}`;
-		}
-	}
-
 	const startedBy = opts.startedBy ? sql`s.username = ${opts.startedBy}` : sql`TRUE`;
 
 	const endedBy = opts.endedBy !== undefined ? sql`e.username = ${opts.endedBy}` : sql`TRUE`;
@@ -245,7 +196,6 @@ export async function getTripCount(opts: TripFilterOptions = {}) {
                 AND ${endTimeFrom}
                 AND ${endTimeTo}
                 AND ${distance}
-                AND ${duration}
                 AND ${startedBy}
                 AND ${endedBy}
                 AND ${endedByDifferent}

@@ -177,30 +177,6 @@
 							</div>
 						</div>
 
-						<div class="flex items-end gap-2">
-							<div class="w-28">
-								<Select
-									label="Duration (min)"
-									name="durationComparator"
-									options={[
-										{ value: "=", label: "=" },
-										{ value: ">", label: ">" },
-										{ value: "<", label: "<" },
-										{ value: ">=", label: ">=" },
-										{ value: "<=", label: "<=" },
-									]}
-									value={page.url.searchParams.get("durationComparator") ?? "="}
-								/>
-							</div>
-							<div class="flex-1">
-								<Input
-									type="number"
-									name="duration"
-									value={page.url.searchParams.get("duration") ?? undefined}
-								/>
-							</div>
-						</div>
-
 						<div class="flex justify-end">
 							<Button type="submit">Submit</Button>
 						</div>

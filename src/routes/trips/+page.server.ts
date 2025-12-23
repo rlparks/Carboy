@@ -33,11 +33,6 @@ function getFilterParams(params: URLSearchParams, orgId: string): TripFilterOpti
 				? parseInt(params.get("distance")!)
 				: undefined,
 		distanceComparator: getComparator(params.get("distanceComparator")),
-		duration:
-			params.get("duration") !== null && params.get("duration") !== ""
-				? parseInt(params.get("duration")!)
-				: undefined,
-		durationComparator: getComparator(params.get("durationComparator")),
 		startedBy: params.get("startedBy") || undefined,
 		endedBy: params.get("endedBy") || undefined,
 		endedByDifferent:
@@ -112,10 +107,6 @@ function getChips(opts: TripFilterOptions, params: URLSearchParams) {
 
 	if (opts.distance) {
 		values.push({ name: "distance", displayName: "Distance", value: String(opts.distance) });
-	}
-
-	if (opts.duration) {
-		values.push({ name: "duration", displayName: "Duration", value: String(opts.duration) });
 	}
 
 	return values;
