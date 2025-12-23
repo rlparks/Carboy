@@ -55,11 +55,7 @@
 		issues={editVehicle.fields.mileage.issues()}
 	/>
 
-	<Checkbox
-		{...editVehicle.fields.archived.as("checkbox")}
-		label="Archived"
-		checked={data.vehicle.archived}
-	/>
+	<Checkbox name="b:archived" label="Archived" checked={data.vehicle.archived} />
 
 	<Checkbox {...editVehicle.fields.updateImage.as("checkbox")} label="Update Image" />
 
