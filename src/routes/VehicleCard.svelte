@@ -6,9 +6,10 @@
 
 	type Props = {
 		vehicle: VehicleWithDepartment;
+		showButton?: boolean;
 	};
 
-	let { vehicle }: Props = $props();
+	let { vehicle, showButton = true }: Props = $props();
 </script>
 
 <div class={["border", vehicle.isCheckedOut ? "border-blue-500" : "border-green-500"]}>
@@ -20,18 +21,20 @@
 		<p class="truncate text-xl text-ellipsis">{vehicle.number}</p>
 		<p class="truncate text-ellipsis">{vehicle.name}</p>
 
-		{#if !vehicle.isCheckedOut}
-			<div class="text-green-500">
-				<Button href={resolve("/checkout/[vehicleNumber]", { vehicleNumber: vehicle.number })}>
-					Check Out
-				</Button>
-			</div>
-		{:else}
-			<div class="text-blue-500">
-				<Button href={resolve("/checkin/[vehicleNumber]", { vehicleNumber: vehicle.number })}>
-					Check In
-				</Button>
-			</div>
+		{#if showButton}
+			{#if !vehicle.isCheckedOut}
+				<div class="text-green-500">
+					<Button href={resolve("/checkout/[vehicleNumber]", { vehicleNumber: vehicle.number })}>
+						Check Out
+					</Button>
+				</div>
+			{:else}
+				<div class="text-blue-500">
+					<Button href={resolve("/checkin/[vehicleNumber]", { vehicleNumber: vehicle.number })}>
+						Check In
+					</Button>
+				</div>
+			{/if}
 		{/if}
 	</section>
 	{#if vehicle.destinations}
