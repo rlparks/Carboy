@@ -4,6 +4,7 @@
 	import PageTitle from "$lib/components/PageTitle.svelte";
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
 	import type { Destination } from "$lib/types/db";
+	import { createDestinationSimple } from "../../checkout/[vehicleNumber]/createDestinationSimple.remote";
 	import { searchDestinations } from "../../checkout/[vehicleNumber]/searchDestinations.remote";
 	import { checkin } from "./checkin.remote";
 
@@ -93,28 +94,72 @@
 
 		handleDrop();
 	}
+
+	let creatingDestination = $state(false);
 </script>
 
 <WindowTitle {title} description="Check in a vehicle." />
 
 <div class="justify-around space-y-4 md:flex">
 	<section class="max-w-md space-y-4">
-		<div class="space-y-2">
-			<PageTitle title="Check In" />
+		{#if !creatingDestination}
+			<div class="space-y-2">
+				<PageTitle title="Check In" />
 
-			{#if data.vehicle.hasImage}
-				<img alt="Vehicle {data.vehicle.number}" src="/api/images/vehicles/{data.vehicle.number}" />
-			{/if}
+				{#if data.vehicle.hasImage}
+					<img
+						alt="Vehicle {data.vehicle.number}"
+						src="/api/images/vehicles/{data.vehicle.number}"
+					/>
+				{/if}
 
-			<h2 class="text-3xl font-semibold">{data.vehicle.number}</h2>
-			<p class="text-xl">{data.vehicle.name}</p>
-			{#if data.vehicle.mileage !== null}
-				<p class="text-xl">
-					{data.vehicle.mileage.toLocaleString()}
-					{data.vehicle.mileage === 1 ? "mile" : "miles"}
-				</p>
-			{/if}
-		</div>
+				<h2 class="text-3xl font-semibold">{data.vehicle.number}</h2>
+				<p class="text-xl">{data.vehicle.name}</p>
+				{#if data.vehicle.mileage !== null}
+					<p class="text-xl">
+						{data.vehicle.mileage.toLocaleString()}
+						{data.vehicle.mileage === 1 ? "mile" : "miles"}
+					</p>
+				{/if}
+			</div>
+		{:else}
+			<h2 class="text-3xl font-semibold">Create Destination</h2>
+			<form
+				class="space-y-4"
+				{...createDestinationSimple.enhance(async (e) => {
+					await e.submit();
+					if (!createDestinationSimple.fields.allIssues()?.length) {
+						e.form.reset();
+						creatingDestination = false;
+					}
+				})}
+			>
+				<Input
+					{...createDestinationSimple.fields.name.as("text")}
+					label="Name"
+					helperText="Must be unique"
+					issues={createDestinationSimple.fields.name.issues()}
+				/>
+
+				<Input
+					{...createDestinationSimple.fields.shortName.as("text")}
+					label="Short Name"
+					helperText="Another identifier for the destination (building number)"
+					issues={createDestinationSimple.fields.shortName.issues()}
+				/>
+
+				<Input
+					{...createDestinationSimple.fields.address.as("text")}
+					label="Address"
+					issues={createDestinationSimple.fields.address.issues()}
+				/>
+
+				<div class="flex gap-2">
+					<Button type="submit">Submit</Button>
+					<Button type="button" onclick={() => (creatingDestination = false)}>Cancel</Button>
+				</div>
+			</form>
+		{/if}
 
 		<div class="space-y-2">
 			<h2 class="text-3xl font-semibold">Trip</h2>
@@ -185,7 +230,26 @@
 
 			<div class="space-y-2">
 				<h2 class="text-3xl font-semibold">Destinations</h2>
-				<Input label="Search" issues={checkin.fields.destinationIds.issues()} bind:value={query} />
+				<div class="flex items-end gap-2">
+					<div class="grow">
+						<Input
+							label="Search"
+							issues={checkin.fields.destinationIds.issues()}
+							bind:value={query}
+						/>
+					</div>
+					<button
+						class="h-9.5 w-9.5 cursor-pointer border border-gray-300 px-3 dark:border-gray-600 dark:bg-gray-800"
+						type="button"
+						onclick={() => (creatingDestination = !creatingDestination)}
+					>
+						{#if !creatingDestination}
+							+
+						{:else}
+							-
+						{/if}
+					</button>
+				</div>
 
 				<!-- search results -->
 				<div>
