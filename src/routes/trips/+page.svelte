@@ -211,7 +211,7 @@
 	</div>
 
 	{#if data.chips.length > 0}
-		<section>
+		<section class="flex gap-2">
 			{#each data.chips as chip (chip.name + chip.value)}
 				<FilterChip {...chip} />
 			{/each}
