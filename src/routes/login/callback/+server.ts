@@ -47,6 +47,7 @@ export const GET: RequestHandler = async (event) => {
 	const username = parseUsernameClaim(oidcUserInfo, usernameClaim);
 
 	if (!username) {
+		console.error(oidcUserInfo);
 		return error(400, "Invalid OIDC user info.");
 	}
 
