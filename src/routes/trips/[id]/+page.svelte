@@ -27,7 +27,7 @@
 <WindowTitle {title} description="View trip details." />
 
 <div class="justify-around space-y-4 md:flex">
-	<section class="w-md space-y-4">
+	<section class="max-w-md space-y-4">
 		<div class="space-y-2">
 			<header class="flex justify-between">
 				<PageTitle {title} />
@@ -104,7 +104,7 @@
 		</div>
 	</section>
 
-	<section class="w-md space-y-4">
+	<section class="max-w-md space-y-4">
 		{#if data.trip.destinations.length}
 			<div class="space-y-2">
 				<h2 class="text-3xl font-semibold">Destinations</h2>
