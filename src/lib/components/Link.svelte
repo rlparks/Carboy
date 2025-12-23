@@ -1,9 +1,8 @@
 <script lang="ts">
-	import type { ResolvedPathname } from "$app/types";
 	import type { Snippet } from "svelte";
 
 	type Props = {
-		href: ResolvedPathname;
+		href: string;
 		children: Snippet;
 	};
 

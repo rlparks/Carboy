@@ -15,7 +15,7 @@
 <WindowTitle title="Destinations" description="View and manage destinations." />
 
 <header class="flex items-center justify-between">
-	<aside class="italic">Note: destinations are shared across all organizations.</aside>
+	<aside class="italic">Destinations are shared across all organizations.</aside>
 	<Button href={resolve("/admin/destinations/create")}>Create</Button>
 </header>
 

@@ -10,6 +10,7 @@
 		<NavLink href="/admin/destinations" text="Destinations" mode="startsWith" />
 		<NavLink href="/admin/departments" text="Departments" mode="startsWith" />
 		<NavLink href="/admin/accounts" text="Accounts" mode="startsWith" />
+		<NavLink href="/admin/dashboard" text="Dashboard Keys" mode="startsWith" />
 	</nav>
 </div>
 

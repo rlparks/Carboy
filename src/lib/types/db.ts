@@ -107,3 +107,12 @@ export type Configuration = {
 	createdAt: Date;
 	updatedAt: Date | null;
 };
+
+export type DashboardKey = {
+	id: string;
+	name: string | null;
+	key: string;
+	organizationId: string;
+	createdAt: Date;
+	updatedAt: Date | null;
+};
