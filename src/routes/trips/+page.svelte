@@ -57,6 +57,7 @@
 
 <WindowTitle title="Trips" description="View and manage trips." />
 
+<!-- TODO: trips chips -->
 <div class="space-y-2">
 	<div class="flex items-end justify-between">
 		{#await data.totalCount}

@@ -24,7 +24,7 @@
 			<TableCell colspan={headers.length} class="text-center italic">Loading...</TableCell>
 		</TableRow>
 	{:then vehicles}
-		{#each vehicles as vehicle (vehicle.id)}
+		{#each vehicles.toSorted((a, b) => b.tripCount - a.tripCount) as vehicle (vehicle.id)}
 			<TableRow>
 				<TableCell>
 					<Link href={resolve("/admin/vehicles/[id]", { id: vehicle.id })}>
