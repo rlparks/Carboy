@@ -29,24 +29,34 @@
 	{/if}
 {/if}
 
-{#if data.departments && data.groupedVehicles}
-	{#each data.groupedVehicles as topLevelSection (topLevelSection.name)}
-		{#if Object.values(topLevelSection.vehicles).some((vehicles) => vehicles?.length && vehicles.length > 0)}
-			<h1 class="text-4xl font-bold">{topLevelSection.name}</h1>
+{#if data.departments && data.availableVehicles && data.checkedOutVehicles}
+	<h1 class="text-4xl font-bold">Available</h1>
 
-			{#each data.departments as department (topLevelSection.name + department.id)}
-				{#if topLevelSection.vehicles[department.id]?.length}
-					<h2 class="text-3xl font-semibold">{department.name}</h2>
+	{#if Object.values(data.availableVehicles).some((vehicles) => vehicles?.length && vehicles.length > 0)}
+		{#each data.departments as department (department.id)}
+			{#if data.availableVehicles[department.id]?.length}
+				<h2 class="text-3xl font-semibold">{department.name}</h2>
 
-					<section class="grid grid-cols-2 gap-4 md:grid-cols-5">
-						{#each topLevelSection.vehicles[department.id] as vehicle (vehicle.id)}
-							<VehicleCard {vehicle} />
-						{/each}
-					</section>
-				{/if}
+				<section class="grid grid-cols-2 gap-4 md:grid-cols-5">
+					{#each data.availableVehicles[department.id] as vehicle (vehicle.id)}
+						<VehicleCard {vehicle} />
+					{/each}
+				</section>
+			{/if}
+		{/each}
+	{:else}
+		<p class="text-lg italic">No vehicles are currently available.</p>
+	{/if}
+
+	{#if data.checkedOutVehicles.length}
+		<h1 class="text-4xl font-bold">Checked Out</h1>
+
+		<section class="grid grid-cols-2 gap-4 md:grid-cols-5">
+			{#each data.checkedOutVehicles as vehicle (vehicle.id)}
+				<VehicleCard {vehicle} />
 			{/each}
-		{/if}
-	{/each}
+		</section>
+	{/if}
 {:else}
 	<p>Welcome to Carboy 2.</p>
 {/if}

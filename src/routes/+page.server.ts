@@ -20,18 +20,16 @@ export const load = (async (event) => {
 			checkedOut: vehicles.filter((vehicle) => vehicle.isCheckedOut),
 		};
 
-		const groupedVehicles = [
-			{
-				name: "Available",
-				vehicles: Object.groupBy(vehiclesWithStatus.available, (vehicle) => vehicle.departmentId),
-			},
-			{
-				name: "Checked Out",
-				vehicles: Object.groupBy(vehiclesWithStatus.checkedOut, (vehicle) => vehicle.departmentId),
-			},
-		];
+		const availableVehicles = Object.groupBy(
+			vehiclesWithStatus.available,
+			(vehicle) => vehicle.departmentId,
+		);
 
-		return { departments, groupedVehicles };
+		return {
+			departments,
+			availableVehicles,
+			checkedOutVehicles: vehiclesWithStatus.checkedOut,
+		};
 	}
 
 	return {};
