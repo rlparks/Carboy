@@ -25,10 +25,15 @@ export const load = (async (event) => {
 			(vehicle) => vehicle.departmentId,
 		);
 
+		const successMessage = event.url.searchParams.get("success");
+		const errorMessage = event.url.searchParams.get("error");
+
 		return {
 			departments,
 			availableVehicles,
 			checkedOutVehicles: vehiclesWithStatus.checkedOut,
+			successMessage,
+			errorMessage,
 		};
 	}
 
