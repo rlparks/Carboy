@@ -12,12 +12,14 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<Header
-	account={data.account}
-	organizations={data.accountOrganizations}
-	selectedOrganizationId={data.selectedOrganizationId}
-	isImpersonating={data.impersonatedBy !== null}
-/>
+{#if page.route.id !== "/dashboard"}
+	<Header
+		account={data.account}
+		organizations={data.accountOrganizations}
+		selectedOrganizationId={data.selectedOrganizationId}
+		isImpersonating={data.impersonatedBy !== null}
+	/>
+{/if}
 
 <MainBody>
 	{#if data.account && !data.selectedOrganizationId && !page.route.id?.startsWith("/super")}

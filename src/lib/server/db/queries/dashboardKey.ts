@@ -66,6 +66,28 @@ export async function getDashboardKeyById(id: string) {
 	}
 }
 
+export async function getDashboardKeyByKey(key: string) {
+	try {
+		const [row] = await sql<DashboardKey[]>`
+            SELECT
+                id,
+                name,
+                key,
+                organization_id,
+                created_at,
+                updated_at
+            FROM
+                dashboard_key
+            WHERE
+                key = ${key}
+        `;
+
+		return row;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
+
 export async function createDashboardKey(
 	data: Omit<DashboardKey, "id" | "createdAt" | "updatedAt">,
 ) {

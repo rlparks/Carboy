@@ -80,7 +80,9 @@
 		<li>
 			<NavLink href="/trips" text="Trips" mode="startsWith" />
 		</li>
-		<!-- TODO: dashboard -->
+		<li>
+			<NavLink href="/dashboard" text="Dashboard" mode="exact" />
+		</li>
 	{/if}
 
 	{#if account?.role === "admin" || account?.role === "superadmin"}
