@@ -1,5 +1,6 @@
-import { form, getRequestEvent } from "$app/server";
+import { form, getRequestEvent, query } from "$app/server";
 import { getDepartmentById } from "$lib/server/db/queries/department";
+import { getDestinationByName as getDestDb } from "$lib/server/db/queries/destination";
 import { checkoutVehicle, getTrips } from "$lib/server/db/queries/trip";
 import { getVehicleById } from "$lib/server/db/queries/vehicle";
 import { error, invalid, redirect } from "@sveltejs/kit";
@@ -48,3 +49,12 @@ export const checkout = form(
 		return redirect(303, "/?success=checkout");
 	},
 );
+
+export const getDestinationByName = query(v.string(), async (name) => {
+	const event = getRequestEvent();
+	event.locals.security.enforceAuthenticated();
+
+	const destination = await getDestDb(name);
+
+	return destination;
+});

@@ -4,7 +4,7 @@
 	import PageTitle from "$lib/components/PageTitle.svelte";
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
 	import type { Destination } from "$lib/types/db";
-	import { checkout } from "./checkout.remote";
+	import { checkout, getDestinationByName } from "./checkout.remote";
 	import { createDestinationSimple } from "./createDestinationSimple.remote";
 	import { searchDestinations } from "./searchDestinations.remote";
 
@@ -124,6 +124,11 @@
 					if (!createDestinationSimple.fields.allIssues()?.length) {
 						e.form.reset();
 						creatingDestination = false;
+
+						const newDestination = await getDestinationByName(e.data.name);
+						if (newDestination) {
+							destinations.push(newDestination);
+						}
 					}
 				})}
 			>

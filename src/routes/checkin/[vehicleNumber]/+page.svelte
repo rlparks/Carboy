@@ -4,6 +4,7 @@
 	import PageTitle from "$lib/components/PageTitle.svelte";
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
 	import type { Destination } from "$lib/types/db";
+	import { getDestinationByName } from "../../checkout/[vehicleNumber]/checkout.remote";
 	import { createDestinationSimple } from "../../checkout/[vehicleNumber]/createDestinationSimple.remote";
 	import { searchDestinations } from "../../checkout/[vehicleNumber]/searchDestinations.remote";
 	import { checkin } from "./checkin.remote";
@@ -131,6 +132,11 @@
 					if (!createDestinationSimple.fields.allIssues()?.length) {
 						e.form.reset();
 						creatingDestination = false;
+
+						const newDestination = await getDestinationByName(e.data.name);
+						if (newDestination) {
+							destinations.push(newDestination);
+						}
 					}
 				})}
 			>
