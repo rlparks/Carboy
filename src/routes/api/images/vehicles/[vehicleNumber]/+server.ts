@@ -5,8 +5,6 @@ import { join } from "path";
 import type { RequestHandler } from "./$types";
 
 export const GET: RequestHandler = async (event) => {
-	event.locals.security.enforceAuthenticated();
-
 	const { vehicleNumber } = event.params;
 	const vehicle = await getVehicleByNumber(vehicleNumber);
 	if (!vehicle) {
