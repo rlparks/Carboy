@@ -159,8 +159,10 @@
 				<form
 					{...addNote.enhance(async (e) => {
 						await e.submit();
-						addingNote = false;
-						e.form.reset();
+						if (!addNote.fields.allIssues()?.length) {
+							addingNote = false;
+							e.form.reset();
+						}
 					})}
 					class="space-y-2"
 				>
