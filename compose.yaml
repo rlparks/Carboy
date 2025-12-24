@@ -10,6 +10,8 @@ services:
       BODY_SIZE_LIMIT: 15M
       # Analytics
       PUBLIC_RYBBIT_ID: 1
+    volumes:
+      - ./images:/app/images
     depends_on:
       - carboy-db
     networks:

@@ -99,7 +99,7 @@
 <WindowTitle {title} description="Check out a vehicle." />
 
 <div class="justify-around space-y-4 md:flex">
-	<section class="max-w-md space-y-2">
+	<section class="max-w-md space-y-2 md:w-md">
 		{#if !creatingDestination}
 			<PageTitle title="Check Out" />
 

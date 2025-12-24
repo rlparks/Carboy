@@ -27,7 +27,7 @@
 <WindowTitle {title} description="View trip details." />
 
 <div class="justify-around space-y-4 md:flex">
-	<section class="max-w-md space-y-4">
+	<section class="max-w-md space-y-4 md:w-md">
 		<div class="space-y-2">
 			<header class="flex justify-between">
 				<PageTitle {title} />
@@ -160,6 +160,7 @@
 					{...addNote.enhance(async (e) => {
 						await e.submit();
 						addingNote = false;
+						e.form.reset();
 					})}
 					class="space-y-2"
 				>
