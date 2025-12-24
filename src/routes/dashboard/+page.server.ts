@@ -29,20 +29,32 @@ export const load = (async (event) => {
 		orgId = orgFromSession;
 	}
 
-	const vehicles = getVehiclesByOrganizationId(orgId);
+	const vehiclesPromise = getVehiclesByOrganizationId(orgId);
 
-	const totalTripCount = getTripCount({ organizationId: orgId });
+	const totalTripCountPromise = getTripCount({ organizationId: orgId });
 
 	const firstOfMonth = new Date();
 	firstOfMonth.setDate(1);
 	firstOfMonth.setHours(0, 0, 0, 0);
-	const monthTripCount = getTripCount({ organizationId: orgId, startTimeFrom: firstOfMonth });
+	const monthTripCountPromise = getTripCount({
+		organizationId: orgId,
+		startTimeFrom: firstOfMonth,
+	});
 
 	const startOfDay = new Date();
 	startOfDay.setHours(0, 0, 0, 0);
-	const todayTripCount = getTripCount({ organizationId: orgId, startTimeFrom: startOfDay });
+	const todayTripCountPromise = getTripCount({ organizationId: orgId, startTimeFrom: startOfDay });
 
-	const destinations = getDestinations();
+	const destinationsPromise = getDestinations();
+
+	const [vehicles, totalTripCount, monthTripCount, todayTripCount, destinations] =
+		await Promise.all([
+			vehiclesPromise,
+			totalTripCountPromise,
+			monthTripCountPromise,
+			todayTripCountPromise,
+			destinationsPromise,
+		]);
 
 	return { vehicles, trips: { totalTripCount, monthTripCount, todayTripCount }, destinations };
 }) satisfies PageServerLoad;

@@ -8,6 +8,6 @@
 	let { children }: Props = $props();
 </script>
 
-<main class={page.route.id !== "/dashboard" ? "m-4 space-y-4" : ""}>
+<main class={page.route.id !== "/dashboard" ? "m-4 space-y-4" : "space-y-4"}>
 	{@render children()}
 </main>
