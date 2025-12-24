@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from "$app/state";
-	import favicon from "$lib/assets/favicon.svg";
+	import favicon from "$lib/assets/carboy-favicon.png";
 	import Header from "$lib/components/header/Header.svelte";
 	import MainBody from "$lib/components/MainBody.svelte";
 	import "../app.css";
