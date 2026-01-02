@@ -17,7 +17,7 @@
 	const headers = [
 		"",
 		"Vehicle",
-		"Started By",
+		"Account",
 		"Starting Time",
 		"Ending Time",
 		"Destinations",
@@ -206,7 +206,14 @@
 						<Link href={resolve("/trips/[id]", { id: trip.id })}>Details</Link>
 					</TableCell>
 					<TableCell>{trip.vehicleNumber}</TableCell>
-					<TableCell>{trip.startedByName}</TableCell>
+					<TableCell>
+						{trip.startedByName}
+						{#if trip.endedByName && trip.endedBy !== trip.startedBy}
+							<span class="text-orange-400" title="Checked in by {trip.endedByName}">
+								({trip.endedByName})
+							</span>
+						{/if}
+					</TableCell>
 					<TableCell>{trip.startTime.toLocaleString()}</TableCell>
 					<TableCell>{trip.endTime?.toLocaleString() ?? ""}</TableCell>
 					<TableCell class="max-w-50 truncate text-ellipsis">
