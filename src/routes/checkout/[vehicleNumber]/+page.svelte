@@ -98,9 +98,9 @@
 
 <WindowTitle {title} description="Check out a vehicle." />
 
-<div class="justify-around space-y-4 md:flex">
-	<section class="max-w-md space-y-2 md:w-md">
-		{#if !creatingDestination}
+{#if !creatingDestination}
+	<div class="justify-around space-y-4 md:flex">
+		<section class="max-w-md space-y-2 md:w-md">
 			<PageTitle title="Check Out" />
 
 			{#if data.vehicle.hasImage}
@@ -115,170 +115,170 @@
 					{data.vehicle.mileage === 1 ? "mile" : "miles"}
 				</p>
 			{/if}
-		{:else}
-			<h2 class="text-3xl font-semibold">Create Destination</h2>
-			<form
-				class="space-y-4"
-				{...createDestinationSimple.enhance(async (e) => {
-					await e.submit();
-					if (!createDestinationSimple.fields.allIssues()?.length) {
-						e.form.reset();
-						creatingDestination = false;
+		</section>
+		<section class="container max-w-md">
+			<form {...checkout} class="space-y-4">
+				<input {...checkout.fields.vehicleId.as("hidden", data.vehicle.id)} />
 
-						const newDestination = await getDestinationByName(e.data.name);
-						if (newDestination) {
-							destinations.push(newDestination);
-						}
-					}
-				})}
-			>
-				<Input
-					{...createDestinationSimple.fields.name.as("text")}
-					label="Name"
-					helperText="Must be unique"
-					issues={createDestinationSimple.fields.name.issues()}
-				/>
-
-				<Input
-					{...createDestinationSimple.fields.shortName.as("text")}
-					label="Short Name"
-					helperText="Another identifier for the destination (building number)"
-					issues={createDestinationSimple.fields.shortName.issues()}
-				/>
-
-				<Input
-					{...createDestinationSimple.fields.address.as("text")}
-					label="Address"
-					issues={createDestinationSimple.fields.address.issues()}
-				/>
-
-				<div class="flex gap-2">
-					<Button type="submit">Submit</Button>
-					<Button type="button" onclick={() => (creatingDestination = false)}>Cancel</Button>
-				</div>
-			</form>
-		{/if}
-	</section>
-	<section class="container max-w-md">
-		<form {...checkout} class="space-y-4">
-			<input {...checkout.fields.vehicleId.as("hidden", data.vehicle.id)} />
-
-			<div class="space-y-2">
-				<h2 class="text-3xl font-semibold">Destinations</h2>
-				<div class="flex items-end gap-2">
-					<div class="grow">
-						<Input
-							label="Search"
-							issues={checkout.fields.destinationIds.issues()}
-							bind:value={query}
-						/>
-					</div>
-					<button
-						class="h-9.5 w-9.5 cursor-pointer border border-gray-300 px-3 dark:border-gray-600 dark:bg-gray-800"
-						type="button"
-						onclick={() => (creatingDestination = !creatingDestination)}
-					>
-						{#if !creatingDestination}
-							+
-						{:else}
-							-
-						{/if}
-					</button>
-				</div>
-
-				<!-- search results -->
-				<div>
-					{#await searchPromise}
-						<p aria-live="polite">Loading...</p>
-					{:then results}
-						<!-- results will be undefined if no query -->
-						{#if results}
-							<ul class="divide-y">
-								{#each results as destination (destination.id)}
-									{#if !destinations.find((d) => d.id === destination.id)}
-										<li class="dark:bg-gray-800 dark:hover:bg-gray-700">
-											<button
-												type="button"
-												class="flex w-full cursor-pointer items-center justify-between p-4 text-left"
-												onclick={() => {
-													destinations.push(destination);
-													query = "";
-												}}
-											>
-												<div>
-													<p>{destination.name}</p>
-													<p>{destination.shortName ?? " "}</p>
-												</div>
-												<p class="text-2xl">+</p>
-											</button>
-										</li>
-									{/if}
-								{:else}
-									<li class="italic">No results found.</li>
-								{/each}
-							</ul>
-						{/if}
-					{/await}
-				</div>
-
-				<!-- actual destination list for trip -->
-				<ol class="space-y-2">
-					{#each destinations as destination, i (destination.id)}
-						<li
-							data-destination-id={destination.id}
-							class={draggedOverIndex === i ? "bg-blue-100 dark:bg-blue-900" : "dark:bg-gray-800"}
-							draggable={true}
-							ondragstart={() => handleDragStart(destination.id)}
-							ondragover={(e) => handleDragOver(e, destination.id)}
-							ondragleave={handleDragLeave}
-							ondrop={() => handleDrop()}
-							ontouchstart={() => handleTouchStart(destination.id)}
-							ontouchmove={handleTouchMove}
-							ontouchend={handleTouchEnd}
+				<div class="space-y-2">
+					<h2 class="text-3xl font-semibold">Destinations</h2>
+					<div class="flex items-end gap-2">
+						<div class="grow">
+							<Input
+								label="Search"
+								issues={checkout.fields.destinationIds.issues()}
+								bind:value={query}
+							/>
+						</div>
+						<button
+							class="h-9.5 w-9.5 cursor-pointer border border-gray-300 px-3 dark:border-gray-600 dark:bg-gray-800"
+							type="button"
+							onclick={() => (creatingDestination = !creatingDestination)}
 						>
-							<div class="flex w-full cursor-grab items-center justify-between p-4 text-left">
-								<div class="flex items-center gap-4">
-									<p class="space-x-2 text-xl font-semibold select-none">
-										<span>⋮⋮</span>
-										<span>{i + 1}</span>
-									</p>
-									<div>
-										<p class="font-semibold">{destination.name}</p>
-										{#if destination.shortName}
-											<p class="text-sm text-gray-600 dark:text-gray-400">
-												{destination.shortName}
-											</p>
+							{#if !creatingDestination}
+								+
+							{:else}
+								-
+							{/if}
+						</button>
+					</div>
+
+					<!-- search results -->
+					<div>
+						{#await searchPromise}
+							<p aria-live="polite">Loading...</p>
+						{:then results}
+							<!-- results will be undefined if no query -->
+							{#if results}
+								<ul class="divide-y">
+									{#each results as destination (destination.id)}
+										{#if !destinations.find((d) => d.id === destination.id)}
+											<li class="dark:bg-gray-800 dark:hover:bg-gray-700">
+												<button
+													type="button"
+													class="flex w-full cursor-pointer items-center justify-between p-4 text-left"
+													onclick={() => {
+														destinations.push(destination);
+														query = "";
+													}}
+												>
+													<div>
+														<p>{destination.name}</p>
+														<p>{destination.shortName ?? " "}</p>
+													</div>
+													<p class="text-2xl">+</p>
+												</button>
+											</li>
 										{/if}
-										{#if destination.address}
-											<p class="text-sm text-gray-600 dark:text-gray-400">
-												{destination.address}
-											</p>
-										{/if}
+									{:else}
+										<li class="italic">No results found.</li>
+									{/each}
+								</ul>
+							{/if}
+						{/await}
+					</div>
+
+					<!-- actual destination list for trip -->
+					<ol class="space-y-2">
+						{#each destinations as destination, i (destination.id)}
+							<li
+								data-destination-id={destination.id}
+								class={draggedOverIndex === i ? "bg-blue-100 dark:bg-blue-900" : "dark:bg-gray-800"}
+								draggable={true}
+								ondragstart={() => handleDragStart(destination.id)}
+								ondragover={(e) => handleDragOver(e, destination.id)}
+								ondragleave={handleDragLeave}
+								ondrop={() => handleDrop()}
+								ontouchstart={() => handleTouchStart(destination.id)}
+								ontouchmove={handleTouchMove}
+								ontouchend={handleTouchEnd}
+							>
+								<div class="flex w-full cursor-grab items-center justify-between p-4 text-left">
+									<div class="flex items-center gap-4">
+										<p class="space-x-2 text-xl font-semibold select-none">
+											<span>⋮⋮</span>
+											<span>{i + 1}</span>
+										</p>
+										<div>
+											<p class="font-semibold">{destination.name}</p>
+											{#if destination.shortName}
+												<p class="text-sm text-gray-600 dark:text-gray-400">
+													{destination.shortName}
+												</p>
+											{/if}
+											{#if destination.address}
+												<p class="text-sm text-gray-600 dark:text-gray-400">
+													{destination.address}
+												</p>
+											{/if}
+										</div>
 									</div>
+									<button
+										type="button"
+										class="cursor-pointer text-xl text-red-600 hover:text-red-800"
+										onclick={() => destinations.splice(i, 1)}
+									>
+										✕
+									</button>
 								</div>
-								<button
-									type="button"
-									class="cursor-pointer text-xl text-red-600 hover:text-red-800"
-									onclick={() => destinations.splice(i, 1)}
-								>
-									✕
-								</button>
-							</div>
-							<input name="destinationIds[]" type="hidden" value={destination.id} />
-						</li>
-					{:else}
-						<p class="italic">No destinations selected.</p>
-					{/each}
-				</ol>
-			</div>
+								<input name="destinationIds[]" type="hidden" value={destination.id} />
+							</li>
+						{:else}
+							<p class="italic">No destinations selected.</p>
+						{/each}
+					</ol>
+				</div>
 
-			<div class="space-y-2">
-				<h2 class="text-3xl font-semibold">Note</h2>
+				<div class="space-y-2">
+					<h2 class="text-3xl font-semibold">Note</h2>
 
-				<Input {...checkout.fields.note.as("text")} helperText="Optional" />
-			</div>
+					<Input {...checkout.fields.note.as("text")} helperText="Optional" />
+				</div>
 
+				<Button type="submit">Submit</Button>
+			</form>
+		</section>
+	</div>
+{:else}
+	<h2 class="text-3xl font-semibold">Create Destination</h2>
+	<form
+		class="max-w-md space-y-4 md:w-md"
+		{...createDestinationSimple.enhance(async (e) => {
+			await e.submit();
+			if (!createDestinationSimple.fields.allIssues()?.length) {
+				e.form.reset();
+				creatingDestination = false;
+
+				const newDestination = await getDestinationByName(e.data.name);
+				if (newDestination) {
+					destinations.push(newDestination);
+				}
+			}
+		})}
+	>
+		<Input
+			{...createDestinationSimple.fields.name.as("text")}
+			label="Name"
+			helperText="Must be unique"
+			issues={createDestinationSimple.fields.name.issues()}
+		/>
+
+		<Input
+			{...createDestinationSimple.fields.shortName.as("text")}
+			label="Short Name"
+			helperText="Another identifier for the destination (building number)"
+			issues={createDestinationSimple.fields.shortName.issues()}
+		/>
+
+		<Input
+			{...createDestinationSimple.fields.address.as("text")}
+			label="Address"
+			issues={createDestinationSimple.fields.address.issues()}
+		/>
+
+		<div class="flex gap-2">
 			<Button type="submit">Submit</Button>
-		</form>
-	</section>
-</div>
+			<Button type="button" onclick={() => (creatingDestination = false)}>Cancel</Button>
+		</div>
+	</form>
+{/if}
