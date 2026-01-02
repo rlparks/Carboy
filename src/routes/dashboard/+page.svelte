@@ -9,10 +9,18 @@
 
 	const checkedOutVehicles = $derived(data.vehicles.filter((v) => v.isCheckedOut === true));
 
+	let intervalId: NodeJS.Timeout | null = null;
+
 	$effect(() => {
-		setInterval(() => {
+		intervalId = setInterval(() => {
 			invalidateAll();
 		}, 5000);
+
+		return () => {
+			if (intervalId) {
+				clearInterval(intervalId);
+			}
+		};
 	});
 </script>
 
