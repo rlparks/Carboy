@@ -67,7 +67,7 @@ export async function getTrips(opts: TripFilterOptions = {}) {
 
 	const endedByDifferent =
 		opts.endedByDifferent !== undefined && opts.endedByDifferent
-			? sql`t.ended_by IS DISTINCT FROM t.started_by`
+			? sql`t.ended_by IS DISTINCT FROM t.started_by AND t.ended_by IS NOT NULL`
 			: sql`TRUE`;
 
 	try {
@@ -177,7 +177,7 @@ export async function getTripCount(opts: TripFilterOptions = {}) {
 
 	const endedByDifferent =
 		opts.endedByDifferent !== undefined && opts.endedByDifferent
-			? sql`t.ended_by IS DISTINCT FROM t.started_by`
+			? sql`t.ended_by IS DISTINCT FROM t.started_by AND t.ended_by IS NOT NULL`
 			: sql`TRUE`;
 
 	try {
