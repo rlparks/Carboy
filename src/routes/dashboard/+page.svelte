@@ -33,9 +33,9 @@
 	</a>
 </header>
 
-<div class="container mx-auto">
-	<section class="flex flex-col items-center gap-4">
-		<h2 class="text-3xl">Checked Out</h2>
+<div class="mx-[6%]">
+	<section class="space-y-4">
+		<h2 class="text-center text-3xl">Checked Out</h2>
 		{#if checkedOutVehicles.length}
 			<div class="grid grid-cols-2 gap-4 md:grid-cols-5">
 				{#each checkedOutVehicles as vehicle (vehicle.id)}
