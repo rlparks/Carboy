@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { invalidateAll } from "$app/navigation";
 	import { resolve } from "$app/paths";
 	import logo from "$lib/assets/carboy-icon.png";
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
@@ -7,6 +8,12 @@
 	let { data } = $props();
 
 	const checkedOutVehicles = $derived(data.vehicles.filter((v) => v.isCheckedOut === true));
+
+	$effect(() => {
+		setInterval(() => {
+			invalidateAll();
+		}, 5000);
+	});
 </script>
 
 <WindowTitle title="Dashboard" description="See an overview of Carboy" />
