@@ -82,7 +82,11 @@ function getChips(opts: TripFilterOptions, params: URLSearchParams) {
 	}
 
 	if (opts.endedByDifferent) {
-		values.push({ name: "endedByDifferent", displayName: "Ended By Different User", value: "yes" });
+		values.push({
+			name: "endedByDifferentUser",
+			displayName: "Ended By Different User",
+			value: "yes",
+		});
 	}
 
 	const startTimeFrom = params.get("startTimeFrom");
