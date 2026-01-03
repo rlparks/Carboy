@@ -20,7 +20,7 @@ export async function getDestinations() {
                     SELECT count(*)
                     FROM trip_destination
                     WHERE trip_destination.destination_id = destination.id
-                ) as trip_count
+                )::int as trip_count
             FROM
                 destination
             ORDER BY
