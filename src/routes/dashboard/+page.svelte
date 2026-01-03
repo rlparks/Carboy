@@ -8,6 +8,7 @@
 	let { data } = $props();
 
 	const checkedOutVehicles = $derived(data.vehicles.filter((v) => v.isCheckedOut === true));
+	const availableVehiclesCount = $derived(data.vehicles.length - checkedOutVehicles.length);
 
 	let intervalId: NodeJS.Timeout | null = null;
 
@@ -46,5 +47,52 @@
 			<p class="text-xl italic">No vehicles are currently checked out.</p>
 		{/if}
 	</section>
+
 	<div class="my-6 w-full border-b"></div>
+
+	<section class="grid grid-cols-2 gap-4 md:grid-cols-5">
+		<div class="border">
+			<h2 class="p-4 text-xl">Vehicles</h2>
+			<div class="border-b"></div>
+			<div class="space-y-2 p-4">
+				<p class="truncate">
+					<span class="font-bold">{data.vehicles.length.toLocaleString()}</span>
+					total {data.vehicles.length === 1 ? "vehicle" : "vehicles"}
+				</p>
+
+				<p class="truncate">
+					<span class="font-bold">{availableVehiclesCount.toLocaleString()}</span>
+					available {availableVehiclesCount === 1 ? "vehicle" : "vehicles"}
+				</p>
+
+				<p class="truncate">
+					<span class="font-bold">{checkedOutVehicles.length.toLocaleString()}</span>
+					checked out {checkedOutVehicles.length === 1 ? "vehicle" : "vehicles"}
+				</p>
+			</div>
+		</div>
+		<div class="border">
+			<h2 class="p-4 text-xl">Trips</h2>
+			<div class="border-b"></div>
+			<div class="space-y-2 p-4">
+				<p class="truncate">
+					<span class="font-bold">{data.trips.totalTripCount.toLocaleString()}</span>
+					total {data.trips.totalTripCount === 1 ? "trip" : "trips"}
+				</p>
+
+				<p class="truncate">
+					<span class="font-bold">{data.trips.monthTripCount.toLocaleString()}</span>
+					{data.trips.monthTripCount === 1 ? "trip" : "trips"} this month
+				</p>
+
+				<p class="truncate">
+					<span class="font-bold">{data.trips.todayTripCount.toLocaleString()}</span>
+					{data.trips.todayTripCount === 1 ? "trip" : "trips"} today
+				</p>
+			</div>
+		</div>
+		<div>e</div>
+		<div>e</div>
+		<div>e</div>
+	</section>
 </div>

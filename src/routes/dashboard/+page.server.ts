@@ -47,7 +47,6 @@ export const load = (async (event) => {
 
 	const destinationsPromise = getDestinations();
 
-	// TODO: fast
 	const [vehicles, totalTripCount, monthTripCount, todayTripCount, destinations] =
 		await Promise.all([
 			vehiclesPromise,
