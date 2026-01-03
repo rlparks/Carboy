@@ -130,6 +130,34 @@
 			</div>
 		</div>
 
-		<div>e</div>
+		<div class="border">
+			<h2 class="p-4 text-xl">Top Destinations</h2>
+			<div class="border-b"></div>
+			<div class="space-y-2 p-4">
+				{#if data.destinations[0]}
+					<p class="truncate">
+						<span class="font-bold">{data.destinations[0].tripCount.toLocaleString()}</span>
+						{data.destinations[0].tripCount === 1 ? "trip" : "trips"} -
+						{data.destinations[0].name}
+					</p>
+				{/if}
+
+				{#if data.destinations[1]}
+					<p class="truncate">
+						<span class="font-bold">{data.destinations[1].tripCount.toLocaleString()}</span>
+						{data.destinations[1].tripCount === 1 ? "trip" : "trips"} -
+						{data.destinations[1].name}
+					</p>
+				{/if}
+
+				{#if data.destinations[2]}
+					<p class="truncate">
+						<span class="font-bold">{data.destinations[2].tripCount.toLocaleString()}</span>
+						{data.destinations[2].tripCount === 1 ? "trip" : "trips"} -
+						{data.destinations[2].name}
+					</p>
+				{/if}
+			</div>
+		</div>
 	</section>
 </div>
