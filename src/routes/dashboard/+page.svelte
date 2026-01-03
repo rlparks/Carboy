@@ -10,6 +10,11 @@
 	const checkedOutVehicles = $derived(data.vehicles.filter((v) => v.isCheckedOut === true));
 	const availableVehiclesCount = $derived(data.vehicles.length - checkedOutVehicles.length);
 
+	// destinations already ordered by trip count
+	const vehiclesOrderedTripCount = $derived(
+		data.vehicles.toSorted((a, b) => b.tripCount - a.tripCount),
+	);
+
 	let intervalId: NodeJS.Timeout | null = null;
 
 	$effect(() => {
@@ -71,6 +76,7 @@
 				</p>
 			</div>
 		</div>
+
 		<div class="border">
 			<h2 class="p-4 text-xl">Trips</h2>
 			<div class="border-b"></div>
@@ -91,8 +97,39 @@
 				</p>
 			</div>
 		</div>
+
 		<div>e</div>
-		<div>e</div>
+
+		<div class="border">
+			<h2 class="p-4 text-xl">Favorite Vehicles</h2>
+			<div class="border-b"></div>
+			<div class="space-y-2 p-4">
+				{#if vehiclesOrderedTripCount[0]}
+					<p class="truncate">
+						{vehiclesOrderedTripCount[0].number} -
+						<span class="font-bold">{vehiclesOrderedTripCount[0].tripCount.toLocaleString()}</span>
+						{vehiclesOrderedTripCount[0].tripCount === 1 ? "trip" : "trips"}
+					</p>
+				{/if}
+
+				{#if vehiclesOrderedTripCount[1]}
+					<p class="truncate">
+						{vehiclesOrderedTripCount[1].number} -
+						<span class="font-bold">{vehiclesOrderedTripCount[1].tripCount.toLocaleString()}</span>
+						{vehiclesOrderedTripCount[1].tripCount === 1 ? "trip" : "trips"}
+					</p>
+				{/if}
+
+				{#if vehiclesOrderedTripCount[2]}
+					<p class="truncate">
+						{vehiclesOrderedTripCount[2].number} -
+						<span class="font-bold">{vehiclesOrderedTripCount[2].tripCount.toLocaleString()}</span>
+						{vehiclesOrderedTripCount[2].tripCount === 1 ? "trip" : "trips"}
+					</p>
+				{/if}
+			</div>
+		</div>
+
 		<div>e</div>
 	</section>
 </div>
