@@ -55,7 +55,7 @@
 
 	<div class="my-6 w-full border-b"></div>
 
-	<section class="grid grid-cols-2 gap-4 md:grid-cols-5">
+	<section class="grid grid-cols-2 gap-4 md:grid-cols-4">
 		<div class="border">
 			<h2 class="p-4 text-xl">Vehicles</h2>
 			<div class="border-b"></div>
@@ -97,8 +97,6 @@
 				</p>
 			</div>
 		</div>
-
-		<div>e</div>
 
 		<div class="border">
 			<h2 class="p-4 text-xl">Favorite Vehicles</h2>
