@@ -45,7 +45,7 @@ export const load = (async (event) => {
 	startOfDay.setHours(0, 0, 0, 0);
 	const todayTripCountPromise = getTripCount({ organizationId: orgId, startTimeFrom: startOfDay });
 
-	const destinationsPromise = getDestinations();
+	const destinationsPromise = getDestinations().then((d) => d.slice(0, 3));
 
 	const [vehicles, totalTripCount, monthTripCount, todayTripCount, destinations] =
 		await Promise.all([
