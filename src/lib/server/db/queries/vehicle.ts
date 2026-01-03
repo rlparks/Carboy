@@ -58,7 +58,7 @@ export async function getVehiclesByOrganizationId(
                     FROM trip_destination td
                     INNER JOIN trip t ON t.id = td.trip_id
                     WHERE t.vehicle_id = v.id
-                ) AS trip_count
+                )::int AS trip_count
             FROM
                 vehicle v
             INNER JOIN
