@@ -3,6 +3,7 @@
 	import { resolve } from "$app/paths";
 	import logo from "$lib/assets/carboy-icon.png";
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
+	import { SvelteDate } from "svelte/reactivity";
 	import VehicleCard from "../VehicleCard.svelte";
 
 	let { data } = $props();
@@ -28,6 +29,17 @@
 			}
 		};
 	});
+
+	const firstOfMonth = new SvelteDate();
+	firstOfMonth.setDate(1);
+	firstOfMonth.setHours(0, 0, 0, 0);
+
+	const startOfDay = new SvelteDate();
+	startOfDay.setHours(0, 0, 0, 0);
+
+	function dateToYyyyMmDd(date: SvelteDate) {
+		return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+	}
 </script>
 
 <WindowTitle title="Dashboard" description="See an overview of Carboy" />
@@ -81,20 +93,26 @@
 			<h2 class="p-4 text-xl">Trips</h2>
 			<div class="border-b"></div>
 			<div class="space-y-2 p-4">
-				<p class="truncate">
+				<a class="block truncate hover:underline" href={resolve("/trips")}>
 					<span class="font-bold">{data.trips.totalTripCount.toLocaleString()}</span>
 					total {data.trips.totalTripCount === 1 ? "trip" : "trips"}
-				</p>
+				</a>
 
-				<p class="truncate">
+				<a
+					class="block truncate hover:underline"
+					href={resolve("/trips") + `?startTimeFrom=${dateToYyyyMmDd(firstOfMonth)}`}
+				>
 					<span class="font-bold">{data.trips.monthTripCount.toLocaleString()}</span>
 					{data.trips.monthTripCount === 1 ? "trip" : "trips"} this month
-				</p>
+				</a>
 
-				<p class="truncate">
+				<a
+					class="block truncate hover:underline"
+					href={resolve("/trips") + `?startTimeFrom=${dateToYyyyMmDd(startOfDay)}`}
+				>
 					<span class="font-bold">{data.trips.todayTripCount.toLocaleString()}</span>
 					{data.trips.todayTripCount === 1 ? "trip" : "trips"} today
-				</p>
+				</a>
 			</div>
 		</div>
 
@@ -103,27 +121,36 @@
 			<div class="border-b"></div>
 			<div class="space-y-2 p-4">
 				{#if vehiclesOrderedTripCount[0]}
-					<p class="truncate">
+					<a
+						class="block truncate hover:underline"
+						href="/trips?vehicleNumber={vehiclesOrderedTripCount[0].number}"
+					>
 						{vehiclesOrderedTripCount[0].number} -
 						<span class="font-bold">{vehiclesOrderedTripCount[0].tripCount.toLocaleString()}</span>
 						{vehiclesOrderedTripCount[0].tripCount === 1 ? "trip" : "trips"}
-					</p>
+					</a>
 				{/if}
 
 				{#if vehiclesOrderedTripCount[1]}
-					<p class="truncate">
+					<a
+						class="block truncate hover:underline"
+						href="/trips?vehicleNumber={vehiclesOrderedTripCount[1].number}"
+					>
 						{vehiclesOrderedTripCount[1].number} -
 						<span class="font-bold">{vehiclesOrderedTripCount[1].tripCount.toLocaleString()}</span>
 						{vehiclesOrderedTripCount[1].tripCount === 1 ? "trip" : "trips"}
-					</p>
+					</a>
 				{/if}
 
 				{#if vehiclesOrderedTripCount[2]}
-					<p class="truncate">
+					<a
+						class="block truncate hover:underline"
+						href="/trips?vehicleNumber={vehiclesOrderedTripCount[2].number}"
+					>
 						{vehiclesOrderedTripCount[2].number} -
 						<span class="font-bold">{vehiclesOrderedTripCount[2].tripCount.toLocaleString()}</span>
 						{vehiclesOrderedTripCount[2].tripCount === 1 ? "trip" : "trips"}
-					</p>
+					</a>
 				{/if}
 			</div>
 		</div>
