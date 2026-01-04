@@ -1,4 +1,5 @@
 import { getAccountWithOrgsByUsername } from "$lib/server/db/queries/auth";
+import { getTripCount } from "$lib/server/db/queries/trip";
 import { error } from "@sveltejs/kit";
 import type { LayoutServerLoad } from "./$types";
 
@@ -19,5 +20,8 @@ export const load = (async (event) => {
 		return error(403, "Forbidden");
 	}
 
-	return { editAccount: account };
+	// only catches started by, but this is probably fine :)
+	const tripCount = await getTripCount({ startedBy: account.username });
+
+	return { editAccount: account, tripCount };
 }) satisfies LayoutServerLoad;

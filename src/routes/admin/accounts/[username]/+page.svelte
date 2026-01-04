@@ -40,6 +40,13 @@
 				Edit
 			</Button>
 		{/if}
+		{#if data.tripCount === 0 && data.editAccount.id !== data.account?.id && (data.account?.role === "superadmin" || data.editAccount.role !== "superadmin")}
+			<Button
+				href={resolve("/admin/accounts/[username]/delete", { username: data.editAccount.username })}
+			>
+				Delete
+			</Button>
+		{/if}
 	</div>
 </header>
 

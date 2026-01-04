@@ -158,7 +158,7 @@ export async function getAccountByUsername(username: string) {
 export async function getAccountByEmail(email: string) {
 	try {
 		const [row] = await sql<FriendlyAccount[]>`
-            SELECT 
+            SELECT
                 id,
                 name,
                 email,
@@ -173,6 +173,17 @@ export async function getAccountByEmail(email: string) {
         `;
 
 		return row;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
+
+export async function deleteAccount(id: string) {
+	try {
+		await sql`
+            DELETE FROM account
+            WHERE id = ${id}
+        `;
 	} catch (err) {
 		throw parsePgError(err);
 	}
