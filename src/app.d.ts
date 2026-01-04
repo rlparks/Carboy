@@ -2,7 +2,7 @@
 
 import type Security from "$lib/server/auth/Security";
 import type { FriendlyAccount } from "$lib/types/bonus";
-import type { Session } from "$lib/types/db";
+import type { Organization, Session } from "$lib/types/db";
 
 // for information about these interfaces
 declare global {
@@ -11,6 +11,7 @@ declare global {
 		interface Locals {
 			session: Session | null;
 			account: FriendlyAccount | null;
+			accountOrganizations: Organization[];
 			security: Security;
 		}
 		// interface PageData {}

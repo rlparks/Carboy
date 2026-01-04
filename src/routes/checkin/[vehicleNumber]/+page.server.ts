@@ -15,9 +15,7 @@ export const load = (async (event) => {
 		return error(404, "Vehicle not found");
 	}
 
-	if (vehicle.organizationId !== event.locals.session?.selectedOrganizationId) {
-		return error(403, "Organization does not match.");
-	}
+	await event.locals.security.enforceOrganization(vehicle.organizationId);
 
 	if (vehicle.archived) {
 		return error(400, "Vehicle is archived.");

@@ -14,10 +14,7 @@ export const load = (async (event) => {
 		return error(404, "Vehicle not found");
 	}
 
-	// TODO: switch or error
-	if (vehicle.organizationId !== event.locals.session?.selectedOrganizationId) {
-		return error(403, "Organization does not match.");
-	}
+	await event.locals.security.enforceOrganization(vehicle.organizationId);
 
 	const [mostRecentTrip] = await getTrips({ vehicleNumber: vehicle.number, limit: 1 });
 	if (mostRecentTrip && !mostRecentTrip.endTime) {

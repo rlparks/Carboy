@@ -5,6 +5,7 @@ import Security from "$lib/server/auth/Security";
 import { getOrganizations, getOrganizationsByAccountId } from "$lib/server/db/queries/organization";
 import { updateSelectedOrganization } from "$lib/server/db/queries/session";
 import { initCarboy } from "$lib/server/init";
+import type { Organization } from "$lib/types/db";
 import type { Handle, ServerInit } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
 
@@ -34,26 +35,31 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 		deleteSessionCookie(event);
 	}
 
-	if (account && session && !session.selectedOrganizationId) {
-		// if no organization is selected, and the account has organizations, select the first one by default
-		const accountOrgs = await (account.role === "superadmin"
+	let accountOrgs: Organization[] = [];
+	if (account && session) {
+		accountOrgs = await (account.role === "superadmin"
 			? getOrganizations()
 			: getOrganizationsByAccountId(account.id));
 
-		if (accountOrgs.length > 0 && accountOrgs[0]?.id) {
-			session.selectedOrganizationId = accountOrgs[0].id;
-			await updateSelectedOrganization(session.id, session.selectedOrganizationId);
+		if (!session.selectedOrganizationId) {
+			// if no organization is selected, and the account has organizations, select the first one by default
+			if (accountOrgs.length > 0 && accountOrgs[0]?.id) {
+				session.selectedOrganizationId = accountOrgs[0].id;
+				await updateSelectedOrganization(session.id, session.selectedOrganizationId);
+			}
+		} else if (!accountOrgs.some((org) => org.id === session.selectedOrganizationId)) {
+			// if the selected organization is no longer accessible, deselect it
+			session.selectedOrganizationId = null;
+			await updateSelectedOrganization(session.id, null);
 		}
 	}
 
 	event.locals.session = session;
 	event.locals.account = account;
+	event.locals.accountOrganizations = accountOrgs;
 
-	return await resolve(event);
-};
+	event.locals.security = new Security(event);
 
-const addLocals: Handle = async ({ event, resolve }) => {
-	event.locals.security = new Security(event.locals.account);
 	return await resolve(event);
 };
 
@@ -76,4 +82,4 @@ const setHeaders: Handle = async ({ event, resolve }) => {
 	return result;
 };
 
-export const handle = sequence(handleAuth, addLocals, setHeaders);
+export const handle = sequence(handleAuth, setHeaders);
