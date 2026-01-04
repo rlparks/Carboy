@@ -13,7 +13,12 @@
 
 <header class="flex justify-between">
 	<PageTitle {title} />
-	<Button href={resolve("/admin/dashboard/[id]/edit", { id: data.dashboardKey.id })}>Edit</Button>
+	<div class="flex gap-2">
+		<Button href={resolve("/admin/dashboard/[id]/edit", { id: data.dashboardKey.id })}>Edit</Button>
+		<Button href={resolve("/admin/dashboard/[id]/delete", { id: data.dashboardKey.id })}>
+			Delete
+		</Button>
+	</div>
 </header>
 
 <div class="grid max-w-md grid-cols-2 gap-4">
