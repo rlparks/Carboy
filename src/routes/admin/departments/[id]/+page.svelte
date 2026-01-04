@@ -12,7 +12,14 @@
 <WindowTitle {title} description="View department details." />
 <header class="flex justify-between">
 	<PageTitle {title} />
-	<Button href={resolve("/admin/departments/[id]/edit", { id: data.department.id })}>Edit</Button>
+	<div class="flex gap-2">
+		<Button href={resolve("/admin/departments/[id]/edit", { id: data.department.id })}>Edit</Button>
+		{#if data.vehicleCount === 0}
+			<Button href={resolve("/admin/departments/[id]/delete", { id: data.department.id })}>
+				Delete
+			</Button>
+		{/if}
+	</div>
 </header>
 
 <div class="mt-4 grid max-w-md grid-cols-2 gap-4">

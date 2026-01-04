@@ -1,3 +1,4 @@
+import { getVehicleCountByDepartmentId } from "$lib/server/db/queries/department";
 import { getDepartmentById } from "$lib/server/db/queries/department";
 import { error } from "@sveltejs/kit";
 import type { LayoutServerLoad } from "./$types";
@@ -20,5 +21,7 @@ export const load = (async (event) => {
 		return error(403, "Forbidden");
 	}
 
-	return { department };
+	const vehicleCount = await getVehicleCountByDepartmentId(id);
+
+	return { department, vehicleCount };
 }) satisfies LayoutServerLoad;

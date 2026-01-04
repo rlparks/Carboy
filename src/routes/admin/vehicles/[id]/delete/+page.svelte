@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from "$app/paths";
 	import Button from "$lib/components/Button.svelte";
 	import PageTitle from "$lib/components/PageTitle.svelte";
 	import WindowTitle from "$lib/components/WindowTitle.svelte";
@@ -28,6 +29,6 @@
 	<form {...deleteVehicle} class="flex gap-2">
 		<input type="hidden" name="id" value={data.vehicle.id} />
 		<Button type="submit">Delete</Button>
-		<Button href={`/admin/vehicles/${data.vehicle.id}`}>Cancel</Button>
+		<Button href={resolve("/admin/vehicles/[id]", { id: data.vehicle.id })}>Cancel</Button>
 	</form>
 </div>

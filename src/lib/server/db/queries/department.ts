@@ -195,3 +195,29 @@ export async function reorderDepartments(
 		throw parsePgError(err);
 	}
 }
+
+export async function getVehicleCountByDepartmentId(departmentId: string) {
+	try {
+		const [row] = await sql<{ count: number }[]>`
+            SELECT
+                count(*)::int AS count
+            FROM vehicle
+            WHERE department_id = ${departmentId}
+        ;`;
+
+		return row?.count ?? 0;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
+
+export async function deleteDepartment(id: string) {
+	try {
+		await sql`
+            DELETE FROM department
+            WHERE id = ${id}
+        `;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
