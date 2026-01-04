@@ -221,3 +221,14 @@ export async function updateVehicle(
 		throw parsePgError(err);
 	}
 }
+
+export async function deleteVehicle(id: string) {
+	try {
+		await sql`
+            DELETE FROM vehicle
+            WHERE id = ${id}
+        `;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}

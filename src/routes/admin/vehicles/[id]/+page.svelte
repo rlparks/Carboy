@@ -16,7 +16,12 @@
 
 <header class="flex justify-between">
 	<PageTitle {title} />
-	<Button href={resolve("/admin/vehicles/[id]/edit", { id: data.vehicle.id })}>Edit</Button>
+	<div class="flex gap-2">
+		<Button href={resolve("/admin/vehicles/[id]/edit", { id: data.vehicle.id })}>Edit</Button>
+		{#if data.tripCount === 0}
+			<Button href={resolve("/admin/vehicles/[id]/delete", { id: data.vehicle.id })}>Delete</Button>
+		{/if}
+	</div>
 </header>
 
 <div class="grid max-w-md grid-cols-2 gap-4">
