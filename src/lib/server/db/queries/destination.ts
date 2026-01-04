@@ -169,3 +169,14 @@ export async function mergeDestinations(finalDestinationId: string, oldDestinati
 		throw parsePgError(err);
 	}
 }
+
+export async function deleteDestination(id: string) {
+	try {
+		await sql`
+            DELETE FROM destination
+            WHERE id = ${id}
+        `;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}

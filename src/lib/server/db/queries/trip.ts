@@ -207,6 +207,21 @@ export async function getTripCount(opts: TripFilterOptions = {}) {
 	}
 }
 
+export async function getTripCountByDestinationId(destinationId: string) {
+	try {
+		const [row] = await sql<{ count: number }[]>`
+            SELECT
+                count(DISTINCT td.trip_id)::int AS count
+            FROM trip_destination td
+            WHERE td.destination_id = ${destinationId}
+        ;`;
+
+		return row?.count ?? 0;
+	} catch (err) {
+		throw parsePgError(err);
+	}
+}
+
 export async function getTripWithDestinations(tripId: string) {
 	try {
 		const [row] = await sql<TripWithDestinations[]>`

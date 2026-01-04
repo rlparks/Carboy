@@ -20,6 +20,11 @@
 		<Button href={resolve("/admin/destinations/[id]/edit", { id: data.destination.id })}>
 			Edit
 		</Button>
+		{#if data.tripCount === 0}
+			<Button href={resolve("/admin/destinations/[id]/delete", { id: data.destination.id })}>
+				Delete
+			</Button>
+		{/if}
 	</div>
 </header>
 

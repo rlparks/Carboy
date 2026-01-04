@@ -1,4 +1,5 @@
 import { getDestinationById } from "$lib/server/db/queries/destination";
+import { getTripCountByDestinationId } from "$lib/server/db/queries/trip";
 import { error } from "@sveltejs/kit";
 import type { LayoutServerLoad } from "./$types";
 
@@ -12,5 +13,7 @@ export const load = (async (event) => {
 		return error(404, "Destination not found.");
 	}
 
-	return { destination };
+	const tripCount = await getTripCountByDestinationId(id);
+
+	return { destination, tripCount };
 }) satisfies LayoutServerLoad;
