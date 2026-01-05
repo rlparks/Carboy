@@ -25,6 +25,8 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 	if (!token) {
 		event.locals.session = null;
 		event.locals.account = null;
+		event.locals.security = new Security(event);
+
 		return await resolve(event);
 	}
 
